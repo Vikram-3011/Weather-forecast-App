@@ -30,7 +30,7 @@ public class WeatherDataService
 
         foreach (var (city, country) in predefinedCities)
         {
-            var requestUri = $"https://api.openweathermap.org/data/2.5/weather?q={city}&appid=596a1e71b480c1efbdbdd4da71b6f8da&units=metric";
+            var requestUri = $"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={ Your API's KEY }&units=metric";
 
             try
             {
