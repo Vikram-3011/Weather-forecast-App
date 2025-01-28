@@ -1,0 +1,264 @@
+﻿@page "/"
+@using BlazorApp.Controllers
+@using BlazorApp.Singletons
+@using BlazorApp.Services
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+@inject AuthService auth 
+@inject WeatherDataService WeatherService
+@inject IJSRuntime JSRuntime
+@inject UserStateManager userState
+
+<PageTitle>Home</PageTitle>
+
+<MudText Typo="Typo.h3" Align="Align.Center">Weather Forecast</MudText>
+<MudText Typo="Typo.body1" Align="Align.Center">Welcome to  forecast</MudText>
+@* 
+<MudButton Variant="Variant.Filled" DropShadow="false" Size="Size.Large" Color="Color.Primary"
+           style="position: absolute; top: 60%; left: 52%; "
+           @onclick="NavigateToWeather">Go to Weather</MudButton>
+ *@
+
+@if (!userState.IsLoggedIn())
+{
+    <MudContainer MaxWidth="MaxWidth.Large" Class="mt-4" Style="display: flex; justify-content: center;">
+        <MudCard Elevation="4" Class="pa-4" Style="text-align: center; width: 600px; height: 230px;">
+            <MudText Typo="Typo.h6" Align="Align.Center" Class="mb-4">
+                "To access exclusive features in the weather forecast, simply log in or sign up. Gain access to advanced weather insights and enjoy more features to enhance your experience!"
+            </MudText>
+            <MudContainer Style="display: flex; justify-content: space-evenly; margin-top: 35px;">
+                <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="NavigateToLogin" Style="width: 120px;">
+                    Login
+                </MudButton>
+                <MudButton Variant="Variant.Outlined" Color="Color.Secondary" OnClick="NavigateToSignup" Style="width: 120px;">
+                    Sign Up
+                </MudButton>
+            </MudContainer>
+        </MudCard>
+    </MudContainer>
+}
+else
+{
+    <MudText Typo="Typo.h5" Class="pt-8 pb-4 pl-4 pr-4">
+        User live location :
+    </MudText>
+    <MudContainer MaxWidth="MaxWidth.Medium" Class="mt-4">
+        <MudCard Elevation="4" Class="pa-4">
+            @if (IsLoading)
+            {
+                <MudText Typo="Typo.h6" Color="Color.Primary" Align="Align.Center">
+                    Fetching location...
+                </MudText>
+            }
+            else if (ErrorMessage != null)
+            {
+                <MudText Typo="Typo.h6" Color="Color.Error" Align="Align.Center">
+                    @ErrorMessage
+                </MudText>
+            }
+            else
+            {
+                <MudText Typo="Typo.h6" Align="Align.Center"><strong>Address:</strong> @FullAddress</MudText>
+                <MudText Typo="Typo.body1" Align="Align.Center">Latitude: @Latitude</MudText>
+                <MudText Typo="Typo.body1" Align="Align.Center">Longitude: @Longitude</MudText>
+                <MudText Typo="Typo.body1" Align="Align.Center">Accuracy: @Accuracy meters</MudText>
+            }
+
+            <MudSpacer />
+
+            <MudContainer MaxWidth="MaxWidth.Medium" Class="mt-4" Style="display: flex; justify-content: center;">
+                <MudButton Class="mud-button-filled" Color="Color.Primary" Variant="Variant.Text" OnClick="FetchLocation" Style="width: 200px;">
+                    Get Location
+                </MudButton>
+            </MudContainer>
+
+
+        </MudCard>
+    </MudContainer>
+
+    <MudText Typo="Typo.h5" Class="pt-8 pb-4 pl-4 pr-4">
+        Top 5 Global Cities Weather :
+    </MudText>
+}
+@* @if (userState.IsLoggedIn()){
+        
+}
+ *@
+
+
+
+
+@if (userState.IsLoggedIn())
+{
+@if (isLoading)
+{
+    <MudProgressCircular Indeterminate="true" Class="my-4"  Color="Color.Secondary" />
+}
+else if (WeatherService.GlobalCityWeather.Count > 0)
+{
+    <MudPaper Class="p-4 mx-auto" Elevation="6"  Style=" max-width: 800px; border-radius: 7px;">
+        <MudTable Items="WeatherService.GlobalCityWeather" Class="text-center" Bordered="true" >
+            <HeaderContent >
+                <MudTh >City</MudTh>
+                <MudTh >Country</MudTh>
+                <MudTh >Temperature (°C)</MudTh>
+                <MudTh >Weather</MudTh>
+            </HeaderContent>
+            <RowTemplate Context="city">
+                <MudTd>@city.CityName</MudTd>
+                <MudTd>@city.Country</MudTd>
+                <MudTd>Min: @city.TempMin:F2 | Max: @city.TempMax:F2</MudTd>
+                <MudTd>@city.Description</MudTd>
+            </RowTemplate>
+        </MudTable>
+    </MudPaper>
+}
+
+}
+
+
+
+@code
+{
+    private bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadWeatherData();
+    }
+    void NavigateToLogin()
+    {
+        NavigationManager.NavigateTo("/login"); // navigation to the weather page
+    }
+
+    void NavigateToSignup()
+    {
+        NavigationManager.NavigateTo("/signup"); // navigation to the weather page
+    }
+    private async Task LoadWeatherData()
+    {
+        isLoading = true;
+        await WeatherService.FetchGlobalCityWeather();
+        isLoading = false;
+    }
+    private string? user = "";
+
+    protected override void OnInitialized()
+    {
+        user = auth.GetSession()?.User?.Email;
+
+    }
+
+    // Method to navigate to another page
+    void NavigateToWeather()
+    {
+        NavigationManager.NavigateTo("/weather"); // navigation to the weather page
+    }
+
+    
+  
+private bool IsLoading = false;
+private string? ErrorMessage = null;
+private double Latitude;
+private double Longitude;
+private double Accuracy;
+private string? FullAddress;
+
+private async Task FetchLocation()
+{
+IsLoading = true;
+ErrorMessage = null;
+
+try
+{
+        // Fetch Latitude and Longitude
+        var location = await JSRuntime.InvokeAsync<Location>("getUserLocation");
+        Latitude = location.Latitude;
+        Longitude = location.Longitude;
+        Accuracy = location.Accuracy;
+
+        // Fetch Full Address using Reverse Geocoding API
+        var address = await GetAddressFromCoordinates(Latitude, Longitude);
+        FullAddress = address.ToString();
+            StateHasChanged();
+}
+catch (Exception ex)
+{
+        ErrorMessage = ex.Message;
+}
+finally
+{
+        IsLoading = false;
+}
+}
+
+private async Task<Address> GetAddressFromCoordinates(double latitude, double longitude)
+{
+        string apiKey = "fbfb336510e44728a2c31f80d3b6b1d5"; // Replace with your API key
+string url = $"https://api.opencagedata.com/geocode/v1/json?q={latitude}+{longitude}&key={apiKey}";
+
+using var client = new HttpClient();
+var response = await client.GetFromJsonAsync<OpenCageResponse>(url);
+
+if (response != null && response.Results.Count > 0)
+{
+        var components = response.Results[0].Components;
+        return new Address
+{
+Street = components.Road,
+Town = components.Town ?? components.Village,
+City = components.City,
+District = components.County,
+State = components.State,
+Country = components.Country
+};
+}
+
+throw new Exception("Unable to fetch location details.");
+}
+
+private class Location
+{
+    public double Latitude { get; set; }
+    public double Longitude { get; set; }
+    public double Accuracy { get; set; }
+}
+
+private class Address
+{
+    public string? Street { get; set; }
+    public string? Town { get; set; }
+    public string? City { get; set; }
+    public string? District { get; set; }
+    public string? State { get; set; }
+    public string? Country { get; set; }
+
+    public override string ToString()
+    {
+            return $"{Street}, {Town}, {City},{District}, {State}, {Country}";
+    }
+}
+
+private class OpenCageResponse
+{
+    public List<Result> Results { get; set; } = new();
+
+    public class Result
+    {
+        public Components Components { get; set; } = new();
+    }
+
+    public class Components
+    {
+        public string? Road { get; set; }
+        public string? Town { get; set; }
+        public string? Village { get; set; }
+        public string? City { get; set; }
+        public string? County { get; set; }
+        public string? State { get; set; }
+        public string? Country { get; set; }
+    }
+}
+    
+
+}

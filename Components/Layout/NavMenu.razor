@@ -1,0 +1,29 @@
+﻿@using BlazorApp.Singletons
+@inject UserStateManager userState
+@inject NavigationManager NavigationManager
+
+<MudNavMenu>
+    <MudNavLink Href="#" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
+    
+    <MudNavLink Href="/weather" Icon="@Icons.Material.Filled.WbSunny">Weather</MudNavLink>
+    @if(userState.IsLoggedIn())
+    {
+        <MudNavLink Href="/favourites" Icon="@Icons.Material.Filled.Favorite">Favorites</MudNavLink>
+        <MudNavLink Href="/user-profile"   Icon="@Icons.Material.Filled.AccountCircle">profile</MudNavLink>
+    }
+  
+   
+  
+</MudNavMenu>
+
+
+@code
+{
+    protected override void OnInitialized() => userState.OnChange += StateChange;
+
+    private void StateChange() => InvokeAsync(StateHasChanged);
+
+    public void Dispose() => userState.OnChange -= StateChange;
+
+   
+}

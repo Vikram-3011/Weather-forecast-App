@@ -1,0 +1,85 @@
+﻿@page "/login"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+@using BlazorApp.Controllers
+@using BlazorApp.Models
+@inject DatabaseController userController
+@inject  SupabaseController supabase
+@using BlazorApp.Singletons
+@using BlazorApp.Services
+@inject AuthService authService
+@inject UserStateManager userState
+@inject ISnackbar _snackbar
+
+<PageTitle>Login</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Small">
+    <MudCard Class="pa-4 rounded-lg mt-1" Elevation="8">
+        <MudCardHeader Class="d-flex flex-column align-baseline">
+            <MudText Typo="Typo.h2" Color="Color.Primary">Login</MudText>
+            <MudText Typo="Typo.body1">Enter your credentials to login.</MudText>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudTextField T="string" @bind-Value="@email" Label="Email" Variant="Variant.Outlined" Required></MudTextField>
+            <MudTextField T="string" @bind-Value="@password" Label="Password" Variant="Variant.Outlined" InputType="InputType.Password" Required></MudTextField>
+           
+            <div class="d-inline-flex align-items-start my-4">
+                <MudButton OnClick="OnLogin" Class="mr-2" Color="Color.Primary" Variant="Variant.Filled">Login</MudButton>
+                <MudButton OnClick="OnSignup" Class="mr-2" Color="Color.Secondary" Variant="Variant.Outlined">Sign Up</MudButton>
+                <MudButton Variant="Variant.Text" Color="Color.Tertiary" Class="mr-3" OnClick="ForgotPassword">Forgot Password?</MudButton>
+
+            </div>
+        </MudCardContent>
+    </MudCard>
+</MudContainer>
+
+@code {
+    private string email { get; set; } = "";
+    private string password { get; set; } = "";
+    private bool success = false;
+
+    private void OnSignup() => NavigationManager.NavigateTo("signup");
+
+    public async Task OnLogin()
+    {
+        try
+        {
+            // Authenticate the user using AuthService and update UserStateManager
+            string? result = await authService.SignIn(email, password, userState);
+
+            if (string.IsNullOrEmpty(result))
+            {
+                // Redirect to home page if login is successful
+                NavigationManager.NavigateTo("/");
+            }
+            else
+            {
+                _snackbar.Add(result, Severity.Error); // Display error message
+            }
+        }
+        catch (Exception ex)
+        {
+            _snackbar.Add($"Error: {ex.Message}", Severity.Error);
+        }
+    }
+
+    private async Task ForgotPassword()
+    {
+        if (string.IsNullOrEmpty(email))
+        {
+            _snackbar.Add("Please enter your email to reset your password.", Severity.Warning);
+            return;
+        }
+
+        try
+        {
+            await authService.SendPasswordResetLink(email);
+            _snackbar.Add("Password reset link sent to your email.", Severity.Success);
+        }
+        catch (Exception ex)
+        {
+            _snackbar.Add($"Error: {ex.Message}", Severity.Error);
+        }
+    }
+}

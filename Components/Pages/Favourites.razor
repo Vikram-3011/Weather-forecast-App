@@ -1,0 +1,80 @@
+﻿@page "/favourites"
+@rendermode InteractiveServer
+@inject DatabaseController databaseController
+
+@using BlazorApp.Singletons
+@inject UserStateManager userState
+@using MongoDB.Bson
+
+@using BlazorApp.Models
+@using BlazorApp.Controllers
+@inject NavigationManager NavigationManager
+<PageTitle>Favorite Cities</PageTitle>
+
+<MudText Typo="Typo.h4" Align="Align.Center">Favorite Cities</MudText>
+
+@if (favouriteCities != null && favouriteCities.Count > 0)
+{
+    <MudPaper Elevation="0" Class="p-4">
+
+        <MudTable Items="@favouriteCities" Hover="true" Striped="false" Dense="true">
+            <HeaderContent>
+                <MudTh Class="no-border">City Name</MudTh>
+                <MudTh Class="no-border">Date Added</MudTh>
+                <MudTh Class="no-border">Actions</MudTh>
+
+            </HeaderContent>
+            <RowTemplate Context="city">
+
+                <MudTd Class="no-border">@city.CityName</MudTd>
+                <MudTd Class="no-border">@city.DateAdded.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")</MudTd>
+                <MudTd Class="no-border">
+                    <MudButton Color="Color.Error" OnClick="@(() => RemoveCity(city.CityName))">
+                        Remove
+                    </MudButton>
+                </MudTd>
+            </RowTemplate>
+        </MudTable>
+    </MudPaper>
+}
+else
+{
+    <MudAlert Severity="Severity.Info">No favorite cities added yet.</MudAlert>
+}
+
+<style>
+    .no-border {
+        border: none !important;
+    }
+
+    .no-shadow {
+        box-shadow: none !important;
+    }
+</style>
+
+
+@code {
+    private List<Favourite> favouriteCities = new();
+    private string userEmail = "";
+    protected override async Task OnInitializedAsync()
+    {
+        userEmail = userState.UserEmail; // Retrieve logged-in user's email
+
+        if (!string.IsNullOrEmpty(userEmail))
+        {
+            favouriteCities = await databaseController.GetFavoriteCitiesByUser(userEmail);
+        }
+        else
+        {
+            favouriteCities = new List<Favourite>(); // Clear data if no user is logged in
+        }
+    }
+
+
+    private async Task RemoveCity(string cityName)
+    {
+        await databaseController.RemoveFavoriteCity(cityName, userState.UserEmail);
+        favouriteCities.RemoveAll(c => c.CityName == cityName);
+    }
+
+}

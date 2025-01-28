@@ -1,0 +1,103 @@
+﻿@page "/personal-info"
+@inject PersonalInfoService PersonalInfoService
+@using BlazorApp.Models
+@using MudBlazor
+@using BlazorApp.Services
+@inject NavigationManager NavigationManager
+@inject ISnackbar _snackbar
+@using BlazorApp.Singletons
+@inject UserStateManager userState
+<PageTitle>Personal Information</PageTitle>
+
+<MudPaper Elevation="2" Class="p-4" Style="max-width: 600px; margin: auto; border-radius: 10px;">
+    <MudGrid>
+        <MudItem xs="12">
+            <MudText Typo="Typo.h5" style="-ms-flex-item-align:center" Class="mb-4">Enter Your Details</MudText>
+        </MudItem>
+
+        <MudItem xs="12">
+            <MudTextField T="string" Label="Name" @bind-Value="personalInfo.Name" FullWidth="true" Variant="Variant.Outlined" Class="mb-3" />
+        </MudItem>
+
+        <MudItem xs="12">
+            <MudTextField T="string" Label="Email" @bind-Value="personalInfo.Email" FullWidth="true" Variant="Variant.Outlined" Class="mb-3" />
+        </MudItem>
+
+        <MudItem xs="12">
+            <MudTextField T="string" Label="Phone" @bind-Value="personalInfo.Phone" FullWidth="true" Variant="Variant.Outlined" Class="mb-3" />
+        </MudItem>
+
+        <MudItem xs="12">
+            <MudTextField T="string" Label="Address" @bind-Value="personalInfo.City" FullWidth="true" Variant="Variant.Outlined" Class="mb-3" />
+        </MudItem>
+
+        <MudItem xs="12">
+            <MudTextField T="string" Label="Country" @bind-Value="personalInfo.Country" FullWidth="true" Variant="Variant.Outlined" Class="mb-4" />
+        </MudItem>
+
+        <MudItem xs="6">
+            <MudButton Color="Color.Primary" OnClick="SubmitForm" FullWidth="true" Variant="Variant.Filled">
+                Submit
+            </MudButton>
+        </MudItem>
+        <MudItem xs="6">
+            <MudButton Color="Color.Secondary" OnClick="ClearForm" FullWidth="true" Variant="Variant.Outlined">
+                Clear
+            </MudButton>
+        </MudItem>
+    </MudGrid>
+</MudPaper>
+
+@if (isSuccess)
+{
+    _snackbar.Add("Successfully Saved Personal Information !", Severity.Success);
+}
+
+@if (isError)
+{
+    _snackbar.Add("Error while saving personal Information ", Severity.Error);
+}
+
+@code {
+    private PersonalInfo personalInfo = new PersonalInfo();
+    private bool isSuccess = false;
+    private bool isError = false;
+
+
+     protected override async Task OnInitializedAsync()
+    {
+        if (userState.IsLoggedIn())
+        {
+            var userEmail = userState.User?.Email;
+            if (!string.IsNullOrEmpty(userEmail))
+            {
+                personalInfo = await PersonalInfoService.GetUserByEmailAsync(userEmail) ?? new PersonalInfo();
+            }
+        }
+    }
+
+    private async Task SubmitForm()
+    {
+        isSuccess = false;
+        isError = false;
+
+        var result = await PersonalInfoService.SavePersonalInfoAsync(personalInfo);
+
+        if (result)
+        {
+            isSuccess = true;
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            isError = true;
+        }
+    }
+
+    private void ClearForm()
+    {
+        personalInfo = new PersonalInfo();
+        isSuccess = false;
+        isError = false;
+    }
+}

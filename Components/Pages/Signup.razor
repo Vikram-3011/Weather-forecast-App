@@ -1,0 +1,63 @@
+﻿@page "/signup"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+@using BlazorApp.Controllers
+@using BlazorApp.Models
+@inject DatabaseController userController
+@inject SupabaseController supabase
+@using BlazorApp.Singletons
+@using BlazorApp.Services
+@inject AuthService authService
+@inject UserStateManager userState
+@inject ISnackbar _snackbar
+
+<PageTitle>Signup</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Small">
+    <MudCard Class="pa-4 rounded-lg mt-1" Elevation="8">
+        <MudCardHeader Class="d-flex flex-column align-baseline">
+            <MudText Typo="Typo.h2" Color="Color.Primary">Signup</MudText>
+            <MudText Typo="Typo.body1">Create an Account.</MudText>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudTextField T="string" @bind-Value="@email" Label="Email" Variant="Variant.Outlined" Required></MudTextField>
+            <MudTextField T="string" @bind-Value="@password" Label="Password" Variant="Variant.Outlined" InputType="InputType.Password" Required></MudTextField>
+    
+            <div class="d-inline-flex align-items-start my-4">
+                <MudButton OnClick="OnSignup" Class="mr-2" Color="Color.Primary" Variant="Variant.Filled">Signup</MudButton>
+                <MudButton OnClick="OnLogin" Class="mr-2" Color="Color.Secondary" Variant="Variant.Outlined">Login</MudButton>
+            </div>
+        </MudCardContent>
+    </MudCard>
+</MudContainer>
+
+@code{
+    
+    private string email { get; set; } = "";
+    private string password { get; set; } = "";
+    private bool success = false;
+    private string? userEmail = "";
+
+    private void OnLogin() => NavigationManager.NavigateTo("login");
+
+
+    public async Task OnSignup()
+    {
+        try
+        {
+            var user = await authService.SignUp(email, password, userState);
+            if (user != null)
+            {
+                userState.SetUser(user);
+                // _snackbar.Add("Account created successfully!", Severity.Success);
+                NavigationManager.NavigateTo("/personal-info");
+            }
+        }
+        catch (Exception ex)
+        {
+            _snackbar.Add($"Error: {ex.Message}", Severity.Error);
+        }
+    }
+    
+
+}

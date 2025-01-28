@@ -1,0 +1,212 @@
+﻿@page "/weather"
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@using System.Collections.Generic
+@inject IHttpClientFactory ClientFactory
+@inject UserStateManager userState
+@inject DatabaseController databaseController
+@using BlazorApp.Controllers
+@using BlazorApp.Singletons
+@using BlazorApp.Models
+@using MongoDB.Bson;
+@inject ISnackbar Snackbar
+
+
+<PageTitle>Weather Forecast</PageTitle>
+
+<MudText Typo="Typo.h3" Align="Align.Center">Weather Forecast</MudText>
+<MudText Typo="Typo.body1" Align="Align.Center">Enter a city name  to Get  weather data.</MudText>
+
+<MudCard Class="rounded-lg w-50 my-4 py-8 mx-auto" Elevation="5">
+    <MudContainer MaxWidth="MaxWidth.Small">
+        <MudTextField Class="mt-2" @bind-Value="@cityName"  Label="Enter City Name" Variant="Variant.Outlined" Required/>
+        <MudTextField Class="mt-2" @bind-Value="@numDays" Label="Enter  Days (1-5)" Variant="Variant.Outlined" Type="number" />
+        <MudButton Class="mt-2" OnClick="@FetchWeatherData" Variant="Variant.Outlined" Color="Color.Primary">Get Weather</MudButton>
+        @if (userState.IsLoggedIn()){
+        <MudButton Class="mt-2" OnClick="@SaveToFavorites" StartIcon="@Icons.Material.Filled.Favorite" Variant="Variant.Text" Color="Color.Secondary">
+            Add to Favorites
+        </MudButton>
+        }
+    </MudContainer>
+</MudCard>
+
+@if (dailyForecasts != null && dailyForecasts.Count > 0)
+{
+    <MudText Typo="Typo.h5" Align="Align.Center">Weather Forecast for @cityName</MudText>
+    <MudPaper Class="p-4" Elevation="2">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Day</th>
+                    <th>Temperature (°C)</th>
+                    <th>Weather</th>
+                    <th>Humidity (%)</th>
+                    <th>Wind Speed (m/s)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var forecast in dailyForecasts)
+                {
+                    <tr>
+                        <td>@forecast.Date.ToString("dddd, MMM dd")</td>
+                        <td>Min: @(forecast.TempMin - 273):F2 | Max: @(forecast.TempMax - 273):F2</td>      @*exact temperature <td>Min: @(forecast.TempMin - 273.15):F2 | Max: @(forecast.TempMax - 273.15):F2</td> *@
+                                                <td>@forecast.Description</td>
+                        <td>@forecast.Humidity:F0</td>
+                        <td>@forecast.WindSpeed:F2</td>
+                        
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </MudPaper>
+}
+else if (showError)
+{
+    <MudAlert Severity="Severity.Error">Failed to fetch weather data for @cityName.</MudAlert>
+}
+
+@code {
+    private string cityName = string.Empty;
+    private int numDays = 5; // Default to 5 day
+    private List<DailyForecast> dailyForecasts;
+    private bool showError = false;
+    private bool isFavorite = false;
+    private string selectedCityName = "";
+    private async Task FetchWeatherData()
+    {
+        showError = false;
+
+        if (string.IsNullOrWhiteSpace(cityName) || numDays < 1 || numDays > 5)
+        {
+            showError = true;
+            return;
+        }
+
+        var client = ClientFactory.CreateClient();
+        var requestUri = $"https://api.openweathermap.org/data/2.5/forecast?q={Uri.EscapeDataString(cityName)}&appid=596a1e71b480c1efbdbdd4da71b6f8da";
+
+        try
+        {
+            var response = await client.GetAsync(requestUri);
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                var forecastResponse = JsonSerializer.Deserialize<ForecastResponse>(json, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+
+                if (forecastResponse != null)
+                {
+                    // Process forecasts to generate daily summaries
+                    dailyForecasts = forecastResponse.List
+                        .GroupBy(forecast => DateTimeOffset.FromUnixTimeSeconds(forecast.Dt).Date)
+                        .Take(numDays)
+                        .Select(group => new DailyForecast
+                            {
+                                Date = group.Key,
+                                TempMin = group.Min(f => f.Main.TempMin),
+                                TempMax = group.Max(f => f.Main.TempMax),
+                                Description = group.First().Weather[0].Description,
+                                Humidity = group.Average(f => f.Main.Humidity),
+                                WindSpeed = group.Average(f => f.Wind.Speed)
+                            })
+                        .ToList();
+                }
+            }
+            else
+            {
+                showError = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+            showError = true;
+        }
+    }
+   
+
+    private async Task SaveToFavorites()
+    {
+        if (!string.IsNullOrWhiteSpace(cityName) && userState.IsLoggedIn())
+        {
+            var userEmail = userState.UserEmail;
+
+            if (!string.IsNullOrEmpty(userEmail))
+            {
+                await databaseController.AddFavoriteCity(cityName, userEmail);
+                Snackbar.Add($"{cityName} added to favorites!", Severity.Success);
+            }
+            else
+            {
+                Console.WriteLine("User email is null or empty in UserStateManager.");
+                Snackbar.Add("Unable to determine user email. Please log in again.", Severity.Error);
+            }
+        }
+        else
+        {
+            Snackbar.Add("Please enter a city name and ensure you're logged in.", Severity.Warning);
+        }
+    }
+
+
+
+
+
+
+    public class ForecastResponse
+    {
+        [JsonPropertyName("list")]
+        public List<Forecast> List { get; set; }
+    }
+
+    public class Forecast
+    {
+        [JsonPropertyName("dt")]
+        public long Dt { get; set; }
+
+        [JsonPropertyName("main")]
+        public Main Main { get; set; }
+
+        [JsonPropertyName("weather")]
+        public List<WeatherDetail> Weather { get; set; }
+
+        [JsonPropertyName("wind")]
+        public Wind Wind { get; set; }
+    }
+
+    public class Main
+    {
+        [JsonPropertyName("temp_min")]
+        public float TempMin { get; set; }
+
+        [JsonPropertyName("temp_max")]
+        public float TempMax { get; set; }
+
+        [JsonPropertyName("humidity")]
+        public float Humidity { get; set; }
+    }
+
+    public class WeatherDetail
+    {
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
+    }
+
+    public class Wind
+    {
+        [JsonPropertyName("speed")]
+        public float Speed { get; set; }
+    }
+
+    public class DailyForecast
+    {
+        public DateTime Date { get; set; }
+        public float TempMin { get; set; }
+        public float TempMax { get; set; }
+        public string Description { get; set; }
+        public float Humidity { get; set; }
+        public float WindSpeed { get; set; }
+    }
+}

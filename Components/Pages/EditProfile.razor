@@ -1,0 +1,103 @@
+﻿@page "/edit-profile/{email}"
+@inject PersonalInfoService PersonalInfoService
+@inject NavigationManager NavigationManager
+@inject ISnackbar Snackbar
+@using BlazorApp.Models
+@using BlazorApp.Services
+@inject PersonalInfoService PersonalInfoService
+
+<PageTitle>Edit Profile</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-5 d-flex justify-center" Style="max-width: 800px; width: 100%; height: auto;">
+    <MudCard Class="rounded-lg shadow-xl" Elevation="12" Style="padding: 40px;">
+        <MudCardHeader>
+            <MudText Typo="Typo.h5" Class="mb-0"><strong>Edit Profile</strong></MudText>
+        </MudCardHeader>
+        <MudCardContent Class="p-6">
+            @if (user != null)
+            {
+                <MudGrid Spacing="3">
+                    <MudItem xs="12">
+                        <MudTextField Label="Name" @bind-Value="user.Name" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Outlined.Person" />
+                    </MudItem>
+
+                    <MudItem xs="12">
+                        <MudTextField Label="Email" @bind-Value="user.Email" Disabled="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Outlined.Email" />
+                    </MudItem>
+
+                    <MudItem xs="12" sm="6">
+                        <MudTextField Label="Phone" @bind-Value="user.Phone" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Outlined.Phone" />
+                    </MudItem>
+
+                    <MudItem xs="12" sm="6">
+                        <MudTextField Label="City" @bind-Value="user.City" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Outlined.LocationCity" />
+                    </MudItem>
+
+                    <MudItem xs="12">
+                        <MudTextField Label="Country" @bind-Value="user.Country" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Outlined.Public" />
+                    </MudItem>
+                </MudGrid>
+
+                <MudDivider Class="my-7" />
+
+                <MudCardActions Class="d-flex justify-end">
+                    <MudButton Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Material.Filled.Save" OnClick="SaveProfile">
+                        Save Changes
+                    </MudButton>
+                    <MudButton Variant="Variant.Text" Color="Color.Error" StartIcon="@Icons.Material.Filled.Cancel" OnClick="Cancel" Class="ml-3">
+                        Cancel
+                    </MudButton>
+                </MudCardActions>
+            }
+            else
+            {
+                <MudText Typo="Typo.h6" Class="text-center" Color="Color.Error">
+                    Loading user data, please wait...
+                </MudText>
+            }
+        </MudCardContent>
+    </MudCard>
+</MudContainer>
+
+
+
+@code {
+    [Parameter] public string? Email { get; set; }
+    private PersonalInfo? user;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!string.IsNullOrEmpty(Email))
+        {
+            user = await PersonalInfoService.GetUserByEmailAsync(Email);
+        }
+
+        if (user == null)
+        {
+            Snackbar.Add("User data not found.", Severity.Error);
+            NavigationManager.NavigateTo("/user-profile");
+        }
+    }
+
+    private async Task SaveProfile()
+    {
+        if (user != null)
+        {
+            var success = await PersonalInfoService.UpdateUserAsync(user);
+            if (success)
+            {
+                Snackbar.Add("Profile updated successfully!", Severity.Success);
+                NavigationManager.NavigateTo("/user-profile");
+            }
+            else
+            {
+                Snackbar.Add("Failed to update profile.", Severity.Error);
+            }
+        }
+    }
+
+    private void Cancel()
+    {
+        NavigationManager.NavigateTo("/user-profile");
+    }
+}

@@ -1,0 +1,103 @@
+﻿@page "/user-profile"
+@inject PersonalInfoService PersonalInfoService
+@inject UserStateManager userState
+@using BlazorApp.Models
+@using BlazorApp.Services
+@using BlazorApp.Singletons
+@inject ISnackbar Snackbar
+@inject AuthService authService
+@inject NavigationManager NavigationManager
+<PageTitle>User Profile</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-5 d-flex justify-center" Style="max-width: 700px; width: 100%; height: auto;">
+    <MudCard Class="rounded-lg shadow-xl" Elevation="12" Style="padding: 40px;">
+        <MudCardHeader >
+            <MudText Typo="Typo.h5" Class="mb-0"> <srong>User Profile</srong></MudText>
+        </MudCardHeader>
+        <MudCardContent Class="p-6">
+           
+            @if (user != null)
+            {
+                <MudStack Spacing="3">
+                    <MudDivider Class="mb-2" />
+                    <MudText Typo="Typo.body1">
+                        <MudIcon Icon="@Icons.Material.Filled.Person" Color="Color.Primary" />
+                        <strong> Name:</strong> @user.Name
+                    </MudText>
+                    <MudDivider />
+                    <MudText Typo="Typo.body1">
+                        <MudIcon Icon="@Icons.Material.Outlined.Email" Color="Color.Secondary" />
+                        <strong> Email:</strong> @user.Email
+                    </MudText>
+                    <MudDivider />
+                    <MudText Typo="Typo.body1">
+                        <MudIcon Icon="@Icons.Material.Outlined.Phone" Color="Color.Info" />
+                        <strong> Phone:</strong> @user.Phone
+                    </MudText>
+                    <MudDivider />
+                    <MudText Typo="Typo.body1">
+                        <MudIcon Icon="@Icons.Material.Outlined.LocationCity" Color="Color.Tertiary" />
+                        <strong> Address:</strong> @user.City
+                    </MudText>
+                    <MudDivider />
+                    <MudText Typo="Typo.body1">
+                        <MudIcon Icon="@Icons.Material.Outlined.Public" Color="Color.Warning" />
+                        <strong> Country:</strong> @user.Country
+                    </MudText>
+                </MudStack>
+
+                <MudDivider Class="my-7" />
+                <MudButton Variant="Variant.Outlined" Color="Color.Secondary" StartIcon="@Icons.Material.Outlined.Password" OnClick="NavigateToChangePassword" Class="mb-3">
+                    Change Password
+                </MudButton>
+
+                <MudCardActions >
+                    <MudButton Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Edit" OnClick="NavigateToEditProfile">
+                        Edit Profile
+                    </MudButton>
+                </MudCardActions>
+            }
+            else
+            {
+                <MudText Typo="Typo.h6" Class="text-center" Color="Color.Error">
+                    Loading user data, please wait...
+                </MudText>
+            }
+        </MudCardContent>
+       
+    </MudCard>
+</MudContainer>
+
+
+
+@code {
+    private PersonalInfo? user;
+    private bool showUserDetails = false;
+
+    private void NavigateToEditProfile()
+    {
+        NavigationManager.NavigateTo($"/edit-profile/{user?.Email}");
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        if (userState.IsLoggedIn())
+        {
+            var loggedInUser = userState.User; // Access the current user
+            if (loggedInUser != null)
+            {
+                user = await PersonalInfoService.GetUserByEmailAsync(loggedInUser.Email);
+            }
+        }
+
+        if (user == null)
+        {
+            Snackbar.Add("User data not found or unable to retrieve data.", Severity.Error);
+        }
+    }
+
+    private void NavigateToChangePassword()
+    {
+        NavigationManager.NavigateTo("/change-password");
+    }
+
+}

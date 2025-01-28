@@ -1,0 +1,229 @@
+﻿@inherits LayoutComponentBase
+@using BlazorApp.Models
+@using BlazorApp.Singletons
+@using BlazorApp.Services
+@using BlazorApp.Controllers
+@using static Supabase.Gotrue.Constants 
+@using Supabase
+@inject PersonalInfoService personal
+@inject UserStateManager userState
+@inject NavigationManager NavigationManager
+@inject AuthService authService
+@inject SupabaseController supabase
+@using BlazorApp.Models
+
+
+<MudThemeProvider IsDarkMode="@isDarkMode"/>
+<MudPopoverProvider />
+
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar>
+        <MudTooltip Text="Menu">
+            <MudIconButton Icon="@Icons.Material.Filled.List" Color="Color.Inherit" OnClick="@(()=> ToggleDrawer())"></MudIconButton>
+
+        </MudTooltip>
+       
+        <MudSpacer></MudSpacer>
+        <MudText Class="mx-2">@userRole</MudText>
+        @if (userState.IsLoggedIn())
+        {
+            <MudTooltip Text="User LogOut">
+            <MudButton Variant="Variant.Text" OnClick="@Logout">Logout</MudButton>
+            </MudTooltip>
+
+        }
+        else
+        {
+            <MudTooltip Text="User SignUp">
+            <MudButton Variant="Variant.Text" Href="/signup">Signup</MudButton>
+            </MudTooltip>
+            <MudTooltip Text="User LogIn">
+            <MudButton Variant="Variant.Text" Href="/login">Login</MudButton>
+            </MudTooltip>
+        }
+        @if(isDarkMode)
+        {
+            <MudTooltip Text=" Light Mode">
+                <MudIconButton Icon="@Icons.Material.Filled.LightMode"
+                               Color="Color.Inherit"
+                               OnClick="@ToggleDarkMode" />
+            </MudTooltip>
+        }
+        else
+        {
+            <MudTooltip Text=" Dark Mode">
+                <MudIconButton Icon="@Icons.Material.Filled.DarkMode"
+                               Color="Color.Inherit"
+                               OnClick="@ToggleDarkMode" />
+            </MudTooltip>
+        }
+        <MudTooltip Text="Profile">
+        <MudIconButton Icon="@Icons.Material.Filled.AccountCircle" Color="Color.Inherit" OnClick="@ToggleOpen" />
+        </MudTooltip>
+    
+    </MudAppBar>
+
+
+
+    <MudPopover Open="@_open" Fixed="true" AnchorOrigin="Origin.TopRight" TransformOrigin="Origin.TopRight" Class="px-4 pt-4 profile-popover" OnClose="@ClosePopover">
+    <div class="d-flex flex-column">
+        @if (userState.IsLoggedIn())
+        {
+               @*  <MudText Typo="Typo.h5">@userName</MudText> *@
+            <MudText Typo="Typo.h6">@userState.User?.Name</MudText>
+            <MudText Typo="Typo.body2">@userState.User?.Email</MudText>
+            <MudDivider Class="my-2" />
+            <MudButton OnClick="@(() => NavigateTo("/user-profile"))" Variant="Variant.Text" FullWidth="true">View Profile</MudButton>
+            <MudButton OnClick="@(() => NavigateTo("/favourites"))" Variant="Variant.Text" FullWidth="true">Favourites</MudButton>
+            <MudDivider Class="my-2" />
+            <MudButton OnClick="Logout" Variant="Variant.Text" Color="Color.Error" FullWidth="true">Logout</MudButton>
+        } else
+            {
+                <MudButton Variant="Variant.Text" Href="/login">Login</MudButton>
+                <MudButton Variant="Variant.Text" Href="/signup">Signup</MudButton>
+            }
+        </div>
+    </MudPopover>
+
+    <MudDrawer Open="@isOpen" Variant="DrawerVariant.Persistent">
+        <MudDrawerHeader>
+            <MudText Typo="Typo.h5">Weather Forecast</MudText>
+        </MudDrawerHeader>
+        <NavMenu />
+    </MudDrawer>
+
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-4">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+
+@code
+{
+    private bool isOpen = true;
+    private bool isDarkMode = false;
+    private bool _open;
+    private string? userRole = "";
+    // private string? userName;
+    // private string userEmail = "user@example.com";
+
+    private void ToggleDrawer() => isOpen = !isOpen;
+    private void ToggleDarkMode() => isDarkMode = !isDarkMode;
+    
+    private void ToggleOpen()
+    {
+        _open = !_open;
+        if (_open)
+        {
+            AddClickListener();
+        }
+        else
+        {
+            RemoveClickListener(); 
+        }
+        StateHasChanged();
+    }
+
+    private void ClosePopover()
+    {
+        _open = false; 
+        RemoveClickListener(); 
+        StateHasChanged();
+    }
+
+    private void NavigateTo(string route)
+    {
+        _open = false; 
+        NavigationManager.NavigateTo(route);
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine("State Change!!");
+        userState.OnChange += StateChange;
+
+        // userName = await PersonalInfoService.GetUserNameByEmailAsync(userEmail);  // thsi line is used for hte user name to showed up 
+
+        var session = authService.GetSession();
+        if (session != null && session.User != null)
+        {
+            userState.SetUser(new User(session.User.Email, null, new List<Favourite>()));
+
+        }
+        else
+        {
+            userState.ClearUser();
+        }
+
+        StateChange();
+    }
+
+
+    private void StateChange() => InvokeAsync(StateHasChanged);
+
+    public void Dispose() => userState.OnChange -= StateChange;
+
+
+    public async void Logout()
+    {
+        try
+        {
+            
+            await authService.SignOut(userState);
+            Console.WriteLine("User logged out!");
+            StateHasChanged();
+            NavigationManager.NavigateTo("/");
+
+           
+            StateChange();
+            NavigationManager.NavigateTo("/", true);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Logout Error: {ex.Message}");
+        }
+    }
+
+    [Inject] private IJSRuntime JSRuntime { get; set; } = default!;
+
+    private async Task AddClickListener()
+    {
+        await JSRuntime.InvokeVoidAsync("addDocumentClickListener", DotNetObjectReference.Create(this));
+    }
+
+    private async Task RemoveClickListener()
+    {
+        await JSRuntime.InvokeVoidAsync("removeDocumentClickListener");
+    }
+
+    [JSInvokable]
+    public void OnDocumentClick()
+    {
+        if (_open)
+        {
+            ClosePopover();
+        }
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            RemoveClickListener();
+        }
+    }
+
+    // public void Dispose()
+    // {
+    //     // Consolidate cleanup logic into a single Dispose method
+    //     JSRuntime.InvokeVoidAsync("removeDocumentClickListener");
+    //     userState.OnChange -= StateChange;
+    // }
+}
+
