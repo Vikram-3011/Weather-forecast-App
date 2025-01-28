@@ -9,9 +9,9 @@ namespace BlazorApp.Services
 
         public FavoriteCityService()
         {
-            var client = new MongoClient("mongodb://localhost:27017/"); // MongoDB connection
-            var database = client.GetDatabase("authentication"); // Database name
-            _favoriteCityCollection = database.GetCollection<Favourite>("fav cities"); // Collection name
+            var client = new MongoClient("Your Connection String"); // MongoDB connection
+            var database = client.GetDatabase("Database Name"); // your Database name
+            _favoriteCityCollection = database.GetCollection<Favourite>("collection name"); // your  Collection name
         }
 
         public async Task<bool> AddFavoriteCityAsync(string userEmail, string cityName)
