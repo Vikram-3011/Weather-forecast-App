@@ -194,7 +194,7 @@ finally
 
 private async Task<Address> GetAddressFromCoordinates(double latitude, double longitude)
 {
-        string apiKey = "fbfb336510e44728a2c31f80d3b6b1d5"; // Replace with your API key
+        string apiKey = "{Your API KEY}"; // Replace with your API key
 string url = $"https://api.opencagedata.com/geocode/v1/json?q={latitude}+{longitude}&key={apiKey}";
 
 using var client = new HttpClient();
