@@ -14,16 +14,16 @@ namespace BlazorApp.Controllers
 
         public DatabaseController(IConfiguration configuration)
         {
-            string connectionString = configuration.GetConnectionString("MongoDB");
+            string connectionString = configuration.GetConnectionString("MongoDB"); // MongoBD connection string path to appsetting file 
 
             if (string.IsNullOrEmpty(connectionString))
             {
                 throw new ArgumentNullException(nameof(connectionString), "MongoDB connection string is missing in appsettings.");
             }
             var client = new MongoClient(connectionString);
-            var database = client.GetDatabase("authentication");
+            var database = client.GetDatabase("database name"); // Your MongoDB database name 
 
-            _favoriteCities = database.GetCollection<Favourite>("fav cities");
+            _favoriteCities = database.GetCollection<Favourite>("collection name"); // Your collection name
         }
 
         public async Task AddFavoriteCity(string cityName, string userEmail)
