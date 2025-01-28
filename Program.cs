@@ -7,8 +7,8 @@ using Supabase;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var supabaseUrl = "{Supabase URl}";
-var supabaseKey = "{your Supabase APi key }";
+var supabaseUrl = "{Supabase URl}"; // Supabase connection string
+var supabaseKey = "{your Supabase APi key }"; // your Supabase APi key 
 
 var options = new SupabaseOptions { AutoConnectRealtime = true };
 var supabaseClient = new Supabase.Client(supabaseUrl, supabaseKey, options);
