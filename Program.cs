@@ -7,8 +7,8 @@ using Supabase;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var supabaseUrl = "https://nxkuxdowqjedwznnymkv.supabase.co";
-var supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im54a3V4ZG93cWplZHd6bm55bWt2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ5MjM2NjgsImV4cCI6MjA1MDQ5OTY2OH0.DqDceQsmgNxZpS33G2oD6sebgRowSGdP-tqXKu2COmM";
+var supabaseUrl = "{Supabase URl}";
+var supabaseKey = "{your Supabase APi key }";
 
 var options = new SupabaseOptions { AutoConnectRealtime = true };
 var supabaseClient = new Supabase.Client(supabaseUrl, supabaseKey, options);
