@@ -10,9 +10,9 @@ namespace BlazorApp.Services
 
         public PersonalInfoService()
         {
-            var client = new MongoClient("mongodb://localhost:27017/"); // MongoDB connection string
-            var database = client.GetDatabase("authentication"); // Database name
-            _personalInfoCollection = database.GetCollection<PersonalInfo>("user details"); // Collection name
+            var client = new MongoClient(" Your connection string"); // MongoDB connection string
+            var database = client.GetDatabase("Your datbase name"); // Database name
+            _personalInfoCollection = database.GetCollection<PersonalInfo>("Your collection name"); // Collection name
         }
 
         public async Task<bool> SavePersonalInfoAsync(PersonalInfo personalInfo)
