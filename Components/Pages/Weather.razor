@@ -49,8 +49,8 @@
                 {
                     <tr>
                         <td>@forecast.Date.ToString("dddd, MMM dd")</td>
-                        <td>Min: @(forecast.TempMin - 273):F2 | Max: @(forecast.TempMax - 273):F2</td>      @*exact temperature <td>Min: @(forecast.TempMin - 273.15):F2 | Max: @(forecast.TempMax - 273.15):F2</td> *@
-                                                <td>@forecast.Description</td>
+                        <td>Min: @(forecast.TempMin - 273):F2 | Max: @(forecast.TempMax - 273):F2</td>      
+                        <td>@forecast.Description</td>
                         <td>@forecast.Humidity:F0</td>
                         <td>@forecast.WindSpeed:F2</td>
                         
@@ -83,7 +83,7 @@ else if (showError)
         }
 
         var client = ClientFactory.CreateClient();
-        var requestUri = $"https://api.openweathermap.org/data/2.5/forecast?q={Uri.EscapeDataString(cityName)}&appid=596a1e71b480c1efbdbdd4da71b6f8da";
+        var requestUri = $"https://api.openweathermap.org/data/2.5/forecast?q={Uri.EscapeDataString(cityName)}&appid={Your API KEY}";
 
         try
         {
