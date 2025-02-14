@@ -10,55 +10,56 @@
 @using BlazorApp.Models
 @using MongoDB.Bson;
 @inject ISnackbar Snackbar
-
-
+@inject IJSRuntime JS
 <PageTitle>Weather Forecast</PageTitle>
 
 <MudText Typo="Typo.h3" Align="Align.Center">Weather Forecast</MudText>
-<MudText Typo="Typo.body1" Align="Align.Center">Enter a city name  to Get  weather data.</MudText>
+<MudText Typo="Typo.body1" Align="Align.Center">Enter a city name to get weather data.</MudText>
 
 <MudCard Class="rounded-lg w-50 my-4 py-8 mx-auto" Elevation="5">
     <MudContainer MaxWidth="MaxWidth.Small">
-        <MudTextField Class="mt-2" @bind-Value="@cityName"  Label="Enter City Name" Variant="Variant.Outlined" Required/>
-        <MudTextField Class="mt-2" @bind-Value="@numDays" Label="Enter  Days (1-5)" Variant="Variant.Outlined" Type="number" />
-        <MudButton Class="mt-2" OnClick="@FetchWeatherData" Variant="Variant.Outlined" Color="Color.Primary">Get Weather</MudButton>
-        @if (userState.IsLoggedIn()){
-        <MudButton Class="mt-2" OnClick="@SaveToFavorites" StartIcon="@Icons.Material.Filled.Favorite" Variant="Variant.Text" Color="Color.Secondary">
-            Add to Favorites
-        </MudButton>
+        <MudTextField Class="mt-2" @bind-Value="@cityName" Label="Enter City Name" Variant="Variant.Outlined"  OnKeyDown="HandleKeyDown" Required />
+        <MudTextField Class="mt-2" @bind-Value="@numDays" Label="Enter Days (1-5)" Variant="Variant.Outlined" Type="number" />
+        <MudTooltip Text="Fetch Weather Forecast">
+            <MudButton Class="mt-2" OnClick="@FetchWeatherData" Variant="Variant.Outlined" Color="Color.Primary">Get Weather</MudButton>
+        </MudTooltip>
+        @if (userState.IsLoggedIn())
+        {
+            <MudTooltip Text="Add to Fav cities">
+                <MudButton Class="mt-2" OnClick="@SaveToFavorites" StartIcon="@Icons.Material.Filled.Favorite" Variant="Variant.Text" Color="Color.Secondary">
+                    Add to Fav cities
+                </MudButton>
+            </MudTooltip>
         }
     </MudContainer>
 </MudCard>
 
 @if (dailyForecasts != null && dailyForecasts.Count > 0)
 {
-    <MudText Typo="Typo.h5" Align="Align.Center">Weather Forecast for @cityName</MudText>
-    <MudPaper Class="p-4" Elevation="2">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Day</th>
-                    <th>Temperature (°C)</th>
-                    <th>Weather</th>
-                    <th>Humidity (%)</th>
-                    <th>Wind Speed (m/s)</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var forecast in dailyForecasts)
-                {
-                    <tr>
-                        <td>@forecast.Date.ToString("dddd, MMM dd")</td>
-                        <td>Min: @(forecast.TempMin - 273):F2 | Max: @(forecast.TempMax - 273):F2</td>      @*exact temperature <td>Min: @(forecast.TempMin - 273.15):F2 | Max: @(forecast.TempMax - 273.15):F2</td> *@
-                                                <td>@forecast.Description</td>
-                        <td>@forecast.Humidity:F0</td>
-                        <td>@forecast.WindSpeed:F2</td>
-                        
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </MudPaper>
+     <MudText Typo="Typo.h5" Align="Align.Center">Weather Forecast for @cityName</MudText>
+    <MudGrid JustifyContent="Center" Class="mt-4">
+        @foreach (var forecast in dailyForecasts)
+        {
+            <MudItem xs="12" sm="6" md="4" lg="3">
+                <MudCard Class="p-4 text-center">
+                    <MudText Typo="Typo.h6">@forecast.Date.ToString("dddd, MMM dd")</MudText>
+                    <img src="@GetWeatherIcon(forecast.Icon)" alt="@forecast.Description" width="100" height="100" />
+
+                    <MudText Typo="Typo.subtitle1">@forecast.Description</MudText>
+                    <MudText Typo="Typo.body2">Temp: Min @forecast.TempMin°C - Max @forecast.TempMax°C</MudText>
+                    <MudText Typo="Typo.body2">Feels Like: @forecast.FeelsLike°C</MudText>
+                    <MudText Typo="Typo.body2">Wind: @forecast.WindSpeed m/s</MudText>
+                    @if (userState.IsLoggedIn())
+                    {
+                        <MudText Typo="Typo.body2">Humidity: @forecast.Humidity%</MudText>
+                        <MudText Typo="Typo.body2">Pressure: @forecast.Pressure </MudText>
+                        <MudText Typo="Typo.body2">SeaLevel: @forecast.SeaLevel </MudText>
+                        <MudText Typo="Typo.body2">GroundLevel: @forecast.GroundLevel </MudText>
+                    }
+                </MudCard>
+            </MudItem>
+        }
+    </MudGrid>
 }
 else if (showError)
 {
@@ -67,11 +68,21 @@ else if (showError)
 
 @code {
     private string cityName = string.Empty;
-    private int numDays = 5; // Default to 5 day
+    private int numDays = 5;
     private List<DailyForecast> dailyForecasts;
     private bool showError = false;
-    private bool isFavorite = false;
-    private string selectedCityName = "";
+    private int searchCount = 0;  // Track the number of searches
+    private readonly int maxSearches = 5;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && !userState.IsLoggedIn())
+        {
+            searchCount = await GetSearchCount();  // Get search count from localStorage
+            StateHasChanged(); // Re-render the component
+        }
+    }
+
     private async Task FetchWeatherData()
     {
         showError = false;
@@ -80,6 +91,18 @@ else if (showError)
         {
             showError = true;
             return;
+        }
+
+        if (!userState.IsLoggedIn())
+        {
+            if (searchCount >= maxSearches)
+            {
+                Snackbar.Add("Search limit reached! Please log in to continue.", Severity.Warning);
+                return;
+            }
+
+            searchCount++;
+            await SetSearchCount(searchCount);
         }
 
         var client = ClientFactory.CreateClient();
@@ -98,26 +121,33 @@ else if (showError)
 
                 if (forecastResponse != null)
                 {
-                    // Process forecasts to generate daily summaries
                     dailyForecasts = forecastResponse.List
                         .GroupBy(forecast => DateTimeOffset.FromUnixTimeSeconds(forecast.Dt).Date)
                         .Take(numDays)
                         .Select(group => new DailyForecast
                             {
                                 Date = group.Key,
-                                TempMin = group.Min(f => f.Main.TempMin),
-                                TempMax = group.Max(f => f.Main.TempMax),
+                                TempMin = Convert.ToInt32(group.Min(f => f.Main.TempMin) ),
+                                TempMax = Convert.ToInt32(group.Max(f => f.Main.TempMax) ),
+                                FeelsLike = Convert.ToInt32(group.Average(f => f.Main.FeelsLike)),
+                                Icon = group.First().Weather[0].Icon,
                                 Description = group.First().Weather[0].Description,
-                                Humidity = group.Average(f => f.Main.Humidity),
-                                WindSpeed = group.Average(f => f.Wind.Speed)
+                                Humidity = Convert.ToInt32(group.Average(f => f.Main.Humidity)),
+                                Pressure = Convert.ToInt32(group.Average(f => f.Main.Pressure)),
+                                WindSpeed = group.Average(f => f.Wind.Speed),
+                                SeaLevel = group.First().Main.SeaLevel,  // Get Sea Level pressure from main data
+                                GroundLevel = group.First().Main.GroundLevel,
+                                
                             })
                         .ToList();
                 }
+
+
             }
             else
             {
                 showError = true;
-            }
+            }   
         }
         catch (Exception ex)
         {
@@ -125,8 +155,31 @@ else if (showError)
             showError = true;
         }
     }
-   
 
+    private async Task<int> GetSearchCount()
+    {
+        try
+        {
+            var count = await JS.InvokeAsync<int?>("localStorage.getItem", "weatherSearchCount");
+            return count ?? 0;
+        }
+        catch
+        {
+            return 0;
+        }
+    }
+
+    // Set search count in localStorage
+    private async Task SetSearchCount(int count)
+    {
+        await JS.InvokeVoidAsync("localStorage.setItem", "weatherSearchCount", count);
+    }
+
+    // Reset search count when the user logs in
+    private async Task ResetSearchCount()
+    {
+        await SetSearchCount(0);
+    }
     private async Task SaveToFavorites()
     {
         if (!string.IsNullOrWhiteSpace(cityName) && userState.IsLoggedIn())
@@ -150,6 +203,38 @@ else if (showError)
         }
     }
 
+    private async Task HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            await FetchWeatherData();
+        }
+    }
+
+    [Inject] NavigationManager NavigationManager { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        var uri = new Uri(NavigationManager.Uri);
+        var queryParams = System.Web.HttpUtility.ParseQueryString(uri.Query);
+        var city = queryParams["city"];
+
+        if (!string.IsNullOrEmpty(city))
+        {
+            cityName = city;
+            await FetchWeatherData(); // Automatically fetch weather on page load
+        }
+    }
+
+    private string GetWeatherIcon(string iconCode)
+    {
+        if (string.IsNullOrEmpty(iconCode))
+        {
+            // Default to a cloud icon (partly cloudy) instead of an empty image
+            return "https://openweathermap.org/img/wn/02d@2x.png";
+        }
+
+        return $"https://openweathermap.org/img/wn/{iconCode}@2x.png";
+    }
 
 
 
@@ -159,6 +244,15 @@ else if (showError)
     {
         [JsonPropertyName("list")]
         public List<Forecast> List { get; set; }
+
+        [JsonPropertyName("visibility")]
+        public int Visibility { get; set; }
+
+        [JsonPropertyName("clouds")]
+        public Clouds Clouds { get; set; }
+
+        [JsonPropertyName("sys")]
+        public Sys Sys { get; set; }
     }
 
     public class Forecast
@@ -167,7 +261,7 @@ else if (showError)
         public long Dt { get; set; }
 
         [JsonPropertyName("main")]
-        public Main Main { get; set; }
+        public MainData Main { get; set; }
 
         [JsonPropertyName("weather")]
         public List<WeatherDetail> Weather { get; set; }
@@ -176,7 +270,7 @@ else if (showError)
         public Wind Wind { get; set; }
     }
 
-    public class Main
+    public class MainData
     {
         [JsonPropertyName("temp_min")]
         public float TempMin { get; set; }
@@ -184,14 +278,30 @@ else if (showError)
         [JsonPropertyName("temp_max")]
         public float TempMax { get; set; }
 
+        [JsonPropertyName("feels_like")]
+        public float FeelsLike { get; set; }
+
+        [JsonPropertyName("pressure")]
+        public int Pressure { get; set; }
+
         [JsonPropertyName("humidity")]
-        public float Humidity { get; set; }
+        public int Humidity { get; set; }
+
+        [JsonPropertyName("sea_level")]
+        public int SeaLevel { get; set; }  // Sea level pressure (hPa)
+
+        [JsonPropertyName("grnd_level")]
+        public int GroundLevel { get; set; }
     }
 
     public class WeatherDetail
     {
         [JsonPropertyName("description")]
         public string Description { get; set; }
+
+        [JsonPropertyName("icon")]
+        public string Icon { get; set; }
+
     }
 
     public class Wind
@@ -200,13 +310,34 @@ else if (showError)
         public float Speed { get; set; }
     }
 
+    public class Clouds
+    {
+        [JsonPropertyName("all")]
+        public int All { get; set; }
+    }
+
+    public class Sys
+    {
+        [JsonPropertyName("sunrise")]
+        public long Sunrise { get; set; }
+
+        [JsonPropertyName("sunset")]
+        public long Sunset { get; set; }
+    }
+
     public class DailyForecast
     {
         public DateTime Date { get; set; }
         public float TempMin { get; set; }
         public float TempMax { get; set; }
+        public float FeelsLike { get; set; }
         public string Description { get; set; }
-        public float Humidity { get; set; }
+        public int Humidity { get; set; }
+        public int Pressure { get; set; }
         public float WindSpeed { get; set; }
+        public int SeaLevel { get; set; }  // Sea level pressure (hPa)
+        public int GroundLevel { get; set; }
+        public string Icon { get; set; }
     }
+
 }

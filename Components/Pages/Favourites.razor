@@ -1,80 +1,152 @@
 ﻿@page "/favourites"
 @rendermode InteractiveServer
 @inject DatabaseController databaseController
-
 @using BlazorApp.Singletons
 @inject UserStateManager userState
 @using MongoDB.Bson
-
+@inject IDialogService DialogService
 @using BlazorApp.Models
 @using BlazorApp.Controllers
 @inject NavigationManager NavigationManager
+@inject ISnackbar snackbar
+@inject ILogger<Favourites> logger
+@inject WeatherAPIService WeatherService
+@inject EmailService EmailService 
 <PageTitle>Favorite Cities</PageTitle>
 
 <MudText Typo="Typo.h4" Align="Align.Center">Favorite Cities</MudText>
-
-@if (favouriteCities != null && favouriteCities.Count > 0)
+@if (isLoading)
 {
-    <MudPaper Elevation="0" Class="p-4">
 
-        <MudTable Items="@favouriteCities" Hover="true" Striped="false" Dense="true">
+    <div class="d-flex flex-column align-items-center my-4">
+        <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
+        <MudText Typo="Typo.h6" Color="Color.Primary" Align="Align.Center" Class="mt-3">
+            Fetching location...
+        </MudText>
+    </div>
+
+}
+
+else if (favouriteCities != null && favouriteCities.Count > 0) //
+{
+    <MudPaper Elevation="3" Class="p-4">
+        <MudTable Items="@favouriteCities" Hover="true" Striped="false" Dense="false">
             <HeaderContent>
-                <MudTh Class="no-border">City Name</MudTh>
-                <MudTh Class="no-border">Date Added</MudTh>
-                <MudTh Class="no-border">Actions</MudTh>
-
+                <MudTh Class="text-lg font-bold">City Name</MudTh>
+                <MudTh Class="text-lg font-bold">Date Added</MudTh>
+                <MudTh Class="text-lg font-bold"></MudTh>
             </HeaderContent>
-            <RowTemplate Context="city">
 
-                <MudTd Class="no-border">@city.CityName</MudTd>
-                <MudTd Class="no-border">@city.DateAdded.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")</MudTd>
-                <MudTd Class="no-border">
-                    <MudButton Color="Color.Error" OnClick="@(() => RemoveCity(city.CityName))">
-                        Remove
-                    </MudButton>
+            <RowTemplate Context="city">
+                <MudTd Class="text-md font-semibold text-start">@city.CityName</MudTd>
+                <MudTd Class="text-md text-start">@city.DateAdded.ToLocalTime().ToString("yyyy-MM-dd ")</MudTd>
+                <MudTd Class="text-end d-flex justify-content-end gap-4">
+                    <MudTooltip Text="Search Weather forecast">
+                        <MudButton Color="Color.Primary" Variant="Variant.Outlined" OnClick="@(() => SearchWeather(city.CityName))">
+                            <MudIcon Icon="@Icons.Material.Outlined.Search" Class="" />
+                            Weather
+                        </MudButton>
+                    </MudTooltip>
+                    <MudTooltip Text="Delete Fav City">
+                        <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="@(() => OpenDeleteDialog(city.CityName))"></MudIconButton>
+                    </MudTooltip>
                 </MudTd>
             </RowTemplate>
         </MudTable>
     </MudPaper>
+
 }
 else
 {
     <MudAlert Severity="Severity.Info">No favorite cities added yet.</MudAlert>
 }
 
-<style>
-    .no-border {
-        border: none !important;
-    }
 
-    .no-shadow {
-        box-shadow: none !important;
-    }
+
+<style>
+        .no-border {
+            border: none !important;
+        }
+
+        .no-shadow {
+            box-shadow: none !important;
+        }
 </style>
 
 
 @code {
-    private List<Favourite> favouriteCities = new();
+    private List<Favourite> favouriteCities = new(); //favouriteCities
     private string userEmail = "";
+    private bool isLoading = true;
+
+    private bool _isDialogOpen = false;
+    private string selectedCity = "";
     protected override async Task OnInitializedAsync()
     {
+        isLoading = true;
         userEmail = userState.UserEmail; // Retrieve logged-in user's email
 
         if (!string.IsNullOrEmpty(userEmail))
         {
+            var allCities = await databaseController.GetFavoriteCitiesByUser(userEmail);
+
             favouriteCities = await databaseController.GetFavoriteCitiesByUser(userEmail);
+            favouriteCities = favouriteCities
+           .GroupBy(c => c.CityName)
+           .Select(g => g.First())  // Take only the first occurrence
+           .ToList();
+
+
+            // Check weather alerts for each favorite city
+            foreach (var city in favouriteCities)
+            {
+                var alerts = await WeatherService.CheckWeatherAlertsAsync(city.CityName); // FIX: Now this returns a list
+
+                if (alerts.Count > 0) // FIX: Use alerts.Count instead of method group
+                {
+                    string alertSummary = string.Join("\n\n", alerts.Select(a => $"**Alert:** {a.Headline}\n**Details:** {a.Desc}"));
+                    snackbar.Add($"Weather Alert for {city.CityName}: {alertSummary}", Severity.Warning);
+
+                    // Send email notification
+                    await EmailService.SendWeatherAlertEmailAsync(userEmail, city.CityName, alerts[0].Headline, alertSummary);
+                }
+            }
         }
         else
         {
             favouriteCities = new List<Favourite>(); // Clear data if no user is logged in
         }
+
+        isLoading = false;
+        StateHasChanged();
     }
 
+
+
+
+    private async Task OpenDeleteDialog(string cityName)
+    {
+        var parameters = new DialogParameters { ["CityName"] = cityName };
+        var options = new DialogOptions { CloseOnEscapeKey = true, MaxWidth = MaxWidth.Small, FullWidth = true };
+
+        var dialog = await DialogService.ShowAsync<DeleteConfirmationDialog>("Delete Confirmation", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            await RemoveCity(cityName);
+        }
+    }
 
     private async Task RemoveCity(string cityName)
     {
         await databaseController.RemoveFavoriteCity(cityName, userState.UserEmail);
-        favouriteCities.RemoveAll(c => c.CityName == cityName);
+        favouriteCities = favouriteCities.Where(c => c.CityName != cityName).ToList();
+        StateHasChanged();
     }
 
+    private void SearchWeather(string cityName)
+    {
+        NavigationManager.NavigateTo($"/weather?city={cityName}");
+    }
 }

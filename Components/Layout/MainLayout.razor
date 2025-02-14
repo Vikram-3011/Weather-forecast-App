@@ -11,6 +11,7 @@
 @inject AuthService authService
 @inject SupabaseController supabase
 @using BlazorApp.Models
+@inject IJSRuntime JS
 
 
 <MudThemeProvider IsDarkMode="@isDarkMode"/>
@@ -28,22 +29,16 @@
        
         <MudSpacer></MudSpacer>
         <MudText Class="mx-2">@userRole</MudText>
-        @if (userState.IsLoggedIn())
-        {
-            <MudTooltip Text="User LogOut">
-            <MudButton Variant="Variant.Text" OnClick="@Logout">Logout</MudButton>
-            </MudTooltip>
-
-        }
-        else
+        @if (!userState.IsLoggedIn())
         {
             <MudTooltip Text="User SignUp">
-            <MudButton Variant="Variant.Text" Href="/signup">Signup</MudButton>
+                <MudButton Variant="Variant.Text" Style="@($"color:{Colors.LightBlue.Lighten5};")" Href="/signup">Signup</MudButton>
             </MudTooltip>
             <MudTooltip Text="User LogIn">
-            <MudButton Variant="Variant.Text" Href="/login">Login</MudButton>
+                <MudButton Variant="Variant.Text" Style="@($"color:{Colors.LightBlue.Lighten5};")" Href="/login">Login</MudButton>
             </MudTooltip>
         }
+        
         @if(isDarkMode)
         {
             <MudTooltip Text=" Light Mode">
@@ -67,9 +62,11 @@
     </MudAppBar>
 
 
+    <MudButton @onclick="AskNotificationPermission">Enable Notifications</MudButton>
 
     <MudPopover Open="@_open" Fixed="true" AnchorOrigin="Origin.TopRight" TransformOrigin="Origin.TopRight" Class="px-4 pt-4 profile-popover" OnClose="@ClosePopover">
     <div class="d-flex flex-column">
+           
         @if (userState.IsLoggedIn())
         {
                @*  <MudText Typo="Typo.h5">@userName</MudText> *@
@@ -115,6 +112,18 @@
     private void ToggleDrawer() => isOpen = !isOpen;
     private void ToggleDarkMode() => isDarkMode = !isDarkMode;
     
+    private async Task AskNotificationPermission()
+    {
+        try
+        {
+            await JS.InvokeVoidAsync("requestNotificationPermission", "e.vikram456@gmail.com");
+        }
+        catch (JSException ex)
+        {
+            Console.WriteLine($"JS Exception: {ex.Message}");
+        }
+    }
+
     private void ToggleOpen()
     {
         _open = !_open;
@@ -178,11 +187,11 @@
             await authService.SignOut(userState);
             Console.WriteLine("User logged out!");
             StateHasChanged();
-            NavigationManager.NavigateTo("/");
+            NavigationManager.NavigateTo("/",true);
 
            
-            StateChange();
-            NavigationManager.NavigateTo("/", true);
+            // StateChange();
+            // NavigationManager.NavigateTo("/", true);
         }
         catch (Exception ex)
         {

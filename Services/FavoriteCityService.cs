@@ -9,7 +9,7 @@ namespace BlazorApp.Services
 
         public FavoriteCityService()
         {
-            var client = new MongoClient("mongodb://localhost:27017/"); // MongoDB connection
+            var client = new MongoClient("mongodb+srv://vikramelangovan769:Vikram%40258@authenticationpurpose.o8xqu.mongodb.net/"); // MongoDB connection
             var database = client.GetDatabase("authentication"); // Database name
             _favoriteCityCollection = database.GetCollection<Favourite>("fav cities"); // Collection name
         }
@@ -19,6 +19,14 @@ namespace BlazorApp.Services
             try
             {
                 if (string.IsNullOrEmpty(userEmail) || string.IsNullOrEmpty(cityName))
+                    return false;
+
+
+                var existingCity = await _favoriteCityCollection
+                 .Find(c => c.UserEmail == userEmail && c.CityName == cityName)
+                .FirstOrDefaultAsync();
+
+                if (existingCity != null)
                     return false;
 
                 var city = new Favourite { UserEmail = userEmail, CityName = cityName };

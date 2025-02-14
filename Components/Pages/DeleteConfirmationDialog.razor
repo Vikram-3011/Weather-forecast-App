@@ -1,0 +1,46 @@
+﻿@inject IDialogService DialogService
+
+<MudPaper Class="dialog-container">
+    <MudDialogTitle Class="d-flex align-items-center">
+        <MudIcon Icon="@Icons.Material.Filled.Warning" Color="Color.Warning" Size="Size.Large" Class="mr-2" />
+        <span class="font-bold text-lg">Delete Confirmation</span>
+    </MudDialogTitle>
+
+    <MudDialogContent>
+        <MudText Typo="Typo.h6" Class="mb-2">Are you sure you want to remove <strong>@CityName</strong> from favorites?</MudText>
+        
+    </MudDialogContent>
+
+    <MudDialogActions Class="d-flex justify-content-center">
+        <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="ConfirmDelete" Class="button-spacing">
+            <MudIcon Icon="@Icons.Material.Filled.Delete" Color="Color.Inherit" />
+            Delete
+        </MudButton>
+
+        <MudButton Color="Color.Default" Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Cancel" Style="@($"color:{Colors.Purple.Lighten5};")" OnClick="Cancel" Class="button-spacing">Cancel</MudButton>
+        </MudDialogActions>
+</MudPaper>
+<style>
+    .dialog-container {
+        padding: 20px;
+        border-radius: 10px;
+        border: 2px solid #ddd; /* Thicker full border */
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        background-color: #2d2d2d; /* Dark theme */
+        color: white; /* Light text for better readability */
+    }
+
+    .button-spacing {
+        margin: 0 10px;
+        border-radius: 5px;
+        min-width: 100px;
+    }
+</style>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [Parameter] public string CityName { get; set; }
+
+    private void ConfirmDelete() => MudDialog.Close(DialogResult.Ok(true));
+    private void Cancel() => MudDialog.Cancel();
+}

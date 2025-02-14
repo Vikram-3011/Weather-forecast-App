@@ -13,13 +13,8 @@
 
 <MudText Typo="Typo.h3" Align="Align.Center">Weather Forecast</MudText>
 <MudText Typo="Typo.body1" Align="Align.Center">Welcome to  forecast</MudText>
-@* 
-<MudButton Variant="Variant.Filled" DropShadow="false" Size="Size.Large" Color="Color.Primary"
-           style="position: absolute; top: 60%; left: 52%; "
-           @onclick="NavigateToWeather">Go to Weather</MudButton>
- *@
 
-@if (!userState.IsLoggedIn())
+@* @if (!userState.IsLoggedIn())
 {
     <MudContainer MaxWidth="MaxWidth.Large" Class="mt-4" Style="display: flex; justify-content: center;">
         <MudCard Elevation="4" Class="pa-4" Style="text-align: center; width: 600px; height: 230px;">
@@ -36,90 +31,179 @@
             </MudContainer>
         </MudCard>
     </MudContainer>
-}
-else
-{
-    <MudText Typo="Typo.h5" Class="pt-8 pb-4 pl-4 pr-4">
-        User live location :
-    </MudText>
-    <MudContainer MaxWidth="MaxWidth.Medium" Class="mt-4">
-        <MudCard Elevation="4" Class="pa-4">
-            @if (IsLoading)
-            {
-                <MudText Typo="Typo.h6" Color="Color.Primary" Align="Align.Center">
-                    Fetching location...
+} *@
+
+
+<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-2">
+    <MudCard Elevation="4" Class="pa-6 rounded-lg glassmorphism">
+        <MudStack Direction="Column" AlignItems="AlignItems.Center" >
+            <MudIcon Color="Color.Primary" />
+            <MudText Typo="Typo.h5" Class="font-weight-bold text-primary">
+                Your Live Location <MudIcon Icon="@Icons.Material.Filled.LocationOn"></MudIcon>
+            </MudText>
+        </MudStack>
+
+        <MudDivider Class="my-2" />
+
+        @if (IsLoading)
+        {
+            <MudStack Direction="Column" AlignItems="AlignItems.Center" Spacing="2">
+                <MudProgressCircular Size="Size.Medium" Color="Color.Primary" Indeterminate="true" />
+                <MudText Typo="Typo.h6" Color="Color.Primary" Align="Align.Center" Class="mt-3">
+                    Detecting your location...
                 </MudText>
-            }
-            else if (ErrorMessage != null)
-            {
+            </MudStack>
+        }
+        else if (ErrorMessage != null)
+        {
+            <MudStack Direction="Column" AlignItems="AlignItems.Center" Spacing="2">
+                <MudIcon Icon="@Icons.Material.Filled.Error" Size="Size.Large" Color="Color.Error" />
                 <MudText Typo="Typo.h6" Color="Color.Error" Align="Align.Center">
                     @ErrorMessage
                 </MudText>
-            }
-            else
-            {
-                <MudText Typo="Typo.h6" Align="Align.Center"><strong>Address:</strong> @FullAddress</MudText>
-                <MudText Typo="Typo.body1" Align="Align.Center">Latitude: @Latitude</MudText>
-                <MudText Typo="Typo.body1" Align="Align.Center">Longitude: @Longitude</MudText>
-                <MudText Typo="Typo.body1" Align="Align.Center">Accuracy: @Accuracy meters</MudText>
-            }
+            </MudStack>
+        }
+        else
+        {
+            <MudPaper Elevation="4" Class="p-4 rounded-md location-card">
+                <MudStack Direction="Column" AlignItems="AlignItems.Center">
+                    <MudText Typo="Typo.h6" Align="Align.Center">
+                        <MudIcon Icon="@Icons.Material.Filled.LocationOn" Color="Color.Primary" Class="mr-1" />
+                        <strong>Address:</strong> @FullAddress
+                    </MudText>
+                    @if(userState.IsLoggedIn()){
+                        
+                  
+                     <MudText Typo="Typo.body1" Align="Align.Center">
+                        <MudIcon Icon="@Icons.Material.Outlined.Explore" Color="Color.Secondary" Class="mr-1" />
+                        Latitude: @Latitude
+                    </MudText>
+                    <MudText Typo="Typo.body1" Align="Align.Center">
+                        <MudIcon Icon="@Icons.Material.Outlined.Explore" Color="Color.Secondary" Class="mr-1" />
+                        Longitude: @Longitude
+                    </MudText>
+                    <MudText Typo="Typo.body1" Align="Align.Center">
+                        <MudIcon Icon="@Icons.Material.Outlined.Speed" Color="Color.Tertiary" Class="mr-1" />
+                        Accuracy: @Accuracy meters
+                    </MudText>
 
-            <MudSpacer />
+                    }
+                </MudStack>
+            </MudPaper>
 
-            <MudContainer MaxWidth="MaxWidth.Medium" Class="mt-4" Style="display: flex; justify-content: center;">
-                <MudButton Class="mud-button-filled" Color="Color.Primary" Variant="Variant.Text" OnClick="FetchLocation" Style="width: 200px;">
-                    Get Location
-                </MudButton>
-            </MudContainer>
+           
+        }
 
+        <MudDivider Class="my-4" />
 
-        </MudCard>
-    </MudContainer>
+        <MudStack Direction="Row" Justify="Justify.Center" AlignItems="AlignItems.Center">
+            <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="FetchLocation" Style="width: 220px;">
+                <MudIcon Icon="@Icons.Material.Filled.MyLocation" Class="mr-2" />
+                Get My Location
+            </MudButton>
+        </MudStack>
+    </MudCard>
+</MudContainer>
 
-    <MudText Typo="Typo.h5" Class="pt-8 pb-4 pl-4 pr-4">
-        Top 5 Global Cities Weather :
-    </MudText>
-}
-@* @if (userState.IsLoggedIn()){
-        
-}
- *@
+<MudText Typo="Typo.h5" Class="pt-13 pb-15 pb-4 pl-4 pr-4">
+    Top 5 Global Cities Weather <MudIcon Icon="@Icons.Material.Filled.Public"></MudIcon>
+</MudText>
 
-
-
-
-@if (userState.IsLoggedIn())
-{
 @if (isLoading)
 {
-    <MudProgressCircular Indeterminate="true" Class="my-4"  Color="Color.Secondary" />
+    <div class="d-flex justify-content-center my-4">
+        <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
+    </div>
 }
 else if (WeatherService.GlobalCityWeather.Count > 0)
 {
-    <MudPaper Class="p-4 mx-auto" Elevation="6"  Style=" max-width: 800px; border-radius: 7px;">
-        <MudTable Items="WeatherService.GlobalCityWeather" Class="text-center" Bordered="true" >
-            <HeaderContent >
-                <MudTh >City</MudTh>
-                <MudTh >Country</MudTh>
-                <MudTh >Temperature (°C)</MudTh>
-                <MudTh >Weather</MudTh>
-            </HeaderContent>
-            <RowTemplate Context="city">
-                <MudTd>@city.CityName</MudTd>
-                <MudTd>@city.Country</MudTd>
-                <MudTd>Min: @city.TempMin:F2 | Max: @city.TempMax:F2</MudTd>
-                <MudTd>@city.Description</MudTd>
-            </RowTemplate>
-        </MudTable>
-    </MudPaper>
+    <MudGrid Class="d-flex justify-content-center">
+        @foreach (var city in WeatherService.GlobalCityWeather)
+        {
+            <MudItem Class="p-2">
+                <MudCard Elevation="4" Class="weather-card">
+                    <MudStack Direction="Column" AlignItems="AlignItems.Center" Spacing="2">
+                        <MudText Typo="Typo.h6" Class="city-name">@city.CityName, @city.Country</MudText>
+                        <MudIcon Size="Size.Large" Color="Color.Primary" Icon="@GetWeatherIcon(city.Description)" />
+                        <MudText Typo="Typo.body1" Class="temperature-text">
+                            Min: @($"{city.TempMin:F2}")°C | Max: @($"{city.TempMax:F2}")°C
+                        </MudText>
+                        <MudText Typo="Typo.body2" Class="weather-description">@city.Description</MudText>
+                    </MudStack>
+                </MudCard>
+            </MudItem>
+        }
+    </MudGrid>
 }
 
-}
+
+
+
+
+<style>
+
+    .weather-card {
+        padding: 16px;
+        border-radius: 10px;
+        text-align: center;
+        background-color: var(--mud-palette-background);
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .city-name {
+        font-weight: bold;
+        color: var(--mud-palette-text-primary);
+    }
+
+    .temperature-text {
+        font-weight: bold;
+        color: var(--mud-palette-warning);
+    }
+
+    .weather-description {
+        color: var(--mud-palette-text-secondary);
+    }
+
+</style>
+
+
 
 
 
 @code
 {
+    private string GetCityImageUrl(string cityName)
+    {
+        // Make sure the city name matches the keys in the dictionary
+        if (cityImageMap.TryGetValue(cityName, out var imageUrl))
+        {
+            return imageUrl; // Return the image URL from the dictionary
+        }
+
+        // Fallback image if the city is not found in the map
+        return "https://via.placeholder.com/400x300?text=No+Image";
+    }
+
+    private Dictionary<string, string> cityImageMap = new()
+{
+    { "New York", "https://upload.wikimedia.org/wikipedia/commons/c/c7/New_York_City_at_night_HDR.jpg" },
+    { "London", "https://upload.wikimedia.org/wikipedia/commons/c/cd/London_Montage_L.jpg" },
+    { "Paris", "https://upload.wikimedia.org/wikipedia/commons/e/e6/Paris_Night.jpg" },
+    { "Tokyo", "https://upload.wikimedia.org/wikipedia/commons/9/94/Tokyo_Skyline_Night.jpg" },
+    { "Dubai", "https://upload.wikimedia.org/wikipedia/commons/6/66/Dubai_Skyline_at_night.jpg" }
+};
+
+
+     private string GetWeatherIcon(string description)
+    {
+        if (description.Contains("rain", StringComparison.OrdinalIgnoreCase)) return Icons.Material.Filled.Umbrella;
+        if (description.Contains("cloud", StringComparison.OrdinalIgnoreCase)) return Icons.Material.Filled.Cloud;
+        if (description.Contains("clear", StringComparison.OrdinalIgnoreCase)) return Icons.Material.Filled.WbSunny;
+        if (description.Contains("storm", StringComparison.OrdinalIgnoreCase)) return Icons.Material.Filled.Bolt;
+        return Icons.Material.Filled.WbCloudy;
+    }
+
+
     private bool isLoading = true;
 
     protected override async Task OnInitializedAsync()

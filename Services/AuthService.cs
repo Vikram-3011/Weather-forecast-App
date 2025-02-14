@@ -19,24 +19,39 @@ namespace BlazorApp.Services
             _snackbar = snackbar;
         }
 
-        public async Task<BlazorApp.Models.User> SignUp(string email, string password, UserStateManager userState)
+        public async Task<BlazorApp.Models.User?> SignUp(string email, string password, UserStateManager userState)
         {
-            var response = await _supabaseClient.Auth.SignUp(email, password);
-            currentUser = response?.User; // Use Supabase.Gotrue.User explicitly
+            try
+            {
 
-            if (currentUser != null)
-            {
-                var newUser = new BlazorApp.Models.User(currentUser.Email, null, new List<Favourite>());
-                userState.SetUser(newUser); // Store user email globally
-                _snackbar.Add("User registered successfully!", Severity.Success);
-                return newUser;
+
+                
+
+                var response = await _supabaseClient.Auth.SignUp(email, password);
+                currentUser = response?.User;
+
+                if (currentUser != null)
+                {
+                    var newUser = new BlazorApp.Models.User(currentUser.Email, null, new List<Favourite>());
+                    userState.SetUser(newUser);
+                    _snackbar.Add("User registered successfully!", Severity.Success);
+                    return newUser;
+                }
             }
-            else
+            catch (Exception ex)  // Catch Supabase-specific exception
             {
-                _snackbar.Add("Registration failed!", Severity.Error);
-                return null;
+                if (ex.Message.Contains("User already registered") || ex.Message.Contains("already exists"))
+                {
+                    _snackbar.Add("The email already exists. Try logging in.", Severity.Warning);
+                    return null;
+                }
+
+                _snackbar.Add($"Registration failed: {ex.Message}", Severity.Error);
             }
-        }
+           
+            return null;
+                 }
+
 
         public async Task<string> SignIn(string email, string password, UserStateManager userState)
         {

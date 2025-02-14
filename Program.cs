@@ -12,12 +12,7 @@ var supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIs
 
 var options = new SupabaseOptions { AutoConnectRealtime = true };
 var supabaseClient = new Supabase.Client(supabaseUrl, supabaseKey, options);
-// MongoDB connection parameters
-var mongoConnectionString = "mongodb://localhost:27017/";  // Change to your MongoDB connection string
-var databaseName = "\r\nauthentication";  // Your database name
-var collectionName = "user details";  // Your collection name
 
-// Register the PersonalInfoService with MongoDB connection details
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
 builder.Services.AddSingleton(supabaseClient);
@@ -35,9 +30,10 @@ builder.Services.AddHttpClient();
 builder.Services.AddMudBlazorSnackbar();
 builder.Services.AddSingleton<PersonalInfoService>();
 builder.Services.AddSingleton<FavoriteCityService>();
-
-
-
+builder.Services.AddScoped<WeatherAPIService>(); // ? Correct
+builder.Services.AddHostedService<WeatherAlertBackgroundService>();
+builder.Services.AddSingleton<EmailService>();
+builder.Services.AddSingleton<FirebaseMessagingService>();
 
 
 

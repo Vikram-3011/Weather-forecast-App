@@ -22,8 +22,16 @@
         </MudCardHeader>
         <MudCardContent>
             <MudTextField T="string" @bind-Value="@email" Label="Email" Variant="Variant.Outlined" Required></MudTextField>
-            <MudTextField T="string" @bind-Value="@password" Label="Password" Variant="Variant.Outlined" InputType="InputType.Password" Required></MudTextField>
-           
+           <MudTextField T="string" 
+    @bind-Value="@password" 
+    Label="Password" 
+    Variant="Variant.Outlined" 
+    InputType="@passwordInputType" Required>
+    <Adornment End>
+        <MudIconButton Icon="@passwordIcon" OnClick="TogglePasswordVisibility"></MudIconButton>
+    </Adornment>
+</MudTextField>
+
             <div class="d-inline-flex align-items-start my-4">
                 <MudButton OnClick="OnLogin" Class="mr-2" Color="Color.Primary" Variant="Variant.Filled">Login</MudButton>
                 <MudButton OnClick="OnSignup" Class="mr-2" Color="Color.Secondary" Variant="Variant.Outlined">Sign Up</MudButton>
@@ -38,6 +46,8 @@
     private string email { get; set; } = "";
     private string password { get; set; } = "";
     private bool success = false;
+    private InputType passwordInputType = InputType.Password;
+    private string passwordIcon = Icons.Material.Filled.VisibilityOff;
 
     private void OnSignup() => NavigationManager.NavigateTo("signup");
 
@@ -80,6 +90,19 @@
         catch (Exception ex)
         {
             _snackbar.Add($"Error: {ex.Message}", Severity.Error);
+        }
+    }
+    private void TogglePasswordVisibility()
+    {
+        if (passwordInputType == InputType.Password)
+        {
+            passwordInputType = InputType.Text;
+            passwordIcon = Icons.Material.Filled.Visibility;
+        }
+        else
+        {
+            passwordInputType = InputType.Password;
+            passwordIcon = Icons.Material.Filled.VisibilityOff;
         }
     }
 }
