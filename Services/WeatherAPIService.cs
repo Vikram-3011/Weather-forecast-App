@@ -11,21 +11,19 @@ public class WeatherAPIService
     private readonly HttpClient _httpClient;
     private readonly ILogger<WeatherAPIService> _logger;
     private readonly ISnackbar _snackbar;
-    private readonly EmailService _emailService;  // <-- Add this
     private readonly DatabaseController _databaseController;
 
-
-    private const string ApiKey = "b9693035c52f49d390164524240110";
+    private const string ApiKey = "b9693035c52f49d390164524240110"; // weather API key 
     private const string BaseUrl = "https://api.weatherapi.com/v1/alerts.json";
-
-    public WeatherAPIService(HttpClient httpClient, ILogger<WeatherAPIService> logger, ISnackbar snackbar, EmailService emailService, DatabaseController databaseController)
+    
+    public WeatherAPIService(HttpClient httpClient, ILogger<WeatherAPIService> logger, ISnackbar snackbar, DatabaseController databaseController)
     {
         _httpClient = httpClient;
         _logger = logger;
         _snackbar = snackbar;
-        _emailService = emailService;
         _databaseController = databaseController;
     }
+
     public async Task CheckWeatherAlertsForFavoritesAsync()
     {
         var allFavorites = await _databaseController.GetAllFavoriteCities();
@@ -50,9 +48,7 @@ public class WeatherAPIService
                 {
                     _snackbar.Add($"**City:** {city}\n**Alert:** {alert.Headline}\n**Description:** {alert.Desc}", Severity.Warning);
 
-                    // Send Email Notification
-                    await _emailService.SendWeatherAlertEmailAsync(userEmail, city, alert.Headline, alert.Desc);
-                }
+                   }
             }
         }
         catch (HttpRequestException ex)
@@ -60,6 +56,9 @@ public class WeatherAPIService
             _logger.LogError($"Error fetching weather alerts for {city}: {ex.Message}");
         }
     }
+
+   
+
 
     public async Task<List<WeatherAlert>> CheckWeatherAlertsAsync(string city)
     {
@@ -111,5 +110,5 @@ public class WeatherAlert
     public string Expires { get; set; } = "";
     public string Desc { get; set; } = "";
     public string Instruction { get; set; } = "";
+    public string Type { get; set; }
 }
-    

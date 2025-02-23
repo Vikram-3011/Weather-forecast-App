@@ -20,11 +20,19 @@
             <MudText Typo="Typo.body1">Create an Account.</MudText>
         </MudCardHeader>
         <MudCardContent>
-            <MudTextField T="string" @bind-Value="@email" Label="Email" Variant="Variant.Outlined" Required></MudTextField>
-            <MudTextField T="string" @bind-Value="@password" Label="Password" Variant="Variant.Outlined" InputType="InputType.Password" Required></MudTextField>
-    
+            <MudTextField T="string" @bind-Value="@email" Label="Email" Variant="Variant.Outlined" Required OnKeyDown="HandleKeyDown"></MudTextField>
+            <MudTextField T="string"
+                          @bind-Value="@password"
+                          Label="Password"
+                          Variant="Variant.Outlined"
+                          InputType="@passwordInputType"
+                          Required
+                          Adornment="Adornment.End"
+                          AdornmentIcon="@passwordIcon"
+                          OnAdornmentClick="TogglePasswordVisibility" OnKeyDown="HandleKeyDown">
+            </MudTextField>
             <div class="d-inline-flex align-items-start my-4">
-                <MudButton OnClick="OnSignup" Class="mr-2" Color="Color.Primary" Variant="Variant.Filled">Signup</MudButton>
+                <MudButton OnClick="OnSignup" Class="mr-2" Color="Color.Primary" Variant="Variant.Filled" >Signup</MudButton>
                 <MudButton OnClick="OnLogin" Class="mr-2" Color="Color.Secondary" Variant="Variant.Outlined">Login</MudButton>
             </div>
         </MudCardContent>
@@ -37,6 +45,8 @@
     private string password { get; set; } = "";
     private bool success = false;
     private string? userEmail = "";
+    private InputType passwordInputType = InputType.Password;
+    private string passwordIcon = Icons.Material.Filled.VisibilityOff;
 
     private void OnLogin() => NavigationManager.NavigateTo("login");
 
@@ -59,5 +69,25 @@
         }
     }
     
+    private void TogglePasswordVisibility()
+    {
+        if (passwordInputType == InputType.Password)
+        {
+            passwordInputType = InputType.Text;
+            passwordIcon = Icons.Material.Filled.Visibility;
+        }
+        else
+        {
+            passwordInputType = InputType.Password;
+            passwordIcon = Icons.Material.Filled.VisibilityOff;
+        }
+    }
 
+    private async Task HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            await OnSignup();
+        }
+    }
 }

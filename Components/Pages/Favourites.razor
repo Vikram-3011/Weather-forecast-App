@@ -11,10 +11,14 @@
 @inject ISnackbar snackbar
 @inject ILogger<Favourites> logger
 @inject WeatherAPIService WeatherService
-@inject EmailService EmailService 
-<PageTitle>Favorite Cities</PageTitle>
 
+<PageTitle>Favorite Cities</PageTitle>
 <MudText Typo="Typo.h4" Align="Align.Center">Favorite Cities</MudText>
+
+<MudButton Color="Color.Secondary" Variant="Variant.Filled" OnClick="NavigateToAlertPreferences">
+    <MudIcon Icon="@Icons.Material.Filled.Settings" Class="mr-2" />
+    Alert
+</MudButton>
 @if (isLoading)
 {
 
@@ -81,6 +85,9 @@ else
 
     private bool _isDialogOpen = false;
     private string selectedCity = "";
+    
+
+
     protected override async Task OnInitializedAsync()
     {
         isLoading = true;
@@ -98,19 +105,29 @@ else
 
 
             // Check weather alerts for each favorite city
-            foreach (var city in favouriteCities)
+            // Get user alert preferences
+            var userPreferences = await databaseController.GetUserAlertPreferences(userEmail);
+
+            if (userPreferences != null)
             {
-                var alerts = await WeatherService.CheckWeatherAlertsAsync(city.CityName); // FIX: Now this returns a list
-
-                if (alerts.Count > 0) // FIX: Use alerts.Count instead of method group
+                foreach (var city in favouriteCities)
                 {
-                    string alertSummary = string.Join("\n\n", alerts.Select(a => $"**Alert:** {a.Headline}\n**Details:** {a.Desc}"));
-                    snackbar.Add($"Weather Alert for {city.CityName}: {alertSummary}", Severity.Warning);
+                    var alerts = await WeatherService.CheckWeatherAlertsAsync(city.CityName);
+                    var filteredAlerts = alerts.Where(a =>
+                        (userPreferences.TemperatureAlert && a.Type == "Temperature") ||
+                        (userPreferences.WindAlert && a.Type == "Wind") ||
+                        (userPreferences.RainAlert && a.Type == "Rain") ||
+                        (userPreferences.AirQualityAlert && a.Type == "AirQuality")
+                    ).ToList();
 
-                    // Send email notification
-                    await EmailService.SendWeatherAlertEmailAsync(userEmail, city.CityName, alerts[0].Headline, alertSummary);
+                    if (filteredAlerts.Any())
+                    {
+                        string alertSummary = string.Join("\n\n", filteredAlerts.Select(a => $"**Alert:** {a.Headline}\n**Details:** {a.Desc}"));
+                        snackbar.Add($"Weather Alert for {city.CityName}: {alertSummary}", Severity.Warning);
+                    }
                 }
             }
+
         }
         else
         {
@@ -148,5 +165,10 @@ else
     private void SearchWeather(string cityName)
     {
         NavigationManager.NavigateTo($"/weather?city={cityName}");
+    }
+
+    private void NavigateToAlertPreferences()
+    {
+        NavigationManager.NavigateTo("/alert-preferences");
     }
 }

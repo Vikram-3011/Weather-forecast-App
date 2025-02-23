@@ -31,9 +31,6 @@ builder.Services.AddMudBlazorSnackbar();
 builder.Services.AddSingleton<PersonalInfoService>();
 builder.Services.AddSingleton<FavoriteCityService>();
 builder.Services.AddScoped<WeatherAPIService>(); // ? Correct
-builder.Services.AddHostedService<WeatherAlertBackgroundService>();
-builder.Services.AddSingleton<EmailService>();
-builder.Services.AddSingleton<FirebaseMessagingService>();
 
 
 

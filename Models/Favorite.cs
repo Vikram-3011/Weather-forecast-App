@@ -13,7 +13,7 @@ namespace BlazorApp.Models
             public string CityName { get; set; }
             public string UserEmail { get; set; }
             public DateTime DateAdded { get; set; }
-        public UserAlertPreference AlertPreference { get; set; } = new UserAlertPreference();
+        
 
     }
 }

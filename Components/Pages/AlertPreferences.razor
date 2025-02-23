@@ -1,0 +1,58 @@
+﻿@page "/alert-preferences"
+@inject DatabaseController databaseController
+@inject UserStateManager userState
+@inject NavigationManager NavigationManager
+@inject ISnackbar snackbar
+@using BlazorApp.Models
+@using BlazorApp.Controllers
+@using BlazorApp.Singletons
+
+<PageTitle>Alert Preferences</PageTitle>
+
+<MudCard Class="p-4">
+    <MudText Typo="Typo.h4">Set Your Weather Alert Preferences</MudText>
+
+    @if (isLoading)
+    {
+        <MudProgressCircular Indeterminate="true" />
+    }
+    else
+    {
+        <MudForm>
+            <MudCheckBox T="bool" Label="Temperature Alerts" @bind-Checked="alertPreferences.TemperatureAlert" />
+            <MudCheckBox T="bool" Label="Wind Speed Alerts" @bind-Checked="alertPreferences.WindAlert" />
+            <MudCheckBox T="bool" Label="Rain Alerts" @bind-Checked="alertPreferences.RainAlert" />
+            <MudCheckBox T="bool" Label="Air Quality Alerts" @bind-Checked="alertPreferences.AirQualityAlert" />
+
+            <MudButton Color="Color.Primary" OnClick="SavePreferences">Save Preferences</MudButton>
+        </MudForm>
+    }
+</MudCard>
+
+@code {
+    
+        private BlazorApp.Models.AlertPreferences alertPreferences = new();
+    
+
+    
+    private bool isLoading = true;
+    private string userEmail = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        userEmail = userState.UserEmail;
+        if (!string.IsNullOrEmpty(userEmail))
+        {
+            var result = await databaseController.GetUserAlertPreferences(userEmail);
+           /*  alertPreferences = result ?? new AlertPreferences { UserEmail = userEmail } */;
+        }
+        isLoading = false;
+    }
+
+    private async Task SavePreferences()
+    {
+        await databaseController.SaveUserAlertPreferences(userEmail, alertPreferences);
+        snackbar.Add("Preferences saved successfully!", Severity.Success);
+        NavigationManager.NavigateTo("/favourites");
+    }
+}

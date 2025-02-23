@@ -125,12 +125,45 @@ namespace BlazorApp.Services
             try
             {
                 await _supabaseClient.Auth.ResetPasswordForEmail(email);
-                _snackbar.Add("Password reset email sent successfully.", Severity.Success);
+
+
             }
             catch (Exception ex)
             {
                 _snackbar.Add($"Failed to send password reset email: {ex.Message}", Severity.Error);
             }
         }
+
+        // Reset the Userr Password
+        public async Task<bool> ResetPassword(string email)
+        {
+            try
+            {
+                await _supabaseClient.Auth.ResetPasswordForEmail(email);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error resetting password: {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdatePassword(string newPassword)
+        {
+            try
+            {
+                var userAttributes = new UserAttributes { Password = newPassword };
+                await _supabaseClient.Auth.Update(userAttributes);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating password: {ex.Message}");
+                return false;
+            }
+        }
+
+
     }
 }

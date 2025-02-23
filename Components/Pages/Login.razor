@@ -21,23 +21,22 @@
             <MudText Typo="Typo.body1">Enter your credentials to login.</MudText>
         </MudCardHeader>
         <MudCardContent>
-            <MudTextField T="string" @bind-Value="@email" Label="Email" Variant="Variant.Outlined" Required></MudTextField>
-           <MudTextField T="string" 
-    @bind-Value="@password" 
-    Label="Password" 
-    Variant="Variant.Outlined" 
-    InputType="@passwordInputType" Required>
-    <Adornment End>
-        <MudIconButton Icon="@passwordIcon" OnClick="TogglePasswordVisibility"></MudIconButton>
-    </Adornment>
-</MudTextField>
-
+            <MudTextField T="string" @bind-Value="@email" Label="Email" Variant="Variant.Outlined" OnKeyDown="HandleKeyDown" Required></MudTextField>
+            <MudTextField T="string" @bind-Value="@password" Label="Password"
+                          Variant="Variant.Outlined"
+                          InputType="@passwordInputType"
+                          Required
+                          Adornment="Adornment.End"
+                          AdornmentIcon="@passwordIcon"
+                          OnAdornmentClick="TogglePasswordVisibility" OnKeyDown="HandleKeyDown">
+            </MudTextField>
             <div class="d-inline-flex align-items-start my-4">
-                <MudButton OnClick="OnLogin" Class="mr-2" Color="Color.Primary" Variant="Variant.Filled">Login</MudButton>
+                <MudButton OnClick="OnLogin" Class="mr-2" Color="Color.Primary" Variant="Variant.Filled" Disabled="@isLoggingIn">Login</MudButton>
                 <MudButton OnClick="OnSignup" Class="mr-2" Color="Color.Secondary" Variant="Variant.Outlined">Sign Up</MudButton>
                 <MudButton Variant="Variant.Text" Color="Color.Tertiary" Class="mr-3" OnClick="ForgotPassword">Forgot Password?</MudButton>
 
             </div>
+           
         </MudCardContent>
     </MudCard>
 </MudContainer>
@@ -46,6 +45,7 @@
     private string email { get; set; } = "";
     private string password { get; set; } = "";
     private bool success = false;
+    private bool isLoggingIn = false;
     private InputType passwordInputType = InputType.Password;
     private string passwordIcon = Icons.Material.Filled.VisibilityOff;
 
@@ -53,6 +53,9 @@
 
     public async Task OnLogin()
     {
+        if (isLoggingIn) return; // Prevent multiple clicks
+
+        isLoggingIn = true; // Start login process
         try
         {
             // Authenticate the user using AuthService and update UserStateManager
@@ -71,6 +74,10 @@
         catch (Exception ex)
         {
             _snackbar.Add($"Error: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            isLoggingIn = false; // Reset after login attempt
         }
     }
 
@@ -103,6 +110,14 @@
         {
             passwordInputType = InputType.Password;
             passwordIcon = Icons.Material.Filled.VisibilityOff;
+        }
+    }
+
+    private async Task HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            await OnLogin();
         }
     }
 }

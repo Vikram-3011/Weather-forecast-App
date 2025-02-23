@@ -1,0 +1,297 @@
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\appsettings.Development.json
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\appsettings.json
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\BlazorApp.staticwebassets.runtime.json
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\BlazorApp.exe
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\BlazorApp.deps.json
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\BlazorApp.runtimeconfig.json
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\BlazorApp.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\BlazorApp.pdb
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\AWSSDK.Core.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\AWSSDK.SecurityToken.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\DnsClient.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\Microsoft.AspNetCore.Authorization.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\Microsoft.AspNetCore.Components.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\Microsoft.AspNetCore.Components.Forms.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\Microsoft.AspNetCore.Components.Web.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\Microsoft.AspNetCore.Metadata.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\Microsoft.Extensions.Localization.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\Microsoft.Extensions.Localization.Abstractions.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\Microsoft.JSInterop.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\MongoDB.Bson.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\MongoDB.Driver.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\MongoDB.Driver.Core.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\MongoDB.Libmongocrypt.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\MudBlazor.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\SharpCompress.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\Snappier.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\ZstdSharp.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\runtimes\linux\native\libmongocrypt.so
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\runtimes\osx\native\libmongocrypt.dylib
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\runtimes\win\native\mongocrypt.dll
+D:\Rahul\Internship\Projects\BlazorApp\obj\Debug\net8.0\BlazorApp.csproj.AssemblyReference.cache
+D:\Rahul\Internship\Projects\BlazorApp\obj\Debug\net8.0\BlazorApp.GeneratedMSBuildEditorConfig.editorconfig
+D:\Rahul\Internship\Projects\BlazorApp\obj\Debug\net8.0\BlazorApp.AssemblyInfoInputs.cache
+D:\Rahul\Internship\Projects\BlazorApp\obj\Debug\net8.0\BlazorApp.AssemblyInfo.cs
+D:\Rahul\Internship\Projects\BlazorApp\obj\Debug\net8.0\BlazorApp.csproj.CoreCompileInputs.cache
+D:\Rahul\Internship\Projects\BlazorApp\obj\Debug\net8.0\BlazorApp.MvcApplicationPartsAssemblyInfo.cache
+D:\Rahul\Internship\Projects\BlazorApp\obj\Debug\net8.0\staticwebassets.build.json
+D:\Rahul\Internship\Projects\BlazorApp\obj\Debug\net8.0\staticwebassets.development.json
+D:\Rahul\Internship\Projects\BlazorApp\obj\Debug\net8.0\staticwebassets\msbuild.BlazorApp.Microsoft.AspNetCore.StaticWebAssets.props
+D:\Rahul\Internship\Projects\BlazorApp\obj\Debug\net8.0\staticwebassets\msbuild.build.BlazorApp.props
+D:\Rahul\Internship\Projects\BlazorApp\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.BlazorApp.props
+D:\Rahul\Internship\Projects\BlazorApp\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.BlazorApp.props
+D:\Rahul\Internship\Projects\BlazorApp\obj\Debug\net8.0\staticwebassets.pack.json
+D:\Rahul\Internship\Projects\BlazorApp\obj\Debug\net8.0\scopedcss\Components\Layout\MainLayout.razor.rz.scp.css
+D:\Rahul\Internship\Projects\BlazorApp\obj\Debug\net8.0\scopedcss\Components\Layout\NavMenu.razor.rz.scp.css
+D:\Rahul\Internship\Projects\BlazorApp\obj\Debug\net8.0\scopedcss\bundle\BlazorApp.styles.css
+D:\Rahul\Internship\Projects\BlazorApp\obj\Debug\net8.0\scopedcss\projectbundle\BlazorApp.bundle.scp.css
+D:\Rahul\Internship\Projects\BlazorApp\obj\Debug\net8.0\BlazorApp.csproj.Up2Date
+D:\Rahul\Internship\Projects\BlazorApp\obj\Debug\net8.0\BlazorApp.dll
+D:\Rahul\Internship\Projects\BlazorApp\obj\Debug\net8.0\refint\BlazorApp.dll
+D:\Rahul\Internship\Projects\BlazorApp\obj\Debug\net8.0\BlazorApp.pdb
+D:\Rahul\Internship\Projects\BlazorApp\obj\Debug\net8.0\BlazorApp.genruntimeconfig.cache
+D:\Rahul\Internship\Projects\BlazorApp\obj\Debug\net8.0\ref\BlazorApp.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\Microsoft.IO.RecyclableMemoryStream.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\MimeMapping.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\Newtonsoft.Json.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\Supabase.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\Supabase.Core.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\Supabase.Functions.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\Supabase.Gotrue.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\Supabase.Postgrest.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\Supabase.Realtime.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\Supabase.Storage.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\System.Reactive.dll
+D:\Rahul\Internship\Projects\BlazorApp\bin\Debug\net8.0\Websocket.Client.dll
+D:\Project\BlazorApp\obj\Debug\net8.0\BlazorApp.dll
+D:\Project\BlazorApp\obj\Debug\net8.0\refint\BlazorApp.dll
+D:\Project\BlazorApp\obj\Debug\net8.0\BlazorApp.pdb
+D:\Project\BlazorApp\obj\Debug\net8.0\BlazorApp.csproj.AssemblyReference.cache
+D:\Project\BlazorApp\obj\Debug\net8.0\BlazorApp.GeneratedMSBuildEditorConfig.editorconfig
+D:\Project\BlazorApp\obj\Debug\net8.0\BlazorApp.AssemblyInfoInputs.cache
+D:\Project\BlazorApp\obj\Debug\net8.0\BlazorApp.AssemblyInfo.cs
+D:\Project\BlazorApp\obj\Debug\net8.0\BlazorApp.csproj.CoreCompileInputs.cache
+D:\Project\BlazorApp\obj\Debug\net8.0\BlazorApp.MvcApplicationPartsAssemblyInfo.cache
+D:\Project\BlazorApp\bin\Debug\net8.0\appsettings.Development.json
+D:\Project\BlazorApp\bin\Debug\net8.0\appsettings.json
+D:\Project\BlazorApp\bin\Debug\net8.0\BlazorApp.staticwebassets.runtime.json
+D:\Project\BlazorApp\bin\Debug\net8.0\BlazorApp.exe
+D:\Project\BlazorApp\bin\Debug\net8.0\BlazorApp.deps.json
+D:\Project\BlazorApp\bin\Debug\net8.0\BlazorApp.runtimeconfig.json
+D:\Project\BlazorApp\bin\Debug\net8.0\BlazorApp.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\AWSSDK.Core.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\AWSSDK.SecurityToken.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\DnsClient.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\Microsoft.AspNetCore.Authorization.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\Microsoft.AspNetCore.Components.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\Microsoft.AspNetCore.Components.Forms.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\Microsoft.AspNetCore.Components.Web.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\Microsoft.AspNetCore.Metadata.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\Microsoft.Extensions.Localization.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\Microsoft.Extensions.Localization.Abstractions.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\Microsoft.IO.RecyclableMemoryStream.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\Microsoft.JSInterop.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\MimeMapping.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\MongoDB.Bson.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\MongoDB.Driver.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\MongoDB.Driver.Core.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\MongoDB.Libmongocrypt.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\MudBlazor.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\Newtonsoft.Json.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\SharpCompress.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\Snappier.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\Supabase.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\Supabase.Core.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\Supabase.Functions.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\Supabase.Gotrue.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\Supabase.Postgrest.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\Supabase.Realtime.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\Supabase.Storage.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\System.Reactive.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\Websocket.Client.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\ZstdSharp.dll
+D:\Project\BlazorApp\bin\Debug\net8.0\runtimes\linux\native\libmongocrypt.so
+D:\Project\BlazorApp\bin\Debug\net8.0\runtimes\osx\native\libmongocrypt.dylib
+D:\Project\BlazorApp\bin\Debug\net8.0\runtimes\win\native\mongocrypt.dll
+D:\Project\BlazorApp\obj\Debug\net8.0\staticwebassets.build.json
+D:\Project\BlazorApp\obj\Debug\net8.0\staticwebassets.development.json
+D:\Project\BlazorApp\obj\Debug\net8.0\staticwebassets\msbuild.BlazorApp.Microsoft.AspNetCore.StaticWebAssets.props
+D:\Project\BlazorApp\obj\Debug\net8.0\staticwebassets\msbuild.build.BlazorApp.props
+D:\Project\BlazorApp\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.BlazorApp.props
+D:\Project\BlazorApp\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.BlazorApp.props
+D:\Project\BlazorApp\obj\Debug\net8.0\staticwebassets.pack.json
+D:\Project\BlazorApp\obj\Debug\net8.0\scopedcss\Components\Layout\MainLayout.razor.rz.scp.css
+D:\Project\BlazorApp\obj\Debug\net8.0\scopedcss\Components\Layout\NavMenu.razor.rz.scp.css
+D:\Project\BlazorApp\obj\Debug\net8.0\scopedcss\bundle\BlazorApp.styles.css
+D:\Project\BlazorApp\obj\Debug\net8.0\scopedcss\projectbundle\BlazorApp.bundle.scp.css
+D:\Project\BlazorApp\obj\Debug\net8.0\BlazorApp.csproj.Up2Date
+D:\Project\BlazorApp\obj\Debug\net8.0\BlazorApp.genruntimeconfig.cache
+D:\Project\BlazorApp\bin\Debug\net8.0\BlazorApp.pdb
+D:\Project\BlazorApp\obj\Debug\net8.0\ref\BlazorApp.dll
+E:\BlazorApp\bin\Debug\net8.0\appsettings.Development.json
+E:\BlazorApp\bin\Debug\net8.0\appsettings.json
+E:\BlazorApp\bin\Debug\net8.0\BlazorApp.staticwebassets.runtime.json
+E:\BlazorApp\bin\Debug\net8.0\BlazorApp.exe
+E:\BlazorApp\bin\Debug\net8.0\BlazorApp.deps.json
+E:\BlazorApp\bin\Debug\net8.0\BlazorApp.runtimeconfig.json
+E:\BlazorApp\bin\Debug\net8.0\BlazorApp.dll
+E:\BlazorApp\bin\Debug\net8.0\BlazorApp.pdb
+E:\BlazorApp\bin\Debug\net8.0\AWSSDK.Core.dll
+E:\BlazorApp\bin\Debug\net8.0\AWSSDK.SecurityToken.dll
+E:\BlazorApp\bin\Debug\net8.0\DnsClient.dll
+E:\BlazorApp\bin\Debug\net8.0\Microsoft.AspNetCore.Authorization.dll
+E:\BlazorApp\bin\Debug\net8.0\Microsoft.AspNetCore.Components.dll
+E:\BlazorApp\bin\Debug\net8.0\Microsoft.AspNetCore.Components.Forms.dll
+E:\BlazorApp\bin\Debug\net8.0\Microsoft.AspNetCore.Components.Web.dll
+E:\BlazorApp\bin\Debug\net8.0\Microsoft.AspNetCore.Metadata.dll
+E:\BlazorApp\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+E:\BlazorApp\bin\Debug\net8.0\Microsoft.Extensions.Localization.dll
+E:\BlazorApp\bin\Debug\net8.0\Microsoft.Extensions.Localization.Abstractions.dll
+E:\BlazorApp\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+E:\BlazorApp\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+E:\BlazorApp\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+E:\BlazorApp\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+E:\BlazorApp\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+E:\BlazorApp\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+E:\BlazorApp\bin\Debug\net8.0\Microsoft.IO.RecyclableMemoryStream.dll
+E:\BlazorApp\bin\Debug\net8.0\Microsoft.JSInterop.dll
+E:\BlazorApp\bin\Debug\net8.0\MimeMapping.dll
+E:\BlazorApp\bin\Debug\net8.0\MongoDB.Bson.dll
+E:\BlazorApp\bin\Debug\net8.0\MongoDB.Driver.dll
+E:\BlazorApp\bin\Debug\net8.0\MongoDB.Driver.Core.dll
+E:\BlazorApp\bin\Debug\net8.0\MongoDB.Libmongocrypt.dll
+E:\BlazorApp\bin\Debug\net8.0\MudBlazor.dll
+E:\BlazorApp\bin\Debug\net8.0\Newtonsoft.Json.dll
+E:\BlazorApp\bin\Debug\net8.0\SharpCompress.dll
+E:\BlazorApp\bin\Debug\net8.0\Snappier.dll
+E:\BlazorApp\bin\Debug\net8.0\Supabase.dll
+E:\BlazorApp\bin\Debug\net8.0\Supabase.Core.dll
+E:\BlazorApp\bin\Debug\net8.0\Supabase.Functions.dll
+E:\BlazorApp\bin\Debug\net8.0\Supabase.Gotrue.dll
+E:\BlazorApp\bin\Debug\net8.0\Supabase.Postgrest.dll
+E:\BlazorApp\bin\Debug\net8.0\Supabase.Realtime.dll
+E:\BlazorApp\bin\Debug\net8.0\Supabase.Storage.dll
+E:\BlazorApp\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+E:\BlazorApp\bin\Debug\net8.0\System.Reactive.dll
+E:\BlazorApp\bin\Debug\net8.0\Websocket.Client.dll
+E:\BlazorApp\bin\Debug\net8.0\ZstdSharp.dll
+E:\BlazorApp\bin\Debug\net8.0\runtimes\linux\native\libmongocrypt.so
+E:\BlazorApp\bin\Debug\net8.0\runtimes\osx\native\libmongocrypt.dylib
+E:\BlazorApp\bin\Debug\net8.0\runtimes\win\native\mongocrypt.dll
+E:\BlazorApp\obj\Debug\net8.0\BlazorApp.csproj.AssemblyReference.cache
+E:\BlazorApp\obj\Debug\net8.0\BlazorApp.GeneratedMSBuildEditorConfig.editorconfig
+E:\BlazorApp\obj\Debug\net8.0\BlazorApp.AssemblyInfoInputs.cache
+E:\BlazorApp\obj\Debug\net8.0\BlazorApp.AssemblyInfo.cs
+E:\BlazorApp\obj\Debug\net8.0\BlazorApp.csproj.CoreCompileInputs.cache
+E:\BlazorApp\obj\Debug\net8.0\BlazorApp.MvcApplicationPartsAssemblyInfo.cache
+E:\BlazorApp\obj\Debug\net8.0\staticwebassets.build.json
+E:\BlazorApp\obj\Debug\net8.0\staticwebassets.development.json
+E:\BlazorApp\obj\Debug\net8.0\staticwebassets\msbuild.BlazorApp.Microsoft.AspNetCore.StaticWebAssets.props
+E:\BlazorApp\obj\Debug\net8.0\staticwebassets\msbuild.build.BlazorApp.props
+E:\BlazorApp\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.BlazorApp.props
+E:\BlazorApp\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.BlazorApp.props
+E:\BlazorApp\obj\Debug\net8.0\staticwebassets.pack.json
+E:\BlazorApp\obj\Debug\net8.0\scopedcss\Components\Layout\MainLayout.razor.rz.scp.css
+E:\BlazorApp\obj\Debug\net8.0\scopedcss\Components\Layout\NavMenu.razor.rz.scp.css
+E:\BlazorApp\obj\Debug\net8.0\scopedcss\bundle\BlazorApp.styles.css
+E:\BlazorApp\obj\Debug\net8.0\scopedcss\projectbundle\BlazorApp.bundle.scp.css
+E:\BlazorApp\obj\Debug\net8.0\BlazorApp.csproj.Up2Date
+E:\BlazorApp\obj\Debug\net8.0\BlazorApp.dll
+E:\BlazorApp\obj\Debug\net8.0\refint\BlazorApp.dll
+E:\BlazorApp\obj\Debug\net8.0\BlazorApp.pdb
+E:\BlazorApp\obj\Debug\net8.0\BlazorApp.genruntimeconfig.cache
+E:\BlazorApp\obj\Debug\net8.0\ref\BlazorApp.dll
+E:\BlazorApp\obj\Debug\net8.0\BlazorApp.sourcelink.json
+D:\Copy project\BlazorApp\obj\Debug\net8.0\BlazorApp.csproj.AssemblyReference.cache
+D:\Copy project\BlazorApp\obj\Debug\net8.0\BlazorApp.GeneratedMSBuildEditorConfig.editorconfig
+D:\Copy project\BlazorApp\obj\Debug\net8.0\BlazorApp.AssemblyInfoInputs.cache
+D:\Copy project\BlazorApp\obj\Debug\net8.0\BlazorApp.AssemblyInfo.cs
+D:\Copy project\BlazorApp\obj\Debug\net8.0\BlazorApp.csproj.CoreCompileInputs.cache
+D:\Copy project\BlazorApp\obj\Debug\net8.0\BlazorApp.MvcApplicationPartsAssemblyInfo.cache
+D:\Copy project\BlazorApp\obj\Debug\net8.0\BlazorApp.sourcelink.json
+D:\Copy project\BlazorApp\bin\Debug\net8.0\appsettings.Development.json
+D:\Copy project\BlazorApp\bin\Debug\net8.0\appsettings.json
+D:\Copy project\BlazorApp\bin\Debug\net8.0\package-lock.json
+D:\Copy project\BlazorApp\bin\Debug\net8.0\package.json
+D:\Copy project\BlazorApp\bin\Debug\net8.0\BlazorApp.staticwebassets.runtime.json
+D:\Copy project\BlazorApp\bin\Debug\net8.0\BlazorApp.exe
+D:\Copy project\BlazorApp\bin\Debug\net8.0\BlazorApp.deps.json
+D:\Copy project\BlazorApp\bin\Debug\net8.0\BlazorApp.runtimeconfig.json
+D:\Copy project\BlazorApp\bin\Debug\net8.0\BlazorApp.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\BlazorApp.pdb
+D:\Copy project\BlazorApp\bin\Debug\net8.0\AWSSDK.Core.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\AWSSDK.SecurityToken.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\DnsClient.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\Microsoft.AspNetCore.Authorization.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\Microsoft.AspNetCore.Components.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\Microsoft.AspNetCore.Components.Forms.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\Microsoft.AspNetCore.Components.Web.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\Microsoft.AspNetCore.Metadata.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\Microsoft.Extensions.Localization.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\Microsoft.Extensions.Localization.Abstractions.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\Microsoft.IO.RecyclableMemoryStream.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\Microsoft.JSInterop.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\MimeMapping.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\MongoDB.Bson.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\MongoDB.Driver.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\MongoDB.Driver.Core.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\MongoDB.Libmongocrypt.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\MudBlazor.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\Newtonsoft.Json.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\Postmark.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\SharpCompress.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\Snappier.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\Supabase.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\Supabase.Core.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\Supabase.Functions.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\Supabase.Gotrue.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\Supabase.Postgrest.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\Supabase.Realtime.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\Supabase.Storage.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\System.Reactive.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\Websocket.Client.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\ZstdSharp.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\runtimes\linux\native\libmongocrypt.so
+D:\Copy project\BlazorApp\bin\Debug\net8.0\runtimes\osx\native\libmongocrypt.dylib
+D:\Copy project\BlazorApp\bin\Debug\net8.0\runtimes\win\native\mongocrypt.dll
+D:\Copy project\BlazorApp\obj\Debug\net8.0\staticwebassets.build.json
+D:\Copy project\BlazorApp\obj\Debug\net8.0\staticwebassets.development.json
+D:\Copy project\BlazorApp\obj\Debug\net8.0\staticwebassets\msbuild.BlazorApp.Microsoft.AspNetCore.StaticWebAssets.props
+D:\Copy project\BlazorApp\obj\Debug\net8.0\staticwebassets\msbuild.build.BlazorApp.props
+D:\Copy project\BlazorApp\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.BlazorApp.props
+D:\Copy project\BlazorApp\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.BlazorApp.props
+D:\Copy project\BlazorApp\obj\Debug\net8.0\staticwebassets.pack.json
+D:\Copy project\BlazorApp\obj\Debug\net8.0\scopedcss\Components\Layout\MainLayout.razor.rz.scp.css
+D:\Copy project\BlazorApp\obj\Debug\net8.0\scopedcss\Components\Layout\NavMenu.razor.rz.scp.css
+D:\Copy project\BlazorApp\obj\Debug\net8.0\scopedcss\bundle\BlazorApp.styles.css
+D:\Copy project\BlazorApp\obj\Debug\net8.0\scopedcss\projectbundle\BlazorApp.bundle.scp.css
+D:\Copy project\BlazorApp\obj\Debug\net8.0\BlazorApp.csproj.Up2Date
+D:\Copy project\BlazorApp\obj\Debug\net8.0\BlazorApp.dll
+D:\Copy project\BlazorApp\obj\Debug\net8.0\refint\BlazorApp.dll
+D:\Copy project\BlazorApp\obj\Debug\net8.0\BlazorApp.pdb
+D:\Copy project\BlazorApp\obj\Debug\net8.0\BlazorApp.genruntimeconfig.cache
+D:\Copy project\BlazorApp\obj\Debug\net8.0\ref\BlazorApp.dll
