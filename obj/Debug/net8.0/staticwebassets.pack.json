@@ -9,6 +9,10 @@
       "PackagePath": "staticwebassets\\Js\\location.js"
     },
     {
+      "Id": "D:\\Copy project\\BlazorApp\\wwwroot\\Js\\site.js",
+      "PackagePath": "staticwebassets\\Js\\site.js"
+    },
+    {
       "Id": "D:\\Copy project\\BlazorApp\\wwwroot\\app.css",
       "PackagePath": "staticwebassets\\app.css"
     },

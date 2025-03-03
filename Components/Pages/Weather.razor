@@ -11,14 +11,17 @@
 @using MongoDB.Bson;
 @inject ISnackbar Snackbar
 @inject IJSRuntime JS
+@using System.Globalization
+
 <PageTitle>Weather Forecast</PageTitle>
+
 
 <MudText Typo="Typo.h3" Align="Align.Center">Weather Forecast</MudText>
 <MudText Typo="Typo.body1" Align="Align.Center">Enter a city name to get weather data.</MudText>
 
 <MudCard Class="rounded-lg w-50 my-4 py-8 mx-auto" Elevation="5">
     <MudContainer MaxWidth="MaxWidth.Small">
-        <MudTextField Class="mt-2" @bind-Value="@cityName" Label="Enter City Name" Variant="Variant.Outlined"  OnKeyDown="HandleKeyDown" Required />
+        <MudTextField Class="mt-2" @bind-Value="@cityName" Label="Enter City Name" Variant="Variant.Outlined" OnKeyDown="HandleKeyDown" Required />
         <MudTextField Class="mt-2" @bind-Value="@numDays" Label="Enter Days (1-5)" Variant="Variant.Outlined" Type="number" />
         <MudTooltip Text="Fetch Weather Forecast">
             <MudButton Class="mt-2" OnClick="@FetchWeatherData" Variant="Variant.Outlined" Color="Color.Primary">Get Weather</MudButton>
@@ -36,7 +39,7 @@
 
 @if (dailyForecasts != null && dailyForecasts.Count > 0)
 {
-     <MudText Typo="Typo.h5" Align="Align.Center">Weather Forecast for @cityName</MudText>
+    <MudText Typo="Typo.h5" Align="Align.Center">Weather Forecast for @cityName</MudText>
     <MudGrid JustifyContent="Center" Class="mt-4">
         @foreach (var forecast in dailyForecasts)
         {
@@ -60,19 +63,77 @@
             </MudItem>
         }
     </MudGrid>
+
+    <MudGrid Spacing="4" Justify="Justify.Center" Class="mt-4 mb-6">
+        <MudItem xs="12" sm="4">
+            <MudButton OnClick="ShowTemperatureChart" Color="Color.Error" Variant="Variant.Outlined" Class="px-5 py-2 mx-2">
+                🔥 TEMPERATURE
+            </MudButton>
+        </MudItem>
+        <MudItem xs="12" sm="4">
+            <MudButton OnClick="ShowHumidityChart" Color="Color.Info" Variant="Variant.Outlined" Class="px-5 py-2 mx-2">
+                💧 HUMIDITY
+            </MudButton>
+        </MudItem>
+        <MudItem xs="12" sm="4">
+            <MudButton OnClick="ShowWindSpeedChart" Color="Color.Success" Variant="Variant.Outlined" Class="px-5 py-2 mx-2">
+                🌬️ WIND SPEED
+            </MudButton>
+        </MudItem>
+    </MudGrid>
+
+
 }
 else if (showError)
 {
     <MudAlert Severity="Severity.Error">Failed to fetch weather data for @cityName.</MudAlert>
 }
 
+<!-- Temperature Chart -->
+@if (showTemperatureChart)
+{
+    <MudCard Class="p-3 mt-4 mx-auto" Style="max-width: 600px; max-height: 350px;">
+        <MudText Typo="Typo.h6" Class="text-center text-blue-600">📊 Temperature Trends</MudText>
+        <MudChart ChartType="ChartType.Bar" ChartSeries="TemperatureSeries" Labels="Labels" Options="chartOptions" />
+    </MudCard>
+}
+
+<!-- Humidity Chart -->
+@if (showHumidityChart)
+{
+    <MudCard Class="p-3 mt-4 mx-auto" Style="max-width: 600px; max-height: 350px;">
+        <MudText Typo="Typo.h6" Class="text-center text-green-600">📊 Humidity Levels</MudText>
+        <MudChart ChartType="ChartType.Bar" ChartSeries="HumiditySeries" Labels="Labels" Options="chartOptions" />
+    </MudCard>
+}
+
+<!-- Wind Speed Chart -->
+@if (showWindSpeedChart)
+{
+    <MudCard Class="p-3 mt-4 mx-auto" Style="max-width: 600px; max-height: 350px;">
+        <MudText Typo="Typo.h6" Class="text-center text-red-600">📊 Wind Speed</MudText>
+        <MudChart ChartType="ChartType.Bar" ChartSeries="WindSpeedSeries" Labels="Labels" Options="chartOptions" />
+    </MudCard>
+}
+
+
 @code {
     private string cityName = string.Empty;
-    private int numDays = 5;
+    private int numDays = 4;
     private List<DailyForecast> dailyForecasts;
     private bool showError = false;
     private int searchCount = 0;  // Track the number of searches
     private readonly int maxSearches = 5;
+
+    private bool showTemperatureChart = false;
+    private bool showHumidityChart = false;
+    private bool showWindSpeedChart = false;
+    private List<string> userAlertPreferences = new();
+
+    private List<string> Labels { get; set; } = new();
+    private List<ChartSeries> TemperatureSeries { get; set; } = new();
+    private List<ChartSeries> HumiditySeries { get; set; } = new();
+    private List<ChartSeries> WindSpeedSeries { get; set; } = new();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -81,6 +142,7 @@ else if (showError)
             searchCount = await GetSearchCount();  // Get search count from localStorage
             StateHasChanged(); // Re-render the component
         }
+
     }
 
     private async Task FetchWeatherData()
@@ -127,8 +189,8 @@ else if (showError)
                         .Select(group => new DailyForecast
                             {
                                 Date = group.Key,
-                                TempMin = Convert.ToInt32(group.Min(f => f.Main.TempMin) ),
-                                TempMax = Convert.ToInt32(group.Max(f => f.Main.TempMax) ),
+                                TempMin = Convert.ToInt32(group.Min(f => f.Main.TempMin)),
+                                TempMax = Convert.ToInt32(group.Max(f => f.Main.TempMax)),
                                 FeelsLike = Convert.ToInt32(group.Average(f => f.Main.FeelsLike)),
                                 Icon = group.First().Weather[0].Icon,
                                 Description = group.First().Weather[0].Description,
@@ -137,9 +199,11 @@ else if (showError)
                                 WindSpeed = group.Average(f => f.Wind.Speed),
                                 SeaLevel = group.First().Main.SeaLevel,  // Get Sea Level pressure from main data
                                 GroundLevel = group.First().Main.GroundLevel,
-                                
+
                             })
                         .ToList();
+
+                    await LoadWeatherData();
                 }
 
 
@@ -147,7 +211,7 @@ else if (showError)
             else
             {
                 showError = true;
-            }   
+            }
         }
         catch (Exception ex)
         {
@@ -214,6 +278,7 @@ else if (showError)
     [Inject] NavigationManager NavigationManager { get; set; }
     protected override async Task OnInitializedAsync()
     {
+        await LoadWeatherData();
         var uri = new Uri(NavigationManager.Uri);
         var queryParams = System.Web.HttpUtility.ParseQueryString(uri.Query);
         var city = queryParams["city"];
@@ -236,9 +301,63 @@ else if (showError)
         return $"https://openweathermap.org/img/wn/{iconCode}@2x.png";
     }
 
+    private async Task LoadWeatherData()
+    {
+        var forecasts = await GetWeatherForecasts();
+        Labels.Clear();
+        TemperatureSeries.Clear();
+        HumiditySeries.Clear();
+        WindSpeedSeries.Clear();
+
+        var maxTemps = new List<double>();
+        var minTemps = new List<double>();
+        var currentHumidities = new List<double>();
+        var normalHumidities = new List<double> { 70, 65, 68, 72, 69 }; // Example normal humidity values
+        var currentWindSpeeds = new List<double>();
+        var normalWindSpeeds = new List<double> { 10, 12, 9, 11, 10 }; // Example normal wind speed values
+
+        // Ensure we take only 5 days of forecast data
+        var filteredForecasts = forecasts.Take(5).ToList();
+
+        foreach (var forecast in filteredForecasts)
+        {
+            Labels.Add(forecast.Date.ToString("MMM dd", CultureInfo.InvariantCulture)); // Add date below each bar
+            maxTemps.Add(forecast.MaxTemperature);
+            minTemps.Add(forecast.MinTemperature);
+            currentHumidities.Add(forecast.Humidity);
+            currentWindSpeeds.Add(forecast.WindSpeed);
+        }
+
+        // Temperature Series
+        TemperatureSeries.Add(new ChartSeries { Name = "Max Temp", Data = maxTemps.ToArray() });
+        TemperatureSeries.Add(new ChartSeries { Name = "Min Temp", Data = minTemps.ToArray() });
+
+        // Humidity Series
+        HumiditySeries.Add(new ChartSeries { Name = "Normal Humidity", Data = normalHumidities.Take(filteredForecasts.Count).ToArray() });
+        HumiditySeries.Add(new ChartSeries { Name = "Current Humidity", Data = currentHumidities.ToArray() });
+
+        // Wind Speed Series
+        WindSpeedSeries.Add(new ChartSeries { Name = "Normal Wind Speed", Data = normalWindSpeeds.Take(filteredForecasts.Count).ToArray() });
+        WindSpeedSeries.Add(new ChartSeries { Name = "Current Wind Speed", Data = currentWindSpeeds.ToArray() });
+
+        StateHasChanged();
+    }
+
+    private async Task<List<WeatherForecast>> GetWeatherForecasts()
+    {
+        // Simulated API call - Replace this with actual API fetching
+        await Task.Delay(1000);
+        return new List<WeatherForecast>
+        {
+            new() { Date = DateTime.Now, MaxTemperature = 30, MinTemperature = 20, Humidity = 75, WindSpeed = 10 },
+            new() { Date = DateTime.Now.AddDays(1), MaxTemperature = 32, MinTemperature = 21, Humidity = 70, WindSpeed = 12 },
+            new() { Date = DateTime.Now.AddDays(2), MaxTemperature = 29, MinTemperature = 19, Humidity = 78, WindSpeed = 8 },
+            new() { Date = DateTime.Now.AddDays(3), MaxTemperature = 31, MinTemperature = 22, Humidity = 65, WindSpeed = 15 }
+        };
+    }
 
 
-
+ 
 
     public class ForecastResponse
     {
@@ -340,4 +459,33 @@ else if (showError)
         public string Icon { get; set; }
     }
 
+    private void ShowTemperatureChart()
+    {
+        showTemperatureChart = true;
+        showHumidityChart = false;
+        showWindSpeedChart = false;
+    }
+
+    private void ShowHumidityChart()
+    {
+        showTemperatureChart = false;
+        showHumidityChart = true;
+        showWindSpeedChart = false;
+    }
+
+    private void ShowWindSpeedChart()
+    {
+        showTemperatureChart = false;
+        showHumidityChart = false;
+        showWindSpeedChart = true;
+    }
+
+    public class WeatherForecast
+    {
+        public DateTime Date { get; set; }
+        public double MaxTemperature { get; set; }
+        public double MinTemperature { get; set; }
+        public double Humidity { get; set; }
+        public double WindSpeed { get; set; }
+    }
 }

@@ -15,10 +15,12 @@
 <PageTitle>Favorite Cities</PageTitle>
 <MudText Typo="Typo.h4" Align="Align.Center">Favorite Cities</MudText>
 
-<MudButton Color="Color.Secondary" Variant="Variant.Filled" OnClick="NavigateToAlertPreferences">
-    <MudIcon Icon="@Icons.Material.Filled.Settings" Class="mr-2" />
-    Alert
-</MudButton>
+<div class="d-flex justify-content-end mb-3">
+    <MudButton Color="Color.Tertiary" Variant="Variant.Filled" OnClick="NavigateToAlertPreferences">
+        <MudIcon Icon="@Icons.Material.Filled.Settings" Class="mr-2" />
+        Alert Preferences
+    </MudButton>
+</div>
 @if (isLoading)
 {
 
@@ -68,13 +70,13 @@ else
 
 
 <style>
-        .no-border {
-            border: none !important;
-        }
+    .no-border {
+        border: none !important;
+    }
 
-        .no-shadow {
-            box-shadow: none !important;
-        }
+    .no-shadow {
+        box-shadow: none !important;
+    }
 </style>
 
 
@@ -85,7 +87,7 @@ else
 
     private bool _isDialogOpen = false;
     private string selectedCity = "";
-    
+
 
 
     protected override async Task OnInitializedAsync()
@@ -105,12 +107,11 @@ else
 
 
             // Check weather alerts for each favorite city
-            // Get user alert preferences
-            var userPreferences = await databaseController.GetUserAlertPreferences(userEmail);
-
-            if (userPreferences != null)
+            foreach (var city in favouriteCities)
             {
-                foreach (var city in favouriteCities)
+                var userPreferences = await databaseController.GetUserAlertPreferences(userEmail, city.CityName);
+
+                if (userPreferences != null)
                 {
                     var alerts = await WeatherService.CheckWeatherAlertsAsync(city.CityName);
                     var filteredAlerts = alerts.Where(a =>
@@ -122,12 +123,11 @@ else
 
                     if (filteredAlerts.Any())
                     {
-                        string alertSummary = string.Join("\n\n", filteredAlerts.Select(a => $"**Alert:** {a.Headline}\n**Details:** {a.Desc}"));
+                        string alertSummary = string.Join("\n\n", filteredAlerts.Select(a => $"*Alert:* {a.Headline}\n*Details:* {a.Desc}"));
                         snackbar.Add($"Weather Alert for {city.CityName}: {alertSummary}", Severity.Warning);
                     }
                 }
             }
-
         }
         else
         {

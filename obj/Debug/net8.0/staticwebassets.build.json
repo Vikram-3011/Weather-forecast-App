@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "2DsPlfedI1Egey3Zpi/pNNNO0C9HrzyOAX0oRzPDcIk=",
+  "Hash": "49IpWicCF7bgCOaJR3guHYiOD5fgB6DKJrMhVrCHwAU=",
   "Source": "BlazorApp",
   "BasePath": "_content/BlazorApp",
   "Mode": "Default",
@@ -186,6 +186,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Js\\location.js"
+    },
+    {
+      "Identity": "D:\\Copy project\\BlazorApp\\wwwroot\\Js\\site.js",
+      "SourceId": "BlazorApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Copy project\\BlazorApp\\wwwroot\\",
+      "BasePath": "_content/BlazorApp",
+      "RelativePath": "Js/site.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Js\\site.js"
     },
     {
       "Identity": "D:\\Copy project\\BlazorApp\\wwwroot\\weather-alert-2dfbf-firebase-adminsdk-fbsvc-a34660a4ad.json",

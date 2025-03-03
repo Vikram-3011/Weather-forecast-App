@@ -15,7 +15,7 @@ public class WeatherDataService
         ("Delhi", "India"),
         ("Shanghai", "China"),
         ("Dhaka", "Bangladesh"),
-        ("São Paulo", "Brazil")
+        ("London", "England")
     };
 
     public WeatherDataService(IHttpClientFactory clientFactory)
@@ -79,7 +79,7 @@ public class CityWeather
     public float TempMin { get; set; }
     public float TempMax { get; set; }
     public string Description { get; set; }
- 
+
 }
 
 public class CityWeatherResponse
@@ -102,4 +102,3 @@ public class WeatherDetail
     [JsonPropertyName("description")]
     public string Description { get; set; }
 }
-

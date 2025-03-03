@@ -12,87 +12,87 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = BlazorApp
 build_property.RootNamespace = BlazorApp
-build_property.ProjectDir = d:\Copy project\BlazorApp\
+build_property.ProjectDir = D:\Copy project\BlazorApp\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = d:\Copy project\BlazorApp
+build_property.MSBuildProjectDirectory = D:\Copy project\BlazorApp
 build_property._RazorSourceGeneratorDebug = 
 
-[d:/Copy project/BlazorApp/Components/App.razor]
+[D:/Copy project/BlazorApp/Components/App.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[d:/Copy project/BlazorApp/Components/Pages/AlertPreferences.razor]
+[D:/Copy project/BlazorApp/Components/Pages/AlertPreferences.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBbGVydFByZWZlcmVuY2VzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[d:/Copy project/BlazorApp/Components/Pages/ChangePassword.razor]
+[D:/Copy project/BlazorApp/Components/Pages/ChangePassword.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDaGFuZ2VQYXNzd29yZC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[d:/Copy project/BlazorApp/Components/Pages/Counter.razor]
+[D:/Copy project/BlazorApp/Components/Pages/Counter.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDb3VudGVyLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[d:/Copy project/BlazorApp/Components/Pages/DeleteConfirmationDialog.razor]
+[D:/Copy project/BlazorApp/Components/Pages/DeleteConfirmationDialog.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xEZWxldGVDb25maXJtYXRpb25EaWFsb2cucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[d:/Copy project/BlazorApp/Components/Pages/EditProfile.razor]
+[D:/Copy project/BlazorApp/Components/Pages/EditProfile.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFZGl0UHJvZmlsZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[d:/Copy project/BlazorApp/Components/Pages/Error.razor]
+[D:/Copy project/BlazorApp/Components/Pages/Error.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcnJvci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[d:/Copy project/BlazorApp/Components/Pages/Favourites.razor]
+[D:/Copy project/BlazorApp/Components/Pages/Favourites.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGYXZvdXJpdGVzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[d:/Copy project/BlazorApp/Components/Pages/Home.razor]
+[D:/Copy project/BlazorApp/Components/Pages/Home.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb21lLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[d:/Copy project/BlazorApp/Components/Pages/Login.razor]
+[D:/Copy project/BlazorApp/Components/Pages/Login.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xMb2dpbi5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[d:/Copy project/BlazorApp/Components/Pages/PersonalInfoapage.razor]
+[D:/Copy project/BlazorApp/Components/Pages/PersonalInfoapage.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQZXJzb25hbEluZm9hcGFnZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[d:/Copy project/BlazorApp/Components/Pages/ResetPassword.razor]
+[D:/Copy project/BlazorApp/Components/Pages/ResetPassword.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZXNldFBhc3N3b3JkLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[d:/Copy project/BlazorApp/Components/Pages/Signup.razor]
+[D:/Copy project/BlazorApp/Components/Pages/Signup.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTaWdudXAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[d:/Copy project/BlazorApp/Components/Pages/UserProfile.razor]
+[D:/Copy project/BlazorApp/Components/Pages/UserProfile.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xVc2VyUHJvZmlsZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[d:/Copy project/BlazorApp/Components/Pages/Weather.razor]
+[D:/Copy project/BlazorApp/Components/Pages/Weather.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xXZWF0aGVyLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[d:/Copy project/BlazorApp/Components/Routes.razor]
+[D:/Copy project/BlazorApp/Components/Routes.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb3V0ZXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[d:/Copy project/BlazorApp/Components/_Imports.razor]
+[D:/Copy project/BlazorApp/Components/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xfSW1wb3J0cy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[d:/Copy project/BlazorApp/Components/Layout/MainLayout.razor]
+[D:/Copy project/BlazorApp/Components/Layout/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTWFpbkxheW91dC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-qgsvw684bo
 
-[d:/Copy project/BlazorApp/Components/Layout/NavMenu.razor]
+[D:/Copy project/BlazorApp/Components/Layout/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTmF2TWVudS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-g8o6n169oq

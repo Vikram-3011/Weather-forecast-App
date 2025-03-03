@@ -48,7 +48,9 @@ public class WeatherAPIService
                 {
                     _snackbar.Add($"**City:** {city}\n**Alert:** {alert.Headline}\n**Description:** {alert.Desc}", Severity.Warning);
 
-                   }
+                    await _databaseController.SaveHistoricalAlert(city, userEmail, alert);
+
+                }
             }
         }
         catch (HttpRequestException ex)

@@ -6,21 +6,14 @@ namespace BlazorApp.Models
     public class AlertPreferences
     {
         [BsonId]
-        public ObjectId Id { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
 
-        [BsonElement("UserEmail")]
-        public string UserEmail { get; set; } = string.Empty; // ✅ Fix: Add UserEmail
-
-        [BsonElement("TemperatureAlert")]
-        public bool TemperatureAlert { get; set; }
-
-        [BsonElement("WindAlert")]
-        public bool WindAlert { get; set; }
-
-        [BsonElement("RainAlert")]
-        public bool RainAlert { get; set; }
-
-        [BsonElement("AirQualityAlert")]
-        public bool AirQualityAlert { get; set; }
+        public string UserEmail { get; set; } = string.Empty;
+        public string CityName { get; set; } = string.Empty;
+        public bool TemperatureAlert { get; set; } = false;
+        public bool WindAlert { get; set; } = false;
+        public bool RainAlert { get; set; } = false;
+        public bool AirQualityAlert { get; set; } = false;
     }
 }

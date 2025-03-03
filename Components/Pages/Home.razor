@@ -4,7 +4,7 @@
 @using BlazorApp.Services
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
-@inject AuthService auth 
+@inject AuthService auth
 @inject WeatherDataService WeatherService
 @inject IJSRuntime JSRuntime
 @inject UserStateManager userState
@@ -36,7 +36,7 @@
 
 <MudContainer MaxWidth="MaxWidth.Medium" Class="mt-2">
     <MudCard Elevation="4" Class="pa-6 rounded-lg glassmorphism">
-        <MudStack Direction="Column" AlignItems="AlignItems.Center" >
+        <MudStack Direction="Column" AlignItems="AlignItems.Center">
             <MudIcon Color="Color.Primary" />
             <MudText Typo="Typo.h5" Class="font-weight-bold text-primary">
                 Your Live Location <MudIcon Icon="@Icons.Material.Filled.LocationOn"></MudIcon>
@@ -71,27 +71,28 @@
                         <MudIcon Icon="@Icons.Material.Filled.LocationOn" Color="Color.Primary" Class="mr-1" />
                         <strong>Address:</strong> @FullAddress
                     </MudText>
-                    @if(userState.IsLoggedIn()){
-                        
-                  
-                     <MudText Typo="Typo.body1" Align="Align.Center">
-                        <MudIcon Icon="@Icons.Material.Outlined.Explore" Color="Color.Secondary" Class="mr-1" />
-                        Latitude: @Latitude
-                    </MudText>
-                    <MudText Typo="Typo.body1" Align="Align.Center">
-                        <MudIcon Icon="@Icons.Material.Outlined.Explore" Color="Color.Secondary" Class="mr-1" />
-                        Longitude: @Longitude
-                    </MudText>
-                    <MudText Typo="Typo.body1" Align="Align.Center">
-                        <MudIcon Icon="@Icons.Material.Outlined.Speed" Color="Color.Tertiary" Class="mr-1" />
-                        Accuracy: @Accuracy meters
-                    </MudText>
+                    @if (userState.IsLoggedIn())
+                    {
+
+
+                        <MudText Typo="Typo.body1" Align="Align.Center">
+                            <MudIcon Icon="@Icons.Material.Outlined.Explore" Color="Color.Secondary" Class="mr-1" />
+                            Latitude: @Latitude
+                        </MudText>
+                        <MudText Typo="Typo.body1" Align="Align.Center">
+                            <MudIcon Icon="@Icons.Material.Outlined.Explore" Color="Color.Secondary" Class="mr-1" />
+                            Longitude: @Longitude
+                        </MudText>
+                        <MudText Typo="Typo.body1" Align="Align.Center">
+                            <MudIcon Icon="@Icons.Material.Outlined.Speed" Color="Color.Tertiary" Class="mr-1" />
+                            Accuracy: @Accuracy meters
+                        </MudText>
 
                     }
                 </MudStack>
             </MudPaper>
 
-           
+
         }
 
         <MudDivider Class="my-4" />
@@ -106,7 +107,7 @@
 </MudContainer>
 
 <MudText Typo="Typo.h5" Class="pt-13 pb-15 pb-4 pl-4 pr-4">
-    Top 5 Global Cities Weather <MudIcon Icon="@Icons.Material.Filled.Public"></MudIcon>
+    Global Cities Weather <MudIcon Icon="@Icons.Material.Filled.Public"></MudIcon>
 </MudText>
 
 @if (isLoading)
@@ -194,7 +195,7 @@ else if (WeatherService.GlobalCityWeather.Count > 0)
 };
 
 
-     private string GetWeatherIcon(string description)
+    private string GetWeatherIcon(string description)
     {
         if (description.Contains("rain", StringComparison.OrdinalIgnoreCase)) return Icons.Material.Filled.Umbrella;
         if (description.Contains("cloud", StringComparison.OrdinalIgnoreCase)) return Icons.Material.Filled.Cloud;
@@ -239,110 +240,110 @@ else if (WeatherService.GlobalCityWeather.Count > 0)
         NavigationManager.NavigateTo("/weather"); // navigation to the weather page
     }
 
-    
-  
-private bool IsLoading = false;
-private string? ErrorMessage = null;
-private double Latitude;
-private double Longitude;
-private double Accuracy;
-private string? FullAddress;
 
-private async Task FetchLocation()
-{
-IsLoading = true;
-ErrorMessage = null;
 
-try
-{
-        // Fetch Latitude and Longitude
-        var location = await JSRuntime.InvokeAsync<Location>("getUserLocation");
-        Latitude = location.Latitude;
-        Longitude = location.Longitude;
-        Accuracy = location.Accuracy;
+    private bool IsLoading = false;
+    private string? ErrorMessage = null;
+    private double Latitude;
+    private double Longitude;
+    private double Accuracy;
+    private string? FullAddress;
 
-        // Fetch Full Address using Reverse Geocoding API
-        var address = await GetAddressFromCoordinates(Latitude, Longitude);
-        FullAddress = address.ToString();
+    private async Task FetchLocation()
+    {
+        IsLoading = true;
+        ErrorMessage = null;
+
+        try
+        {
+            // Fetch Latitude and Longitude
+            var location = await JSRuntime.InvokeAsync<Location>("getUserLocation");
+            Latitude = location.Latitude;
+            Longitude = location.Longitude;
+            Accuracy = location.Accuracy;
+
+            // Fetch Full Address using Reverse Geocoding API
+            var address = await GetAddressFromCoordinates(Latitude, Longitude);
+            FullAddress = address.ToString();
             StateHasChanged();
-}
-catch (Exception ex)
-{
-        ErrorMessage = ex.Message;
-}
-finally
-{
-        IsLoading = false;
-}
-}
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
 
-private async Task<Address> GetAddressFromCoordinates(double latitude, double longitude)
-{
+    private async Task<Address> GetAddressFromCoordinates(double latitude, double longitude)
+    {
         string apiKey = "fbfb336510e44728a2c31f80d3b6b1d5"; // Replace with your API key
-string url = $"https://api.opencagedata.com/geocode/v1/json?q={latitude}+{longitude}&key={apiKey}";
+        string url = $"https://api.opencagedata.com/geocode/v1/json?q={latitude}+{longitude}&key={apiKey}";
 
-using var client = new HttpClient();
-var response = await client.GetFromJsonAsync<OpenCageResponse>(url);
+        using var client = new HttpClient();
+        var response = await client.GetFromJsonAsync<OpenCageResponse>(url);
 
-if (response != null && response.Results.Count > 0)
-{
-        var components = response.Results[0].Components;
-        return new Address
-{
-Street = components.Road,
-Town = components.Town ?? components.Village,
-City = components.City,
-District = components.County,
-State = components.State,
-Country = components.Country
-};
-}
+        if (response != null && response.Results.Count > 0)
+        {
+            var components = response.Results[0].Components;
+            return new Address
+                {
+                    Street = components.Road,
+                    Town = components.Town ?? components.Village,
+                    City = components.City,
+                    District = components.County,
+                    State = components.State,
+                    Country = components.Country
+                };
+        }
 
-throw new Exception("Unable to fetch location details.");
-}
-
-private class Location
-{
-    public double Latitude { get; set; }
-    public double Longitude { get; set; }
-    public double Accuracy { get; set; }
-}
-
-private class Address
-{
-    public string? Street { get; set; }
-    public string? Town { get; set; }
-    public string? City { get; set; }
-    public string? District { get; set; }
-    public string? State { get; set; }
-    public string? Country { get; set; }
-
-    public override string ToString()
-    {
-            return $"{Street}, {Town}, {City},{District}, {State}, {Country}";
-    }
-}
-
-private class OpenCageResponse
-{
-    public List<Result> Results { get; set; } = new();
-
-    public class Result
-    {
-        public Components Components { get; set; } = new();
+        throw new Exception("Unable to fetch location details.");
     }
 
-    public class Components
+    private class Location
     {
-        public string? Road { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+        public double Accuracy { get; set; }
+    }
+
+    private class Address
+    {
+        public string? Street { get; set; }
         public string? Town { get; set; }
-        public string? Village { get; set; }
         public string? City { get; set; }
-        public string? County { get; set; }
+        public string? District { get; set; }
         public string? State { get; set; }
         public string? Country { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Street}, {Town}, {City},{District}, {State}, {Country}";
+        }
     }
-}
-    
+
+    private class OpenCageResponse
+    {
+        public List<Result> Results { get; set; } = new();
+
+        public class Result
+        {
+            public Components Components { get; set; } = new();
+        }
+
+        public class Components
+        {
+            public string? Road { get; set; }
+            public string? Town { get; set; }
+            public string? Village { get; set; }
+            public string? City { get; set; }
+            public string? County { get; set; }
+            public string? State { get; set; }
+            public string? Country { get; set; }
+        }
+    }
+
 
 }

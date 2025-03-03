@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿
+using MongoDB.Driver;
 using BlazorApp.Models;
 using MongoDB.Bson;
 
@@ -68,8 +69,6 @@ namespace BlazorApp.Services
         }
 
     }
-    
+
 
 }
-
-
