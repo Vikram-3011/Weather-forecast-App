@@ -13,8 +13,8 @@ public class WeatherAPIService
     private readonly ISnackbar _snackbar;
     private readonly DatabaseController _databaseController;
 
-    private const string ApiKey = "b9693035c52f49d390164524240110"; // weather API key 
-    private const string BaseUrl = "https://api.weatherapi.com/v1/alerts.json";
+    private const string ApiKey = "Weather api key"; // weather API key 
+    private const string BaseUrl = "Wearhher api url";
     
     public WeatherAPIService(HttpClient httpClient, ILogger<WeatherAPIService> logger, ISnackbar snackbar, DatabaseController databaseController)
     {
