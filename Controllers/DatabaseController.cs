@@ -23,9 +23,9 @@ namespace BlazorApp.Controllers
             }
             var client = new MongoClient(connectionString);
 
-            _database = client.GetDatabase("authentication");
-            _favoriteCities = _database.GetCollection<Favourite>("fav cities");
-            _alertPreferencesCollection = _database.GetCollection<AlertPreferences>("Alert city");
+            _database = client.GetDatabase("Database name");
+            _favoriteCities = _database.GetCollection<Favourite>("collection name");
+            _alertPreferencesCollection = _database.GetCollection<AlertPreferences>("collection name");
   }
 
         public async Task AddFavoriteCity(string cityName, string userEmail)
