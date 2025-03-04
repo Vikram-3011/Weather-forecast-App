@@ -2,7 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace BlazorApp.Models
-{dxfcgvbhnjm,
+{
     public class PersonalInfo
     {
         [BsonId]
