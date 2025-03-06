@@ -10,7 +10,7 @@ namespace BlazorApp.Models
         public string Id { get; set; } = string.Empty;
 
        
-            public string CityName { get; set; } // city name
+            public string CityName { get; set; } 
             public string UserEmail { get; set; }
             public DateTime DateAdded { get; set; }
         
