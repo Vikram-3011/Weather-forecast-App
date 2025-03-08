@@ -9,7 +9,7 @@ namespace BlazorApp.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; } = string.Empty;
 
-       
+       qwertyuiop
             public string CityName { get; set; } 
             public string UserEmail { get; set; }
             public DateTime DateAdded { get; set; }
