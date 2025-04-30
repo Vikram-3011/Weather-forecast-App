@@ -74,3 +74,27 @@ h1:focus {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
     text-align: center;
 }
+/* Temperature Chart Bars */
+.mud-chart-series:nth-child(1) .mud-chart-bar {
+    fill: #ff9800 !important; /* Orange */
+}
+
+/* Humidity Chart Bars */
+.mud-chart-series:nth-child(2) .mud-chart-bar {
+    fill: #2196F3 !important; /* Blue */
+}
+
+body {
+    background: url('images/pexels-lum3n-44775-1410224.jpg') no-repeat center center fixed;
+    background-size: cover;
+}
+    body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);  Adjust opacity for darker or lighter effect 
+        z-index: -1;
+    }

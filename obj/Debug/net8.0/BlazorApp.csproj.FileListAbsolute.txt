@@ -295,3 +295,16 @@ D:\Copy project\BlazorApp\obj\Debug\net8.0\refint\BlazorApp.dll
 D:\Copy project\BlazorApp\obj\Debug\net8.0\BlazorApp.pdb
 D:\Copy project\BlazorApp\obj\Debug\net8.0\BlazorApp.genruntimeconfig.cache
 D:\Copy project\BlazorApp\obj\Debug\net8.0\ref\BlazorApp.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\BlazorApp.staticwebassets.endpoints.json
+D:\Copy project\BlazorApp\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+D:\Copy project\BlazorApp\obj\Debug\net8.0\staticwebassets\msbuild.BlazorApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+D:\Copy project\BlazorApp\bin\Debug\net8.0\OpenAI.GPT3.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\System.Net.Http.Formatting.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\System.Web.Http.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\OpenAI.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\OpenAI.Net.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\System.ClientModel.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\System.Interactive.Async.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\System.Linq.Async.dll
+D:\Copy project\BlazorApp\bin\Debug\net8.0\System.Memory.Data.dll

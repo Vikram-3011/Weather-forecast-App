@@ -6,85 +6,149 @@
 @using BlazorApp.Models
 @using BlazorApp.Controllers
 @using BlazorApp.Singletons
+@using MudBlazor
+
 
 <PageTitle>Alert Preferences</PageTitle>
 
-<MudCard Class="p-4">
-    <MudText Typo="Typo.h4">Set Your Weather Alert Preferences</MudText>
+<MudContainer MaxWidth="MaxWidth.Small">
+    <MudCard Class="glassmorphism-card pa-4 rounded-lg mt-5" Elevation="0">
+        <MudCardHeader Class="d-flex flex-column align-items-center text-center">
+            <MudText Typo="Typo.h3" Class="login-title">Alert Preferences</MudText>
+        </MudCardHeader>
 
-    @if (isLoading)
-    {
-        <MudProgressCircular Indeterminate="true" />
+        <MudCardContent>
+            @if (isLoading)
+            {
+                <div class="d-flex justify-content-center">
+                    <MudProgressCircular Indeterminate="true" Color="Color.Primary" Size="Size.Large" />
+                </div>
+            }
+            else
+            {
+                <MudForm>
+                    <MudStack Row Class="mud-width-full mb-4">
+                        <MudSelect T="string"
+                                   MultiSelection="true"
+                                   Label="Select Alerts"
+                                   SelectedValues="@selectedPreferences"
+                                   SelectedValuesChanged="@(prefs => OnPreferencesChanged(prefs))"
+                                   Class="custom-input">
+                            <MudSelectItem Value="@("Temperature")">Temperature Alert</MudSelectItem>
+                            <MudSelectItem Value="@("Wind")">Wind Speed Alert</MudSelectItem>
+                            <MudSelectItem Value="@("Rain")">Rain Alert</MudSelectItem>
+                        </MudSelect>
+                    </MudStack>
+
+                    <div class="d-flex justify-content-center mt-6 ">
+                        <MudButton Color="Color.Primary" Variant="Variant.Outlined" OnClick="@SavePreferences" Class="custom-btn">Save Preferences</MudButton>
+                    </div>
+                </MudForm>
+            }
+@* 
+            <div class="d-flex justify-content-center mt-4">
+                <MudButton Color="Color.Primary" Variant="Variant.Outlined" OnClick="@NavigateToFavorites" Class="custom-btn">Back to Favorites</MudButton>
+            </div> *@
+        </MudCardContent>
+    </MudCard>
+</MudContainer>
+
+<style>
+    body {
+        background: linear-gradient(to right, #3a0ca3, #240046);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
     }
-    else
-    {
-        <MudForm>
-            <MudSelect T="string" Label="Select City" @bind-SelectedValue="selectedCity" @onchange="LoadPreferences">
-                @foreach (var city in favoriteCities)
-                {
-                    <MudSelectItem T="string" Value="@city">@city</MudSelectItem>
-                }
-            </MudSelect>
 
-            <MudCheckBox T="bool" Label="Temperature Alerts" Checked="@alertPreferences.TemperatureAlert"
-                         CheckedChanged="(EventCallback<bool>)(val => alertPreferences.TemperatureAlert = val)" />
-
-            <MudCheckBox T="bool" Label="Wind Speed Alerts" Checked="@alertPreferences.WindAlert"
-                         CheckedChanged="(EventCallback<bool>)(val => alertPreferences.WindAlert = val)" />
-
-            <MudCheckBox T="bool" Label="Rain Alerts" Checked="@alertPreferences.RainAlert"
-                         CheckedChanged="(EventCallback<bool>)(val => alertPreferences.RainAlert = val)" />
-
-            <MudCheckBox T="bool" Label="Air Quality Alerts" Checked="@alertPreferences.AirQualityAlert"
-                         CheckedChanged="(EventCallback<bool>)(val => alertPreferences.AirQualityAlert = val)" />
-
-            <MudButton Color="Color.Primary" OnClick="SavePreferences">Save Preferences</MudButton>
-        </MudForm>
+    .glassmorphism-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        padding: 2rem;
     }
-</MudCard>
 
+    .login-title {
+        font-size: 24px;
+        font-weight: 600;
+        letter-spacing: 3px;
+        color: #dcdcdc;
+    }
+
+    .custom-btn {
+        padding: 10px 50px;
+        border-radius: 6px;
+        font-weight: bold;
+        font-size: 16px;
+        color: #dcdcdc !important;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        transition: all 0.3s ease;
+    }
+
+        .custom-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .custom-btn.outlined {
+            border: 2px solid rgba(255, 255, 255, 0.4);
+        }
+
+    .mud-input-label {
+        background: transparent !important;
+        color: white !important;
+        padding: 0 4px;
+    }
+
+    .custom-input .mud-input {
+        background: transparent !important;
+        color: white !important;
+        border-color: white !important;
+    }
+
+    .custom-input .mud-input-label {
+        background: transparent !important;
+        color: white !important;
+    }
+
+</style>
 @code {
-    private BlazorApp.Models.AlertPreferences alertPreferences = new();
-    private List<string> favoriteCities = new();
-    private string selectedCity = "";
+    private HashSet<string> selectedPreferences = new();
     private bool isLoading = true;
     private string userEmail = "";
 
     protected override async Task OnInitializedAsync()
     {
         userEmail = userState.UserEmail;
+        var preferences = await databaseController.GetUserAlertPreferences(userEmail); // ✅ Pass only 1 parameter
 
-        if (!string.IsNullOrEmpty(userEmail))
+        if (preferences != null)
         {
-            favoriteCities = (await databaseController.GetFavoriteCitiesByUser(userEmail))
-                .Select(c => c.CityName).ToList();
-
-            if (favoriteCities.Any())
-            {
-                selectedCity = favoriteCities.First();
-                await LoadPreferences();
-            }
+            selectedPreferences = new HashSet<string>(preferences);
         }
+
         isLoading = false;
     }
 
-    private async Task LoadPreferences()
+
+    private void OnPreferencesChanged(IEnumerable<string> preferences)
     {
-        if (!string.IsNullOrEmpty(selectedCity))
-        {
-            alertPreferences = await databaseController.GetUserAlertPreferences(userEmail, selectedCity);
-            StateHasChanged();
-        }
+        selectedPreferences = new HashSet<string>(preferences); // ✅ Converts IEnumerable<string> to HashSet<string>
     }
+
     private async Task SavePreferences()
     {
-        Console.WriteLine($"Saving Preferences: {selectedCity} - {alertPreferences.TemperatureAlert}, {alertPreferences.WindAlert}, {alertPreferences.RainAlert}, {alertPreferences.AirQualityAlert}");
-
-        if (!string.IsNullOrEmpty(selectedCity))
-        {
-            await databaseController.SaveUserAlertPreferences(userEmail, selectedCity, alertPreferences);
-            snackbar.Add("Preferences saved successfully!", Severity.Success);
-        }
+        await databaseController.SaveUserAlertPreferences(userEmail, selectedPreferences.ToList());
+        snackbar.Add("Preferences saved successfully!", Severity.Success);
     }
 
+    private void NavigateToFavorites()
+    {
+        NavigationManager.NavigateTo("/favourites");
+    }
 }
+

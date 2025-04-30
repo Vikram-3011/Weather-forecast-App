@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using System.Collections.Generic;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace BlazorApp.Models
@@ -6,14 +7,16 @@ namespace BlazorApp.Models
     public class AlertPreferences
     {
         [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
+        public ObjectId Id { get; set; }
 
-        public string UserEmail { get; set; } = string.Empty;
-        public string CityName { get; set; } = string.Empty;
-        public bool TemperatureAlert { get; set; } = false;
-        public bool WindAlert { get; set; } = false;
-        public bool RainAlert { get; set; } = false;
-        public bool AirQualityAlert { get; set; } = false;
+        [BsonElement("UserEmail")]
+        public string UserEmail { get; set; } = "";
+
+        [BsonElement("CityName")]
+        public string CityName { get; set; } = ""; // Added CityName to support per-city preferences
+
+        [BsonElement("Preferences")]
+        public List<string> Preferences { get; set; } = new();
+
     }
 }

@@ -7,46 +7,48 @@
 @inject ISnackbar _snackbar
 @using BlazorApp.Singletons
 @inject UserStateManager userState
+
 <PageTitle>Personal Information</PageTitle>
 
-<MudPaper Elevation="2" Class="p-4" Style="max-width: 600px; margin: auto; border-radius: 10px;">
-    <MudGrid>
-        <MudItem xs="12">
-            <MudText Typo="Typo.h5" style="-ms-flex-item-align:center" Class="mb-4">Enter Your Details</MudText>
-        </MudItem>
+<div class="d-flex justify-center align-center" style="min-height: 100vh; background-image: url('/images/background.jpg'); background-size: cover;">
+    <MudPaper Elevation="4" Class="p-6 " Style="backdrop-filter: blur(16px); background-color: rgba(255,255,255,0.07); border-radius: 16px; max-width: 700px; width: 90%; box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); color: white;">
+        <MudText Typo="Typo.h5" Align="Align.Center" Class="mb-4 mt-5 mb-5" Style="font-weight: 600;">Enter Your Details</MudText>
 
-        <MudItem xs="12">
-            <MudTextField T="string" Label="Name" @bind-Value="personalInfo.Name" FullWidth="true" Variant="Variant.Outlined" Class="mb-3" />
-        </MudItem>
+        <MudGrid Gutter="Size.Medium" Class="ml-3">
+            <MudItem xs="12">
+                <MudTextField T="string" Label="Name" @bind-Value="personalInfo.Name" FullWidth="true" Variant="Variant.Outlined" Class=" custom-input mb-3" />
+            </MudItem>
 
-        <MudItem xs="12">
-            <MudTextField T="string" Label="Email" @bind-Value="personalInfo.Email" FullWidth="true" Variant="Variant.Outlined" Class="mb-3" />
-        </MudItem>
+            <MudItem xs="12">
+                <MudTextField T="string" Label="Email" @bind-Value="personalInfo.Email" FullWidth="true" Variant="Variant.Outlined" Class="custom-input mb-3" />
+            </MudItem>
 
-        <MudItem xs="12">
-            <MudTextField T="string" Label="Phone" @bind-Value="personalInfo.Phone" FullWidth="true" Variant="Variant.Outlined" Class="mb-3" />
-        </MudItem>
+            <MudItem xs="12">
+                <MudTextField T="string" Label="Phone" @bind-Value="personalInfo.Phone" FullWidth="true" Variant="Variant.Outlined" Class="custom-input mb-3" />
+            </MudItem>
 
-        <MudItem xs="12">
-            <MudTextField T="string" Label="Address" @bind-Value="personalInfo.City" FullWidth="true" Variant="Variant.Outlined" Class="mb-3" />
-        </MudItem>
+            <MudItem xs="12">
+                <MudTextField T="string" Label="Address" @bind-Value="personalInfo.City" FullWidth="true" Variant="Variant.Outlined" Class="custom-input mb-3" />
+            </MudItem>
 
-        <MudItem xs="12">
-            <MudTextField T="string" Label="Country" @bind-Value="personalInfo.Country" FullWidth="true" Variant="Variant.Outlined" Class="mb-4" />
-        </MudItem>
+            <MudItem xs="12">
+                <MudTextField T="string" Label="Country" @bind-Value="personalInfo.Country" FullWidth="true" Variant="Variant.Outlined" Class="custom-input mb-4" />
+            </MudItem>
 
-        <MudItem xs="6">
-            <MudButton Color="Color.Primary" OnClick="SubmitForm" FullWidth="true" Variant="Variant.Filled">
-                Submit
-            </MudButton>
-        </MudItem>
-        <MudItem xs="6">
-            <MudButton Color="Color.Secondary" OnClick="ClearForm" FullWidth="true" Variant="Variant.Outlined">
-                Clear
-            </MudButton>
-        </MudItem>
-    </MudGrid>
-</MudPaper>
+            <MudItem xs="6" >
+                <MudButton Color="Color.Primary" Class="mb-5" OnClick="SubmitForm" FullWidth="true" Variant="Variant.Filled" Style="font-weight: 400;">
+                    Submit
+                </MudButton>
+            </MudItem>
+            <MudItem xs="6" >
+              
+                <MudButton Color="Color.Secondary" Class="mb-5" OnClick="ClearForm" FullWidth="true" Variant="Variant.Outlined" Style="font-weight: 400;">
+                    Clear
+                </MudButton>
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+</div>
 
 @if (isSuccess)
 {
@@ -57,7 +59,72 @@
 {
     _snackbar.Add("Error while saving personal Information ", Severity.Error);
 }
+<style>
 
+    body {
+        background: linear-gradient(to right, #3a0ca3, #240046);
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: white;
+    }
+
+    .mud-paper {
+        background: rgba(255, 255, 255, 0.05) !important;
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border-radius: 16px !important;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white !important;
+    }
+
+    .mud-input-label {
+        color: white !important;
+    }
+
+    .mud-input-slot input,
+    .mud-input-root input {
+        background: transparent !important;
+        color: white !important;
+        border-color: white !important;
+    }
+
+    .mud-input {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+        color: white !important;
+        border-radius: 10px;
+    }
+
+    .mud-button {
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .mud-button-contained {
+        background-color: #5e60ce !important;
+        color: white !important;
+    }
+
+    .mud-button-outlined {
+        border: 2px solid rgba(255, 255, 255, 0.3) !important;
+        color: white !important;
+    }
+
+        .mud-button-outlined:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+    .custom-input .mud-input {
+        background: transparent !important; /* Removes background */
+        color: white !important; /* Text remains visible */
+        border-color: white !important; /* Keeps borders visible */
+    }
+
+    .custom-input .mud-input-label {
+        background: transparent !important; /* Fix label background */
+        color: white !important; /* Ensures readability */
+    }
+</style>
 @code {
     private PersonalInfo personalInfo = new PersonalInfo();
     private bool isSuccess = false;

@@ -12,34 +12,125 @@
 @inject UserStateManager userState
 @inject ISnackbar _snackbar
 
-<PageTitle>Login</PageTitle>
-
 <MudContainer MaxWidth="MaxWidth.Small">
-    <MudCard Class="pa-4 rounded-lg mt-1" Elevation="8">
-        <MudCardHeader Class="d-flex flex-column align-baseline">
-            <MudText Typo="Typo.h2" Color="Color.Primary">Login</MudText>
-            <MudText Typo="Typo.body1">Enter your credentials to login.</MudText>
+    <MudCard Class="glassmorphism-card pa-4 rounded-lg mt-5" Elevation="0">
+        <MudCardHeader Class="d-flex flex-column align-items-center text-center">
+            <MudText Typo="Typo.h3" Class="login-title">LOGIN</MudText>
         </MudCardHeader>
+
         <MudCardContent>
-            <MudTextField T="string" @bind-Value="@email" Label="Email" Variant="Variant.Outlined" OnKeyDown="HandleKeyDown" Required></MudTextField>
+            <MudTextField T="string" @bind-Value="@email" Class="custom-input" Label="Email" Variant="Variant.Outlined" OnKeyDown="HandleKeyDown" Required></MudTextField>
+
             <MudTextField T="string" @bind-Value="@password" Label="Password"
                           Variant="Variant.Outlined"
                           InputType="@passwordInputType"
                           Required
+                          Class="custom-input"
                           Adornment="Adornment.End"
                           AdornmentIcon="@passwordIcon"
                           OnAdornmentClick="TogglePasswordVisibility" OnKeyDown="HandleKeyDown">
             </MudTextField>
-            <div class="d-inline-flex align-items-start my-4">
-                <MudButton OnClick="OnLogin" Class="mr-2" Color="Color.Primary" Variant="Variant.Filled" Disabled="@isLoggingIn">Login</MudButton>
-                <MudButton OnClick="OnSignup" Class="mr-2" Color="Color.Secondary" Variant="Variant.Outlined">Sign Up</MudButton>
-                <MudButton Variant="Variant.Text" Color="Color.Tertiary" Class="mr-3" OnClick="ForgotPassword">Forgot Password?</MudButton>
 
+            <div class="d-flex justify-content-center my-3 mt-7">
+                <MudButton OnClick="OnLogin" Class="custom-btn" Color="Color.Primary" Variant="Variant.Outlined" Disabled="@isLoggingIn">LOGIN</MudButton>
+               @*  <MudButton Variant="Variant.Text" Color="Color.Tertiary" Class="mr-3 ml-4" OnClick="ForgotPassword">Forgot Password?</MudButton>
+           *@  </div>
+
+            <!-- Sign Up Section -->
+            <div class="d-flex justify-content-center align-items-center my-2">
+                <MudText Class="signup-text">Don't have an account yet?</MudText>
+                <MudButton OnClick="OnSignup" Color="Color.Inherit" Variant="Variant.Text" Class="signup-btn">Register</MudButton>
             </div>
-           
+
         </MudCardContent>
     </MudCard>
 </MudContainer>
+
+<style>
+    body {
+        background: linear-gradient(to right, #3a0ca3, #240046);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .glassmorphism-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        padding: 2rem;
+    }
+
+    .login-title {
+        font-size: 24px;
+        font-weight: 600;
+        letter-spacing: 3px;
+        color: #dcdcdc;
+    }
+
+    .full-width {
+        width: 100%;
+    }
+
+    .custom-textfield {
+        background-color: rgba(255, 255, 255, 0.05);
+        color: white !important;
+        border-radius: 8px;
+    }
+
+    .custom-btn {
+        padding: 10px 50px;
+        border-radius: 6px;
+        font-weight: bold;
+        font-size: 16px;
+        color: #dcdcdc !important;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        transition: all 0.3s ease;
+    }
+
+        .custom-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .custom-btn.outlined {
+            border: 2px solid rgba(255, 255, 255, 0.4);
+        }
+
+    /* Sign Up Text Alignment */
+    .signup-text {
+        color: #dcdcdc;
+        margin-right: 5px;
+    }
+
+    .signup-btn {
+        font-weight: bold;
+        text-transform: uppercase;
+        color:aliceblue;
+    }
+
+    .mud-input-label {
+        background: transparent !important; /* Ensures no background */
+        color: white !important; /* Keeps label visible */
+        padding: 0 4px; /* Optional: Adjust padding */
+    }
+
+    .custom-input .mud-input {
+        background: transparent !important; /* Removes background */
+        color: white !important; /* Text remains visible */
+        border-color: white !important; /* Keeps borders visible */
+    }
+
+    .custom-input .mud-input-label {
+        background: transparent !important; /* Fix label background */
+        color: white !important; /* Ensures readability */
+    }
+
+</style>
 
 @code {
     private string email { get; set; } = "";
@@ -48,39 +139,27 @@
     private bool isLoggingIn = false;
     private InputType passwordInputType = InputType.Password;
     private string passwordIcon = Icons.Material.Filled.VisibilityOff;
-
+    private string inputLabelClass => "mud-input-label";
     private void OnSignup() => NavigationManager.NavigateTo("signup");
 
     public async Task OnLogin()
     {
-        if (isLoggingIn) return; // Prevent multiple clicks
+        if (isLoggingIn) return;
 
-        isLoggingIn = true; // Start login process
-        try
-        {
-            // Authenticate the user using AuthService and update UserStateManager
-            string? result = await authService.SignIn(email, password, userState);
+        isLoggingIn = true;
+        string? result = await authService.SignIn(email, password, userState);
 
-            if (string.IsNullOrEmpty(result))
-            {
-                // Redirect to home page if login is successful
-                NavigationManager.NavigateTo("/");
-            }
-            else
-            {
-                _snackbar.Add(result, Severity.Error); // Display error message
-            }
-        }
-        catch (Exception ex)
+        if (string.IsNullOrEmpty(result))
         {
-            _snackbar.Add($"Error: {ex.Message}", Severity.Error);
+            NavigationManager.NavigateTo("/");
         }
-        finally
+        else
         {
-            isLoggingIn = false; // Reset after login attempt
+            _snackbar.Add(result, Severity.Error);
         }
+
+        isLoggingIn = false;
     }
-
     private async Task ForgotPassword()
     {
         if (string.IsNullOrEmpty(email))

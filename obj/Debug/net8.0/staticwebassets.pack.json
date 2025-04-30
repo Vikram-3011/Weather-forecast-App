@@ -2,7 +2,7 @@
   "Files": [
     {
       "Id": "D:\\Copy project\\BlazorApp\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\BlazorApp.bundle.scp.css",
-      "PackagePath": "staticwebassets\\BlazorApp.bundle.scp.css"
+      "PackagePath": "staticwebassets\\BlazorApp.x7csz8uxo5.bundle.scp.css"
     },
     {
       "Id": "D:\\Copy project\\BlazorApp\\wwwroot\\Js\\location.js",
@@ -11,6 +11,10 @@
     {
       "Id": "D:\\Copy project\\BlazorApp\\wwwroot\\Js\\site.js",
       "PackagePath": "staticwebassets\\Js\\site.js"
+    },
+    {
+      "Id": "D:\\Copy project\\BlazorApp\\wwwroot\\Js\\voice.js",
+      "PackagePath": "staticwebassets\\Js\\voice.js"
     },
     {
       "Id": "D:\\Copy project\\BlazorApp\\wwwroot\\app.css",
@@ -25,12 +29,20 @@
       "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css.map"
     },
     {
-      "Id": "D:\\Copy project\\BlazorApp\\wwwroot\\favicon.png",
-      "PackagePath": "staticwebassets\\favicon.png"
+      "Id": "D:\\Copy project\\BlazorApp\\wwwroot\\images\\pexels-lum3n-44775-1410224.jpg",
+      "PackagePath": "staticwebassets\\images\\pexels-lum3n-44775-1410224.jpg"
+    },
+    {
+      "Id": "D:\\Copy project\\BlazorApp\\wwwroot\\snowflake.png",
+      "PackagePath": "staticwebassets\\snowflake.png"
     },
     {
       "Id": "D:\\Copy project\\BlazorApp\\wwwroot\\weather-alert-2dfbf-firebase-adminsdk-fbsvc-a34660a4ad.json",
       "PackagePath": "staticwebassets\\weather-alert-2dfbf-firebase-adminsdk-fbsvc-a34660a4ad.json"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.BlazorApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.BlazorApp.Microsoft.AspNetCore.StaticWebAssets.props",

@@ -34,35 +34,7 @@ public class WeatherAPIService
         }
     }
 
-    public async Task CheckWeatherAlertsAsync(string city, string userEmail)
-    {
-        try
-        {
-            var url = $"{BaseUrl}?key={ApiKey}&q={city}";
-            var response = await _httpClient.GetFromJsonAsync<WeatherApiResponse>(url);
-            var alerts = response?.Alerts?.Alert;
-
-            if (alerts != null && alerts.Count > 0)
-            {
-                foreach (var alert in alerts)
-                {
-                    _snackbar.Add($"**City:** {city}\n**Alert:** {alert.Headline}\n**Description:** {alert.Desc}", Severity.Warning);
-
-                    await _databaseController.SaveHistoricalAlert(city, userEmail, alert);
-
-                }
-            }
-        }
-        catch (HttpRequestException ex)
-        {
-            _logger.LogError($"Error fetching weather alerts for {city}: {ex.Message}");
-        }
-    }
-
-   
-
-
-    public async Task<List<WeatherAlert>> CheckWeatherAlertsAsync(string city)
+    public async Task<List<WeatherAlert>> CheckWeatherAlertsAsync(string city, string userEmail)
     {
         var alertsList = new List<WeatherAlert>();
 
@@ -72,13 +44,28 @@ public class WeatherAPIService
             var response = await _httpClient.GetFromJsonAsync<WeatherApiResponse>(url);
             var alerts = response?.Alerts?.Alert;
 
-            if (alerts != null && alerts.Count > 0)
-            {
-                alertsList.AddRange(alerts);
+            if (alerts == null || alerts.Count == 0)
+                return alertsList; // ✅ No alerts available, return empty list
 
-                foreach (var alert in alerts)
+            // ✅ Get user preferences from MongoDB
+            var userPreferences = await _databaseController.GetUserAlertPreferences(userEmail);
+
+            // ✅ If no preferences are set, show ALL alerts
+            bool showAllAlerts = (userPreferences == null || userPreferences.Count == 0);
+
+            foreach (var alert in alerts)
+            {
+                // ✅ Show all alerts if no preferences are set
+                // ✅ If preferences exist, only show matching alerts
+                if (showAllAlerts || userPreferences.Contains(alert.Event))
                 {
+                    alertsList.Add(alert);
+
+                    // ✅ Show alert notification to user
                     _snackbar.Add($"**City:** {city}\n**Alert:** {alert.Headline}\n**Description:** {alert.Desc}", Severity.Warning);
+
+                    // ✅ Save to historical alerts
+                    await _databaseController.SaveHistoricalAlert(city, userEmail, alert);
                 }
             }
         }
@@ -87,15 +74,21 @@ public class WeatherAPIService
             _logger.LogError($"Error fetching weather alerts for {city}: {ex.Message}");
         }
 
-        return alertsList;
+        return alertsList; // ✅ Return only relevant alerts
     }
+
 }
 
 public class WeatherApiResponse
 {
     public WeatherAlertContainer? Alerts { get; set; }
+    public CurrentWeather? Current { get; set; }    
 }
-
+public class CurrentWeather
+{
+    public double TempC { get; set; }
+    public double Humidity { get; set; }
+}
 public class WeatherAlertContainer
 {
     public List<WeatherAlert>? Alert { get; set; }

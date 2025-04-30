@@ -5,61 +5,86 @@
 @using BlazorApp.Models
 @using BlazorApp.Services
 @inject PersonalInfoService PersonalInfoService
-
 <PageTitle>Edit Profile</PageTitle>
 
-<MudContainer MaxWidth="MaxWidth.Large" Class="mt-5 d-flex justify-center" Style="max-width: 800px; width: 100%; height: auto;">
-    <MudCard Class="rounded-lg shadow-xl" Elevation="12" Style="padding: 40px;">
-        <MudCardHeader>
-            <MudText Typo="Typo.h5" Class="mb-0"><strong>Edit Profile</strong></MudText>
-        </MudCardHeader>
-        <MudCardContent Class="p-6">
-            @if (user != null)
-            {
-                <MudGrid Spacing="3">
-                    <MudItem xs="12">
-                        <MudTextField Label="Name" @bind-Value="user.Name" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Outlined.Person" />
-                    </MudItem>
+<MudContainer MaxWidth="MaxWidth.False" Class="mt-10 d-flex justify-center">
+    <MudPaper Elevation="12" Class="glass-card p-8" Style="width: 100%; max-width: 900px;">
+        <MudText Typo="Typo.h4" Align="Align.Center" Class="font-bold mb-6 mt-7">
+            <MudIcon Icon="@Icons.Material.Filled.Edit" Class="me-2" /> Edit Profile
+        </MudText>
 
-                    <MudItem xs="12">
-                        <MudTextField Label="Email" @bind-Value="user.Email" Disabled="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Outlined.Email" />
-                    </MudItem>
+        @if (user != null)
+        {
+            <MudGrid class="ml-7 mr-3 " Spacing="4">
+                <MudItem xs="12" sm="8">
+                    <MudTextField Label="Name" @bind-Value="user.Name" FullWidth="true"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Outlined.Person" />
+                </MudItem>
 
-                    <MudItem xs="12" sm="6">
-                        <MudTextField Label="Phone" @bind-Value="user.Phone" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Outlined.Phone" />
-                    </MudItem>
+                <MudItem xs="12" sm="8">
+                    <MudTextField Label="Email" @bind-Value="user.Email" FullWidth="true" Disabled="true"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Outlined.Email" />
+                </MudItem>
 
-                    <MudItem xs="12" sm="6">
-                        <MudTextField Label="City" @bind-Value="user.City" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Outlined.LocationCity" />
-                    </MudItem>
+                <MudItem xs="12" sm="5">
+                    <MudTextField Label="Phone" @bind-Value="user.Phone" FullWidth="true"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Outlined.Phone" />
+                </MudItem>
 
-                    <MudItem xs="12">
-                        <MudTextField Label="Country" @bind-Value="user.Country" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Outlined.Public" />
-                    </MudItem>
-                </MudGrid>
+                <MudItem xs="12" sm="5" Class="ml-5">
+                    <MudTextField Label="City" @bind-Value="user.City" FullWidth="true"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Outlined.LocationCity" />
+                </MudItem>
 
-                <MudDivider Class="my-7" />
+                <MudItem xs="12" sm="8">
+                    <MudTextField Label="Country" @bind-Value="user.Country" FullWidth="true"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Outlined.Public" />
+                </MudItem>
+            </MudGrid>
+@* 
+            <MudDivider Class="my-6" /> *@
 
-                <MudCardActions Class="d-flex justify-end">
-                    <MudButton Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Material.Filled.Save" OnClick="SaveProfile">
-                        Save Changes
-                    </MudButton>
-                    <MudButton Variant="Variant.Text" Color="Color.Error" StartIcon="@Icons.Material.Filled.Cancel" OnClick="Cancel" Class="ml-3">
-                        Cancel
-                    </MudButton>
-                </MudCardActions>
-            }
-            else
-            {
-                <MudText Typo="Typo.h6" Class="text-center" Color="Color.Error">
-                    Loading user data, please wait...
-                </MudText>
-            }
-        </MudCardContent>
-    </MudCard>
+            <MudStack Row="true" JustifyContent="JustifyContent.End" Class="mt-6 mb-5 ml-8 mr-4" Spacing="2">
+                <MudButton Variant="Variant.Text" Color="Color.Success"  StartIcon="@Icons.Material.Filled.Save"
+                           OnClick="SaveProfile" Class="hover-effect">
+                    Save Changes
+                </MudButton>
+                <MudButton Variant="Variant.Text"  Color="Color.Error" StartIcon="@Icons.Material.Filled.Cancel"
+                           OnClick="Cancel" Class="hover-effect">
+                    Cancel
+                </MudButton>
+            </MudStack>
+        }
+        else
+        {
+            <MudText Typo="Typo.h6" Align="Align.Center" Color="Color.Error">
+                Loading user data, please wait...
+            </MudText>
+        }
+    </MudPaper>
 </MudContainer>
 
+<style>
+    .glass-card {
+        background: rgba(255, 255, 255, 0.12);
+        border-radius: 1.5rem;
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+        color: white;
+    }
 
+    .hover-effect {
+        transition: all 0.3s ease;
+    }
+
+        .hover-effect:hover {
+            transform: scale(1.03);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+</style>
 
 @code {
     [Parameter] public string? Email { get; set; }

@@ -1,0 +1,306 @@
+﻿@page "/weather-analysis"
+@inject WeatherService WeatherService
+@using BlazorApp.Services
+@using BlazorApp.Models
+@inject NavigationManager NavigationManager
+@inject ISnackbar Snackbar
+<PageTitle>Weather Data Analysis</PageTitle>
+
+<MudText Typo="Typo.h3" Align="Align.Center" Class="title" Style="color:white;">🌡 WEATHER ANALYSIS</MudText>
+
+<MudCard Class="weather-card rounded-xl mx-auto my-6 py-8 px-6 glass-card" Elevation="5">
+    <MudContainer MaxWidth="MaxWidth.Medium">
+        <MudGrid Spacing="3" Justify="Justify.Center">
+            <!-- City Input -->
+            <MudItem xs="12" sm="6">
+                <MudTextField @bind-Value="_city"
+                              Label="Enter City Name"
+                              Variant="Variant.Filled"
+                              Class="custom-input"
+                              Adornment="Adornment.Start"
+                              AdornmentIcon="@Icons.Material.Filled.LocationOn" />
+            </MudItem>
+
+            <!-- Days Dropdown -->
+            <MudItem xs="12" sm="6">
+                <MudSelect @bind-Value="_days"
+                           Label="Select Days"
+                           Variant="Variant.Filled"
+                           Class="custom-input"
+                           Adornment="Adornment.Start"
+                           AdornmentIcon="@Icons.Material.Filled.CalendarToday">
+                    <MudSelectItem Value="1">1 Day</MudSelectItem>
+                    <MudSelectItem Value="7">7 Days</MudSelectItem>
+                    <MudSelectItem Value="30">30 Days</MudSelectItem>
+                </MudSelect>
+            </MudItem>
+
+            <!-- Action Buttons -->
+            <MudItem xs="12">
+                <MudTooltip Text="Analyze Weather Data">
+                    <MudButton OnClick="FetchWeatherData" Variant="Variant.Filled" Color="Color.Primary" Class="w-full mb-2">
+                        <MudIcon Icon="@Icons.Material.Filled.History" Class="mr-2" />
+                        Weather Data
+                    </MudButton>
+                </MudTooltip>
+                <MudTooltip Text="Compare with another city">
+                    <MudButton OnClick="NavigateTocomparecity" Variant="Variant.Text" Color="Color.Secondary" Class="w-full ml-1">
+                        <MudIcon Icon="@Icons.Material.Filled.CompareArrows" Class="mr-2" />
+                        Compare City
+                    </MudButton>
+                </MudTooltip>
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+</MudCard>
+
+@if (_isLoading)
+{
+    <div class="d-flex flex-column align-items-center my-4">
+        <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
+    </div>
+}
+
+@if (_errorMessage != null)
+{
+    <MudAlert Severity="Severity.Error" Class="mt-3">
+        <MudIcon Icon="@Icons.Material.Filled.Error" Class="mr-2" /> @_errorMessage
+    </MudAlert>
+}
+
+@if (!string.IsNullOrWhiteSpace(analysisSummary))
+{
+    <MudPaper Class="pa-4 mt-4" Style="background-color: rgba(255, 255, 255, 0.05); color: white; border-radius: 12px;">
+        <MudText Typo="Typo.h6" Class="mb-2"  Color="Color.Warning" >Weather Summary :</MudText>
+        <MudText>@analysisSummary</MudText>
+    </MudPaper>
+}
+
+@if (WeatherDataList.Any())
+{
+    <!-- Section Toggle Buttons -->
+    <MudGrid Spacing="3" Justify="Justify.Center" Class="mt-4">
+        <MudItem>
+            <MudButton OnClick="@(() => ShowSection("table"))" Variant="Variant.Outlined" Color="Color.Tertiary" Class="button-hover">📋 Show Table</MudButton>
+        </MudItem>
+        <MudItem>
+            <MudButton OnClick="@(() => ShowSection("temperature"))" Variant="Variant.Outlined" Color="Color.Warning" Class="button-hover">🌡 Show Temperature</MudButton>
+        </MudItem>
+        <MudItem>
+            <MudButton OnClick="@(() => ShowSection("humidity"))" Variant="Variant.Outlined" Color="Color.Info" Class="button-hover">💧 Show Humidity</MudButton>
+        </MudItem>
+    </MudGrid>
+
+    <!-- Weather Data Table -->
+    @if (_activeSection == "table")
+    {
+        <MudCard Class="glass-card-forecast mt-4 p-4 rounded-2xl backdrop-blur shadow-lg border border-white/10" Style="background-color: rgba(255, 255, 255, 0.05);">
+            <MudCardHeader>
+                <MudText Typo="Typo.h5" Class="text-center text-white">📋 Weather Data Table</MudText>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudTable Items="@WeatherDataList" Hover="true" Striped="false" Elevation="0"
+                          Class="text-white"
+                          Style="background-color: rgba(255, 255, 255, 0.03); border-radius: 1rem;">
+                    <HeaderContent>
+                        <MudTh><span class="text-white">Date</span></MudTh>
+                        <MudTh><span class="text-white">City</span></MudTh>
+                        <MudTh><span class="text-white">Temperature (°C)</span></MudTh>
+                        <MudTh><span class="text-white">Wind Speed (m/s)</span></MudTh>
+                        <MudTh><span class="text-white">Humidity (%)</span></MudTh>
+                    </HeaderContent>
+                    <RowTemplate Context="weather">
+                        <MudTd><span class="text-white">@weather.Date.ToString("yyyy-MM-dd")</span></MudTd>
+                        <MudTd><span class="text-white">@weather.City</span></MudTd>
+                        <MudTd><span class="text-white">@weather.Temperature</span></MudTd>
+                        <MudTd><span class="text-white">@weather.WindSpeed</span></MudTd>
+                        <MudTd><span class="text-white">@weather.Humidity</span></MudTd>
+                    </RowTemplate>
+                </MudTable>
+            </MudCardContent>
+        </MudCard>
+
+    }
+
+    <!-- Temperature Chart -->
+    @if (_activeSection == "temperature")
+    {
+        <MudCard Class="glass-card-forecast mt-4 p-4 text-white" Elevation="6">
+            <MudCardHeader>
+                <MudText Typo="Typo.h5" Class="text-center text-white">🌡 Temperature Trend</MudText>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudChart ChartType="ChartType.Bar"
+                          ChartSeries="@_temperatureSeries"
+                          XAxisLabels="@_xAxisLabels"
+                          Width="100%"
+                          Height="400px" />
+            </MudCardContent>
+        </MudCard>
+    }
+
+    <!-- Humidity Chart -->
+    @if (_activeSection == "humidity")
+    {
+        <MudCard Class="glass-card-forecast mt-4 p-4" Elevation="6">
+            <MudCardHeader>
+                <MudText Typo="Typo.h5" Class="text-center text-white">💧 Humidity Trend</MudText>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudChart ChartType="ChartType.Bar"
+                          ChartSeries="@_humiditySeries"
+                          XAxisLabels="@_xAxisLabels"
+                          Width="100%"
+                          Height="400px" />
+            </MudCardContent>
+        </MudCard>
+    }
+}
+
+<style>
+    .weather-card {
+        backdrop-filter: blur(16px) saturate(180%);
+        -webkit-backdrop-filter: blur(16px) saturate(180%);
+        background-color: rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        color: white;
+        max-width: 800px;
+        -webkit-text-fill-color: white;
+    }
+
+    .custom-input .mud-input-root {
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        color: white;
+    }
+
+    .mud-button {
+        border-radius: 12px;
+    }
+
+    .glass-card-forecast {
+        backdrop-filter: blur(14px) saturate(150%);
+        -webkit-backdrop-filter: blur(14px) saturate(150%);
+        background-color: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 18px;
+        color: white;
+        transition: transform 0.3s ease;
+    }
+
+        .glass-card-forecast:hover {
+            transform: scale(1.03);
+            border-color: rgba(0, 173, 255, 0.5);
+            box-shadow: 0 0 20px rgba(0, 173, 255, 0.4);
+        }
+
+    .title {
+        font-size: 24px;
+        font-weight: 600;
+        letter-spacing: 3px;
+        color: #dcdcdc;
+        margin-top: 16px;
+    }
+
+    .glass-card-forecast {
+        background: rgba(255, 255, 255, 0.05); /* translucent white */
+        border-radius: 1rem;
+        backdrop-filter: blur(10px); /* glass blur effect */
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1); /* soft border */
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        /* Optional hover lift effect */
+        .glass-card-forecast:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.45);
+        }
+
+        /* Ensure white text visibility on all modes */
+        .glass-card-forecast .mud-table,
+        .glass-card-forecast .mud-th,
+        .glass-card-forecast .mud-td,
+        .glass-card-forecast .mud-text,
+        .glass-card-forecast span {
+            color: white !important;
+        }
+
+</style>
+
+
+
+@code {
+    private string _city = "";
+    private int _days = 7;
+    private List<ChartSeries> _temperatureSeries = new List<ChartSeries>();
+    private List<ChartSeries> _humiditySeries = new List<ChartSeries>();
+    private string[] _xAxisLabels = Array.Empty<string>();
+    private List<WeatherData> WeatherDataList = new List<WeatherData>();
+
+    private string _activeSection = "table";
+    private bool _isLoading = false;
+    private string? _errorMessage = null;
+    private string? analysisSummary = null;
+
+    [Inject]
+    private GeminiWeatherSummaryService GeminiSummaryService { get; set; }
+
+    private void ShowSection(string section)
+    {
+        _activeSection = section;
+    }
+
+    private async Task FetchWeatherData()
+    {
+        _errorMessage = null;
+
+        if (string.IsNullOrWhiteSpace(_city))
+        {
+            Snackbar.Add(" Please enter a city name before fetching data!", Severity.Warning);
+            return;
+        }
+        
+        _isLoading = true;
+        WeatherDataList.Clear();
+        try
+        {
+            WeatherDataList = await WeatherService.GetHistoricalWeatherData(_city, _days);
+
+            if (WeatherDataList == null || !WeatherDataList.Any())
+            {
+                Snackbar.Add(" No weather data found for the given city.", Severity.Error);
+                return;
+            }
+
+            _xAxisLabels = WeatherDataList.Select(d => d.Date.ToString("MM-dd")).ToArray();
+            _temperatureSeries = new List<ChartSeries>
+            {
+                new ChartSeries { Name = "Temperature (°C)", Data = WeatherDataList.Select(d => d.Temperature).ToArray() }
+            };
+
+            _humiditySeries = new List<ChartSeries>
+            {
+                new ChartSeries { Name = "Humidity (%)", Data = WeatherDataList.Select(d => d.Humidity).ToArray() }
+            };
+
+            analysisSummary = await GeminiSummaryService.GenerateAnalysisSummaryAsync(WeatherDataList, _city, _days);
+
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = $"An error occurred: {ex.Message}";
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private void NavigateTocomparecity()
+    {
+        NavigationManager.NavigateTo("/weather-comparison");
+    }
+}

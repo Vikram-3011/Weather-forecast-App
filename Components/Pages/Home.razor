@@ -8,167 +8,171 @@
 @inject WeatherDataService WeatherService
 @inject IJSRuntime JSRuntime
 @inject UserStateManager userState
+@using System.Text.Json
+@inject IHttpClientFactory HttpClientFactory
+@inject GeminiWeatherSummaryService SummaryService
+
 
 <PageTitle>Home</PageTitle>
 
-<MudText Typo="Typo.h3" Align="Align.Center">Weather Forecast</MudText>
-<MudText Typo="Typo.body1" Align="Align.Center">Welcome to  forecast</MudText>
-
-@* @if (!userState.IsLoggedIn())
-{
-    <MudContainer MaxWidth="MaxWidth.Large" Class="mt-4" Style="display: flex; justify-content: center;">
-        <MudCard Elevation="4" Class="pa-4" Style="text-align: center; width: 600px; height: 230px;">
-            <MudText Typo="Typo.h6" Align="Align.Center" Class="mb-4">
-                "To access exclusive features in the weather forecast, simply log in or sign up. Gain access to advanced weather insights and enjoy more features to enhance your experience!"
-            </MudText>
-            <MudContainer Style="display: flex; justify-content: space-evenly; margin-top: 35px;">
-                <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="NavigateToLogin" Style="width: 120px;">
-                    Login
-                </MudButton>
-                <MudButton Variant="Variant.Outlined" Color="Color.Secondary" OnClick="NavigateToSignup" Style="width: 120px;">
-                    Sign Up
-                </MudButton>
-            </MudContainer>
-        </MudCard>
-    </MudContainer>
-} *@
-
-
-<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-2">
-    <MudCard Elevation="4" Class="pa-6 rounded-lg glassmorphism">
-        <MudStack Direction="Column" AlignItems="AlignItems.Center">
-            <MudIcon Color="Color.Primary" />
-            <MudText Typo="Typo.h5" Class="font-weight-bold text-primary">
-                Your Live Location <MudIcon Icon="@Icons.Material.Filled.LocationOn"></MudIcon>
-            </MudText>
-        </MudStack>
-
-        <MudDivider Class="my-2" />
-
-        @if (IsLoading)
-        {
-            <MudStack Direction="Column" AlignItems="AlignItems.Center" Spacing="2">
-                <MudProgressCircular Size="Size.Medium" Color="Color.Primary" Indeterminate="true" />
-                <MudText Typo="Typo.h6" Color="Color.Primary" Align="Align.Center" Class="mt-3">
-                    Detecting your location...
-                </MudText>
-            </MudStack>
-        }
-        else if (ErrorMessage != null)
-        {
-            <MudStack Direction="Column" AlignItems="AlignItems.Center" Spacing="2">
-                <MudIcon Icon="@Icons.Material.Filled.Error" Size="Size.Large" Color="Color.Error" />
-                <MudText Typo="Typo.h6" Color="Color.Error" Align="Align.Center">
-                    @ErrorMessage
-                </MudText>
-            </MudStack>
-        }
-        else
-        {
-            <MudPaper Elevation="4" Class="p-4 rounded-md location-card">
-                <MudStack Direction="Column" AlignItems="AlignItems.Center">
-                    <MudText Typo="Typo.h6" Align="Align.Center">
-                        <MudIcon Icon="@Icons.Material.Filled.LocationOn" Color="Color.Primary" Class="mr-1" />
-                        <strong>Address:</strong> @FullAddress
-                    </MudText>
-                    @if (userState.IsLoggedIn())
-                    {
-
-
-                        <MudText Typo="Typo.body1" Align="Align.Center">
-                            <MudIcon Icon="@Icons.Material.Outlined.Explore" Color="Color.Secondary" Class="mr-1" />
-                            Latitude: @Latitude
-                        </MudText>
-                        <MudText Typo="Typo.body1" Align="Align.Center">
-                            <MudIcon Icon="@Icons.Material.Outlined.Explore" Color="Color.Secondary" Class="mr-1" />
-                            Longitude: @Longitude
-                        </MudText>
-                        <MudText Typo="Typo.body1" Align="Align.Center">
-                            <MudIcon Icon="@Icons.Material.Outlined.Speed" Color="Color.Tertiary" Class="mr-1" />
-                            Accuracy: @Accuracy meters
-                        </MudText>
-
-                    }
-                </MudStack>
-            </MudPaper>
-
-
-        }
-
-        <MudDivider Class="my-4" />
-
-        <MudStack Direction="Row" Justify="Justify.Center" AlignItems="AlignItems.Center">
-            <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="FetchLocation" Style="width: 220px;">
-                <MudIcon Icon="@Icons.Material.Filled.MyLocation" Class="mr-2" />
-                Get My Location
-            </MudButton>
-        </MudStack>
-    </MudCard>
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-6">
+    <MudText Typo="Typo.h3" Align="Align.Center" Class="font-bold text-white">
+        Weather Dashboard
+    </MudText>
+    <MudText Typo="Typo.subtitle1" Align="Align.Center" Class="text-white">
+        Stay updated with live weather conditions and forecasts
+    </MudText>
 </MudContainer>
 
-<MudText Typo="Typo.h5" Class="pt-13 pb-15 pb-4 pl-4 pr-4">
-    Global Cities Weather <MudIcon Icon="@Icons.Material.Filled.Public"></MudIcon>
-</MudText>
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-6">
+    <MudGrid>
+        <!-- LEFT SIDE -->
+        <MudItem xs="12" md="6">
+            <MudStack Direction="Column" Spacing="4">
 
-@if (isLoading)
-{
-    <div class="d-flex justify-content-center my-4">
-        <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
-    </div>
-}
-else if (WeatherService.GlobalCityWeather.Count > 0)
-{
-    <MudGrid Class="d-flex justify-content-center">
-        @foreach (var city in WeatherService.GlobalCityWeather)
-        {
-            <MudItem Class="p-2">
-                <MudCard Elevation="4" Class="weather-card">
-                    <MudStack Direction="Column" AlignItems="AlignItems.Center" Spacing="2">
-                        <MudText Typo="Typo.h6" Class="city-name">@city.CityName, @city.Country</MudText>
-                        <MudIcon Size="Size.Large" Color="Color.Primary" Icon="@GetWeatherIcon(city.Description)" />
-                        <MudText Typo="Typo.body1" Class="temperature-text">
-                            Min: @($"{city.TempMin:F2}")°C | Max: @($"{city.TempMax:F2}")°C
-                        </MudText>
-                        <MudText Typo="Typo.body2" Class="weather-description">@city.Description</MudText>
+                <!-- Weather Forecast -->
+                <MudCard Class="glassmorphism-card pa-6 rounded-xl">
+                    <MudStack Direction="Column" AlignItems="AlignItems.Center" Spacing="3">
+                        <MudText Typo="Typo.h5" Class="font-weight-bold text-white"> <MudIcon Icon="@Icons.Material.Filled.WbSunny"Color="Color.Warning" Size="Size.Large "></MudIcon> Weather </MudText>
                     </MudStack>
+                    <MudDivider Class="my-4" />
+
+                    @if (CurrentWeather != null)
+                    {
+                        <MudStack Direction="Column" AlignItems="AlignItems.Center" Spacing="2">
+                            <MudIcon Size="Size.Large" Color="Color.Primary" Icon="@GetWeatherIcon(CurrentWeather.Description)" />
+                            <MudText Typo="Typo.body1" Class="text-white">Min: @($"{CurrentWeather.TempMin:F2}")°C | Max: @($"{CurrentWeather.TempMax:F2}")°C</MudText>
+                            <MudText Typo="Typo.body2" Class="text-white">@CurrentWeather.Description</MudText>
+                        </MudStack>
+                    }
+                    else
+                    {
+                        <div class="d-flex justify-content-center align-items-center" style="height: 100px;">
+                            <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
+                        </div>
+                    }
                 </MudCard>
-            </MudItem>
-        }
+
+                <!-- Live Location -->
+                <MudCard Class="glassmorphism-card pa-6 rounded-xl">
+                    <MudStack Direction="Column" AlignItems="AlignItems.Center" Spacing="3">
+                        <MudText Typo="Typo.h5" Class="font-weight-bold text-white">
+                            <MudIcon Icon="@Icons.Material.Filled.LocationOn" Color="Color.Primary" /> Your Location
+                        </MudText>
+                    </MudStack>
+                    <MudDivider Class="my-4" />
+
+                    @if (IsLoading)
+                    {
+                        <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
+                        <MudText Typo="Typo.h6" Color="Color.Primary">Detecting your location...</MudText>
+                    }
+                    else if (ErrorMessage != null)
+                    {
+                        <MudStack Direction="Column" AlignItems="AlignItems.Center" Spacing="2">
+                            <MudIcon Icon="@Icons.Material.Filled.Error" Size="Size.Large" Color="Color.Error" />
+                            <MudText Typo="Typo.h6" Color="Color.Error">@ErrorMessage</MudText>
+                        </MudStack>
+                    }
+                    else
+                    {
+                        <MudPaper Class="glassmorphism-card p-4 rounded-md">
+                            <MudStack Direction="Column" AlignItems="AlignItems.Center" Spacing="2">
+                                <MudText Typo="Typo.h6" Class="text-white">
+                                    <MudIcon Icon="@Icons.Material.Filled.LocationOn" Color="Color.Primary" Class="mr-1" />
+                                    <strong>Address:</strong> @FullAddress
+                                </MudText>
+                            </MudStack>
+                        </MudPaper>
+                    }
+                </MudCard>
+
+                <!-- Weather Summary Section -->
+                <MudCard Class="glassmorphism-card pa-6 rounded-xl mt-4">
+                    <MudStack Direction="Column" AlignItems="AlignItems.Center" Spacing="3">
+                        <MudText Typo="Typo.h5" Class="font-weight-bold text-white">
+                            <MudIcon Icon="@Icons.Material.Filled.Description" Color="Color.Primary" /> AI Weather Summary
+                        </MudText>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="GenerateSummary">
+                            Get AI Summary
+                        </MudButton>
+                    </MudStack>
+                    <MudDivider Class="my-4" />
+                    @if (!string.IsNullOrEmpty(weatherSummary))
+                    {
+                        <MudText Typo="Typo.body1" Class="text-white">@weatherSummary</MudText>
+                    }
+                    else
+                    {
+                        <MudText Typo="Typo.body2" Class="text-white">Click the button to generate a summary.</MudText>
+                    }
+                </MudCard>
+            </MudStack>
+        </MudItem>
+
+        <!-- RIGHT SIDE -->
+        <MudItem xs="12" md="6">
+            <MudStack Direction="Column" AlignItems="AlignItems.Center" Spacing="2">
+                <MudText Typo="Typo.h5" Class="font-bold text-center text-white">
+                    <MudIcon Icon="@Icons.Material.Filled.LocationCity" Color="Color.Primary" Class="mr-1" />
+                    Top Cities Weather
+                </MudText>
+            </MudStack>
+            <MudDivider Class="my-4" />
+
+            @if (isLoading)
+            {
+                <div class="d-flex justify-content-center my-4">
+                    <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
+                </div>
+            }
+            else if (WeatherService.GlobalCityWeather.Count > 0)
+            {
+                <MudGrid>
+                    @foreach (var city in WeatherService.GlobalCityWeather)
+                    {
+                        <MudItem xs="12" sm="6">
+                            <MudCard Class="glassmorphism-card mb-6 pa-4 rounded-xl text-center city-card">
+                                <MudText Typo="Typo.h6" Class="font-bold text-white">@city.CityName, @city.Country</MudText>
+                                <MudIcon Size="Size.Large" Color="Color.Primary" Icon="@GetWeatherIcon(city.Description)" />
+                                <MudText Typo="Typo.h6" Class="text-white">@city.Description</MudText>
+                                <MudText Typo="Typo.body1" Class="text-white">@($"{city.TempMin:F2}")°C - @($"{city.TempMax:F2}")°C</MudText>
+                                
+                            </MudCard>
+                        </MudItem>
+                    }
+                </MudGrid>
+            }
+        </MudItem>
     </MudGrid>
-}
-
-
-
-
+</MudContainer>
 
 <style>
-
-    .weather-card {
-        padding: 16px;
-        border-radius: 10px;
-        text-align: center;
-        background-color: var(--mud-palette-background);
-        transition: background-color 0.3s ease, color 0.3s ease;
+    body {
+        background: linear-gradient(to right, #3a0ca3, #240046);
+        margin: 0;
+        padding: 0;
     }
 
-    .city-name {
-        font-weight: bold;
-        color: var(--mud-palette-text-primary);
+    .glassmorphism-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     }
 
-    .temperature-text {
-        font-weight: bold;
-        color: var(--mud-palette-warning);
+    .text-white {
+        color: #dcdcdc !important;
     }
 
-    .weather-description {
-        color: var(--mud-palette-text-secondary);
+    .city-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0px 10px 20px rgba(0, 173, 255, 0.4); /* Violet hover */
+        transition: all 0.3s ease-in-out;
     }
-
 </style>
-
-
-
 
 
 @code
@@ -210,8 +214,10 @@ else if (WeatherService.GlobalCityWeather.Count > 0)
     protected override async Task OnInitializedAsync()
     {
         await LoadWeatherData();
+
+        await FetchLocation();
     }
-    void NavigateToLogin()
+    void NavigateToLogin()  
     {
         NavigationManager.NavigateTo("/login"); // navigation to the weather page
     }
@@ -231,7 +237,7 @@ else if (WeatherService.GlobalCityWeather.Count > 0)
     protected override void OnInitialized()
     {
         user = auth.GetSession()?.User?.Email;
-
+        
     }
 
     // Method to navigate to another page
@@ -248,6 +254,27 @@ else if (WeatherService.GlobalCityWeather.Count > 0)
     private double Longitude;
     private double Accuracy;
     private string? FullAddress;
+    private CityWeather? CurrentWeather;
+
+    private string weatherSummary;
+
+    private async Task GenerateSummary()
+    {
+        if (CurrentWeather == null)
+        {
+            weatherSummary = "No current weather data available to summarize.";
+            return;
+        }
+
+        var weatherData = new WeatherData
+            {
+                Temperature = (CurrentWeather.TempMin + CurrentWeather.TempMax) / 2,
+                Description = CurrentWeather.Description
+            };
+
+        weatherSummary = await SummaryService.GenerateSummaryAsync(weatherData.ToString());
+    }
+
 
     private async Task FetchLocation()
     {
@@ -262,21 +289,57 @@ else if (WeatherService.GlobalCityWeather.Count > 0)
             Longitude = location.Longitude;
             Accuracy = location.Accuracy;
 
-            // Fetch Full Address using Reverse Geocoding API
             var address = await GetAddressFromCoordinates(Latitude, Longitude);
-            FullAddress = address.ToString();
-            StateHasChanged();
+            FullAddress = address?.ToString() ?? "Unknown Address"; // Fix applied
+
+            await FetchCurrentLocationWeather();
+            
         }
         catch (Exception ex)
         {
-            ErrorMessage = ex.Message;
+            ErrorMessage = "Failed to retrieve location. Please enable location access.";
         }
         finally
         {
             IsLoading = false;
+            StateHasChanged();
         }
     }
 
+    private async Task FetchCurrentLocationWeather()
+    {
+        string apiKey = "596a1e71b480c1efbdbdd4da71b6f8da";
+        string requestUri = $"https://api.openweathermap.org/data/2.5/weather?lat={Latitude}&lon={Longitude}&appid={apiKey}&units=metric";
+
+        try
+        {
+            using var client = HttpClientFactory.CreateClient();
+            var response = await client.GetAsync(requestUri);
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                var weatherResponse = JsonSerializer.Deserialize<CityWeatherResponse>(json, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+
+                if (weatherResponse != null)
+                {
+                    CurrentWeather = new CityWeather
+                        {
+                            CityName = "Your Location",
+                            TempMin = weatherResponse.Main.TempMin,
+                            TempMax = weatherResponse.Main.TempMax,
+                            Description = weatherResponse.Weather[0].Description
+                        };
+                }
+            }
+        }
+        catch (Exception)
+        {
+            ErrorMessage = "Failed to fetch weather data.";
+        }
+    }
     private async Task<Address> GetAddressFromCoordinates(double latitude, double longitude)
     {
         string apiKey = "fbfb336510e44728a2c31f80d3b6b1d5"; // Replace with your API key
@@ -344,6 +407,18 @@ else if (WeatherService.GlobalCityWeather.Count > 0)
             public string? Country { get; set; }
         }
     }
+    private class WeatherData
+    {
+        public double Temperature { get; set; }
+        public string Description { get; set; }
+
+        public override string ToString()
+        {
+            return $"Temperature: {Temperature}°C. Condition: {Description}.";
+        }
+
+    }
+
 
 
 }

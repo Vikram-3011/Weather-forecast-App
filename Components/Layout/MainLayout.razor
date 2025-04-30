@@ -3,7 +3,7 @@
 @using BlazorApp.Singletons
 @using BlazorApp.Services
 @using BlazorApp.Controllers
-@using static Supabase.Gotrue.Constants 
+@using static Supabase.Gotrue.Constants
 @using Supabase
 @inject PersonalInfoService personal
 @inject UserStateManager userState
@@ -14,113 +14,210 @@
 @inject IJSRuntime JS
 
 
-<MudThemeProvider IsDarkMode="@isDarkMode"/>
+<MudThemeProvider IsDarkMode="@isDarkMode" />
 <MudPopoverProvider />
 
 <MudDialogProvider />
 <MudSnackbarProvider />
 
-<MudLayout>
-    <MudAppBar>
-        <MudTooltip Text="Menu">
-            <MudIconButton Icon="@Icons.Material.Filled.List" Color="Color.Inherit" OnClick="@(()=> ToggleDrawer())"></MudIconButton>
+ 
+    <MudLayout>
+        <MudAppBar Elevation="0" Class="d-flex justify-between px-4" Style="background-color: transparent;">
+            <div class="d-flex align-center">
+                <MudTooltip Text="Menu">
+                    <MudIconButton Icon="@Icons.Material.Filled.List" Color="Color.Inherit" OnClick="@(() => ToggleDrawer())" />
+                </MudTooltip>
+            </div>
 
-        </MudTooltip>
-       
-        <MudSpacer></MudSpacer>
-        <MudText Class="mx-2">@userRole</MudText>
-        @if (!userState.IsLoggedIn())
-        {
-            <MudTooltip Text="User SignUp">
-                <MudButton Variant="Variant.Text" Style="@($"color:{Colors.LightBlue.Lighten5};")" Href="/signup">Signup</MudButton>
-            </MudTooltip>
-            <MudTooltip Text="User LogIn">
-                <MudButton Variant="Variant.Text" Style="@($"color:{Colors.LightBlue.Lighten5};")" Href="/login">Login</MudButton>
-            </MudTooltip>
-        }
-        
-        @if(isDarkMode)
-        {
-            <MudTooltip Text=" Light Mode">
-                <MudIconButton Icon="@Icons.Material.Filled.LightMode"
-                               Color="Color.Inherit"
-                               OnClick="@ToggleDarkMode" />
-            </MudTooltip>
-        }
-        else
-        {
-            <MudTooltip Text=" Dark Mode">
-                <MudIconButton Icon="@Icons.Material.Filled.DarkMode"
-                               Color="Color.Inherit"
-                               OnClick="@ToggleDarkMode" />
-            </MudTooltip>
-        }
-        <MudTooltip Text="Profile">
-        <MudIconButton Icon="@Icons.Material.Filled.AccountCircle" Color="Color.Inherit" OnClick="@ToggleOpen" />
-        </MudTooltip>
-    
-    </MudAppBar>
+        <div class="d-flex align-center" style="gap: 8px; margin-left: auto;">
+                <MudText Class="mx-2">@userRole</MudText>
 
+                @if (!userState.IsLoggedIn())
+                {
+                    <MudTooltip Text="User LogIn">
+                        <MudButton Variant="Variant.Text" StartIcon="@Icons.Material.Filled.Login" Style="@($"color:{Colors.LightBlue.Lighten5};")" Href="/login">Login</MudButton>
+                    </MudTooltip>
+                }
 
-   
+                @if (isDarkMode)
+                {
+                    <MudTooltip Text=" Light Mode">
+                        <MudIconButton Icon="@Icons.Material.Filled.LightMode"
+                                       Color="Color.Inherit"
+                                       OnClick="@ToggleDarkMode" />
+                    </MudTooltip>
+                }
+                else
+                {
+                    <MudTooltip Text=" Dark Mode">
+                        <MudIconButton Icon="@Icons.Material.Filled.DarkMode"
+                                       Color="Color.Inherit"
+                                       OnClick="@ToggleDarkMode" />
+                    </MudTooltip>
+                }
+
+                <MudTooltip Text="Profile">
+                    <MudIconButton Icon="@Icons.Material.Filled.AccountCircle" Color="Color.Inherit" OnClick="@ToggleOpen" />
+                </MudTooltip>
+            </div>
+        </MudAppBar>
+
     <MudPopover Open="@_open" Fixed="true" AnchorOrigin="Origin.TopRight" TransformOrigin="Origin.TopRight" Class="px-4 pt-4 profile-popover" OnClose="@ClosePopover">
-    <div class="d-flex flex-column">
-           
-        @if (userState.IsLoggedIn())
-        {
-               @*  <MudText Typo="Typo.h5">@userName</MudText> *@
-            <MudText Typo="Typo.h6">@userState.User?.Name</MudText>
-            <MudText Typo="Typo.body2">@userState.User?.Email</MudText>
-            <MudDivider Class="my-2" />
-            <MudButton OnClick="@(() => NavigateTo("/user-profile"))" Variant="Variant.Text" FullWidth="true">View Profile</MudButton>
-            <MudButton OnClick="@(() => NavigateTo("/favourites"))" Variant="Variant.Text" FullWidth="true">Favourites</MudButton>
-            <MudDivider Class="my-2" />
-            <MudButton OnClick="Logout" Variant="Variant.Text" Color="Color.Error" FullWidth="true">Logout</MudButton>
-        } else
+        <div class="d-flex flex-column">
+
+            @if (userState.IsLoggedIn())
             {
-                <MudButton Variant="Variant.Text" Href="/login">Login</MudButton>
-                <MudButton Variant="Variant.Text" Href="/signup">Signup</MudButton>
+                @*  <MudText Typo="Typo.h5">@userName</MudText> *@
+                <MudText Typo="Typo.h6">@userState.User?.Name</MudText>
+                <MudText Typo="Typo.body2">@userState.User?.Email</MudText>
+                <MudDivider Class="my-2" />
+                <MudButton OnClick="@(() => NavigateTo("/user-profile"))" Variant="Variant.Text" Style="justify-content: center; text-align: center; " FullWidth="true">Profile </MudButton>
+
+                <MudButton OnClick="Logout" StartIcon="@Icons.Material.Filled.Logout" Variant="Variant.Text" Color="Color.Error" FullWidth="true">Logout</MudButton>
+            }
+            else
+            {
+                <MudButton Variant="Variant.Text" StartIcon="@Icons.Material.Filled.Login" Href="/login">Login</MudButton>
+
             }
         </div>
     </MudPopover>
 
     <MudDrawer Open="@isOpen" Variant="DrawerVariant.Persistent">
         <MudDrawerHeader>
-            <MudText Typo="Typo.h5">Weather Forecast</MudText>
+           
+            <MudButton Typo="Typo.h5" OnClick="@(() => NavigateTo("/"))">Weather Forecast</MudButton>
         </MudDrawerHeader>
         <NavMenu />
     </MudDrawer>
+        
 
     <MudMainContent>
         <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-4">
             @Body
         </MudContainer>
     </MudMainContent>
+
+    <!-- 🧠 Icon-only Chatbot Button (Top-Right) -->
+    <MudIconButton Icon="@Icons.Material.Outlined.SmartToy"
+                   Class="chatbot-icon-button"
+                   Color="Color.Default"
+                   Size="Size.Large"
+                   OnClick="ToggleChatbot" />
+
+    
+    <!-- 🧠 Embedded Chatbot Panel -->
+    @if (_showChatbot)
+    {
+        <div class="chatbot-container">
+            <MudCard Class="p-4 chatbot-card">
+                <div class="chatbot-header">
+                    <MudText Typo="Typo.h4" Class="chatbot-title">Chatkaro</MudText>
+                    <MudIconButton Icon="@Icons.Material.Filled.Close" Class="chatbot-fabclose" OnClick="ToggleChatbot" />
+                </div>
+                <WeatherChatBot />
+            </MudCard>
+        </div>
+    }
+
+}
 </MudLayout>
 
+<style>
+    body {
+        background: url('images/pexels-lum3n-44775-1410224.jpg') no-repeat center center fixed;
+        background-size: cover;
+    }
 
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            Adjust opacity for darker or lighter effect z-index: -1;
+        }
+
+
+    .mud-appbar {
+        backdrop-filter: blur(10px);
+    }
+
+   
+
+    .chatbot-icon-button {
+        position: fixed;
+        bottom: 50px;
+        right: 20px;
+        z-index: 9999;
+        color: white; /* Or any color matching your theme */
+        background-color: blueviolet;
+        border: none;
+    }
+
+
+    .chatbot-container {
+        position: fixed;
+        bottom: 100px;
+        right: 30px;
+        z-index: 1000;
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .chatbot-card {
+        width: 320px;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(15px);
+        border-radius: 20px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .chatbot-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .chatbot-title {
+        font-weight: bold;
+        font-size: large;
+        color: white;
+    }
+
+    .chatbot-fabclose {
+        color: white;
+        transition: transform 0.2s ease;
+    }
+
+        .chatbot-fabclose:hover {
+            transform: scale(1.2);
+            color: #f44336;
+        }
+
+
+</style>
 @code
 {
-    private bool isOpen = true;
+    private bool isOpen = false;
     private bool isDarkMode = false;
     private bool _open;
     private string? userRole = "";
-    // private string? userName;
-    // private string userEmail = "user@example.com";
+    private bool _showChatbot = false;
 
     private void ToggleDrawer() => isOpen = !isOpen;
     private void ToggleDarkMode() => isDarkMode = !isDarkMode;
-    
-    private async Task AskNotificationPermission()
+
+   
+    private void ToggleChatbot()
     {
-        try
-        {
-            await JS.InvokeVoidAsync("requestNotificationPermission", "e.vikram456@gmail.com");
-        }
-        catch (JSException ex)
-        {
-            Console.WriteLine($"JS Exception: {ex.Message}");
-        }
+        _showChatbot = !_showChatbot;
     }
 
     private void ToggleOpen()
@@ -132,21 +229,21 @@
         }
         else
         {
-            RemoveClickListener(); 
+            RemoveClickListener();
         }
         StateHasChanged();
     }
 
     private void ClosePopover()
     {
-        _open = false; 
-        RemoveClickListener(); 
+        _open = false;
+        RemoveClickListener();
         StateHasChanged();
     }
 
     private void NavigateTo(string route)
     {
-        _open = false; 
+        _open = false;
         NavigationManager.NavigateTo(route);
     }
 
@@ -156,7 +253,7 @@
         Console.WriteLine("State Change!!");
         userState.OnChange += StateChange;
 
-        // userName = await PersonalInfoService.GetUserNameByEmailAsync(userEmail);  // thsi line is used for hte user name to showed up 
+        // userName = await PersonalInfoService.GetUserNameByEmailAsync(userEmail);  // thsi line is used for hte user name to showed up
 
         var session = authService.GetSession();
         if (session != null && session.User != null)
@@ -182,13 +279,13 @@
     {
         try
         {
-            
+
             await authService.SignOut(userState);
             Console.WriteLine("User logged out!");
             StateHasChanged();
-            NavigationManager.NavigateTo("/",true);
+            NavigationManager.NavigateTo("/", true);
 
-           
+
             // StateChange();
             // NavigationManager.NavigateTo("/", true);
         }
@@ -214,7 +311,7 @@
     public void OnDocumentClick()
     {
         if (_open)
-        {
+        {   
             ClosePopover();
         }
     }
@@ -227,11 +324,6 @@
         }
     }
 
-    // public void Dispose()
-    // {
-    //     // Consolidate cleanup logic into a single Dispose method
-    //     JSRuntime.InvokeVoidAsync("removeDocumentClickListener");
-    //     userState.OnChange -= StateChange;
-    // }
+  
 }
 

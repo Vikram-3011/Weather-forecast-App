@@ -11,34 +11,127 @@
 @inject UserStateManager userState
 @inject ISnackbar _snackbar
 
-<PageTitle>Signup</PageTitle>
+<PageTitle>Register</PageTitle>
 
 <MudContainer MaxWidth="MaxWidth.Small">
-    <MudCard Class="pa-4 rounded-lg mt-1" Elevation="8">
-        <MudCardHeader Class="d-flex flex-column align-baseline">
-            <MudText Typo="Typo.h2" Color="Color.Primary">Signup</MudText>
-            <MudText Typo="Typo.body1">Create an Account.</MudText>
+    <MudCard Class="glassmorphism-card pa-4 rounded-lg mt-5" Elevation="0">
+        <MudCardHeader Class="d-flex flex-column align-items-center text-center">
+            <MudText Typo="Typo.h3" Class="login-title">REGISTER</MudText>
         </MudCardHeader>
+
         <MudCardContent>
-            <MudTextField T="string" @bind-Value="@email" Label="Email" Variant="Variant.Outlined" Required OnKeyDown="HandleKeyDown"></MudTextField>
+            <MudTextField T="string" @bind-Value="@email" Label="Email"
+                          Variant="Variant.Outlined"
+                          Class="custom-input"
+                          Required  OnKeyDown="HandleKeyDown">
+            </MudTextField>
+
             <MudTextField T="string"
                           @bind-Value="@password"
                           Label="Password"
                           Variant="Variant.Outlined"
                           InputType="@passwordInputType"
                           Required
+                          Class="custom-input"
                           Adornment="Adornment.End"
                           AdornmentIcon="@passwordIcon"
                           OnAdornmentClick="TogglePasswordVisibility" OnKeyDown="HandleKeyDown">
             </MudTextField>
-            <div class="d-inline-flex align-items-start my-4">
-                <MudButton OnClick="OnSignup" Class="mr-2" Color="Color.Primary" Variant="Variant.Filled" >Signup</MudButton>
-                <MudButton OnClick="OnLogin" Class="mr-2" Color="Color.Secondary" Variant="Variant.Outlined">Login</MudButton>
+
+            <div class="d-flex justify-content-center my-3 mt-7">
+                <MudButton OnClick="OnSignup" Class="custom-btn" Color="Color.Primary" Variant="Variant.Outlined">REGISTER</MudButton>
             </div>
+
+            <!-- Login Section -->
+            <div class="d-flex justify-content-center align-items-center my-2">
+                <MudText Class="signup-text">Already have an account?</MudText>
+                <MudButton OnClick="OnLogin" Color="Color.Inherit"  Variant="Variant.Filled" Class="signup-btn">Login</MudButton>
+            </div>
+
         </MudCardContent>
     </MudCard>
 </MudContainer>
 
+<style>
+    body {
+        background: linear-gradient(to right, #3a0ca3, #240046);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .glassmorphism-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        padding: 2rem;
+    }
+
+    .login-title {
+        font-size: 24px;
+        font-weight: 600;
+        letter-spacing: 3px;
+        color: #dcdcdc;
+    }
+
+    .full-width {
+        width: 100%;
+    }
+
+    .custom-textfield {
+        background-color: rgba(255, 255, 255, 0.05);
+        color: white !important;
+        border-radius: 8px;
+    }
+
+    .custom-btn {
+        padding: 10px 50px;
+        border-radius: 6px;
+        font-weight: bold;
+        font-size: 16px;
+        color: #dcdcdc !important;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    .custom-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Sign Up Text Alignment */
+    .signup-text {
+        color: #dcdcdc;
+        margin-right: 5px;
+    }
+
+    .signup-btn {
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .mud-input-label {
+        background: transparent !important; /* Ensures no background */
+        color: white !important; /* Keeps label visible */
+        padding: 0 4px; /* Optional: Adjust padding */
+    }
+
+    .custom-input .mud-input {
+        background: transparent !important; /* Removes background */
+        color: white !important; /* Text remains visible */
+        border-color: white !important; /* Keeps borders visible */
+    }
+
+    .custom-input .mud-input-label {
+        background: transparent !important; /* Fix label background */
+        color: white !important; /* Ensures readability */
+    }
+
+</style>
 @code{
     
     private string email { get; set; } = "";
@@ -48,26 +141,20 @@
     private InputType passwordInputType = InputType.Password;
     private string passwordIcon = Icons.Material.Filled.VisibilityOff;
 
+    private string inputLabelClass => "mud-input-label";
     private void OnLogin() => NavigationManager.NavigateTo("login");
 
 
     public async Task OnSignup()
     {
-        try
+        bool isRegistered = await authService.SignUp(email, password);
+        if (isRegistered)
         {
-            var user = await authService.SignUp(email, password, userState);
-            if (user != null)
-            {
-                userState.SetUser(user);
-                // _snackbar.Add("Account created successfully!", Severity.Success);
-                NavigationManager.NavigateTo("/personal-info");
-            }
-        }
-        catch (Exception ex)
-        {
-            _snackbar.Add($"Error: {ex.Message}", Severity.Error);
+         
+            NavigationManager.NavigateTo("/login");
         }
     }
+
     
     private void TogglePasswordVisibility()
     {

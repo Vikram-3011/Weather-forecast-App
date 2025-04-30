@@ -1,0 +1,65 @@
+﻿
+@inject GeminiWeatherSummaryService GeminiService
+@using BlazorApp.Services
+@using BlazorApp.Models
+@inject IJSRuntime JS
+
+<MudCard Class="p-4">
+   
+    <MudPaper Class="p-2 my-2" Style="max-height: 300px; overflow-y: auto;">
+        @foreach (var message in Messages)
+        {
+            <div class="mb-2">
+                <b>@(message.Role == "user" ? "You" : "Generative AI"):</b> @message.Content
+            </div>
+        }
+    </MudPaper>
+
+    <MudTextField @bind-Value="UserMessage" Placeholder="Ask something..." Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.ArrowForward" OnAdornmentClick="SendMessage" />
+    <MudButton OnClick="ClearChat" Color="Color.Error" Class="mt-2">Clear Chat</MudButton>
+    <MudButton OnClick="StartVoiceInput" Color="Color.Primary" Class="mt-2">
+        🎙️ Speak
+    </MudButton>
+</MudCard>
+@code {
+    private string UserMessage = "";
+    private List<GeminiChatMessage> Messages = new();
+    private DotNetObjectReference<WeatherChatBot>? _dotNetRef;
+
+
+    protected override void OnInitialized()
+    {
+        _dotNetRef = DotNetObjectReference.Create(this);
+    }
+
+    public async Task StartVoiceInput()
+    {
+        await JS.InvokeVoidAsync("voiceAssistant.startListening", _dotNetRef);
+    }
+
+    [JSInvokable]
+    public async Task ReceiveVoiceInput(string transcript)
+    {
+        UserMessage = transcript;
+        await SendMessage();
+    }
+
+    private async Task SendMessage()
+    {
+        if (string.IsNullOrWhiteSpace(UserMessage))
+            return;
+
+        Messages.Add(new GeminiChatMessage { Role = "user", Content = UserMessage });
+
+        var reply = await GeminiService.GenerateChatResponseAsync(Messages);
+
+        Messages.Add(new GeminiChatMessage { Role = "model", Content = reply });
+
+        UserMessage = "";
+    }
+
+    private void ClearChat()
+    {
+        Messages.Clear();
+    }
+}

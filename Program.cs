@@ -4,6 +4,7 @@ using MudBlazor.Services;
 using BlazorApp.Singletons;
 using BlazorApp.Services;
 using Supabase;
+//using YourAppNamespace.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +32,8 @@ builder.Services.AddMudBlazorSnackbar();
 builder.Services.AddSingleton<PersonalInfoService>();
 builder.Services.AddSingleton<FavoriteCityService>();
 builder.Services.AddScoped<WeatherAPIService>(); // ? Correct
+builder.Services.AddScoped<WeatherService>();
+builder.Services.AddSingleton<GeminiWeatherSummaryService>();
 
 
 

@@ -1,0 +1,302 @@
+﻿@page "/weather-comparison"
+@inject IHttpClientFactory ClientFactory
+@inject UserStateManager userState
+@using BlazorApp.Models
+@using System.Text.Json
+@using System.Globalization
+@using BlazorApp.Singletons
+@inject ISnackbar Snackbar
+@inject NavigationManager NavigationManager
+@inject GeminiWeatherSummaryService GeminiWeatherSummaryService
+
+<PageTitle>Weather Comparison</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.False" Class="mt-10 d-flex flex-column align-center">
+
+    <MudPaper Class="glass-card p-8 mb-10" Style="max-width: 700px; width: 100%;">
+        <MudCardHeader Class="d-flex flex-column align-items-center text-center">
+            <MudText Typo="Typo.h3" Class="login-title">WEATHER COMPARISON</MudText>
+        </MudCardHeader>
+
+        <MudCardContent>
+            <MudGrid Spacing="3" Class="custom-input">
+                <MudItem xs="12" sm="6">
+                    <MudTextField @bind-Value="city1" Label="Enter First City"
+                                  Variant="Variant.Outlined" Required FullWidth
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.LocationCity" />
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudTextField @bind-Value="city2" Label="Enter Second City"
+                                  Variant="Variant.Outlined" Required FullWidth
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.LocationCity" />
+                </MudItem>
+            </MudGrid>
+
+            <div class="d-flex justify-content-center mt-7">
+                <MudTooltip Text="Compare Weather">
+                    <MudButton OnClick="CompareWeather"
+                               Class="custom-btn"
+                               Color="Color.Primary"
+                               Variant="Variant.Outlined">
+                        <MudIcon Icon="@Icons.Material.Filled.CompareArrows" Class="mr-1" />
+                        Compare
+                    </MudButton>
+                </MudTooltip>
+            </div>
+        </MudCardContent>
+    </MudPaper>
+
+    @if (isLoading)
+    {
+        <div class="d-flex flex-column align-items-center my-4">
+            <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
+        </div>
+    }
+    else if (errorMessage != null)
+    {
+        <MudAlert Severity="Severity.Error" Class="mt-4">@errorMessage</MudAlert>
+    }
+    else if (weatherData1 != null && weatherData2 != null)
+    {
+        <MudGrid JustifyContent="Center" Spacing="6" Class="mt-6 ">
+            <MudItem xs="12" sm="6">
+                <MudPaper Class="city-card p-6 text-center hover-effect">
+                    <MudText Typo="Typo.h5" Class="font-bold  mt-4 mb-2 ">@city1</MudText>
+                    <MudDivider Class="my-2" />
+                    <MudText Typo="Typo.body1">
+                        <MudIcon Icon="@Icons.Material.Filled.Thermostat" Class="mr-2 mt-2 mb-4 " /> Temp: <b>@weatherData1.Temp°C</b>
+                    </MudText>
+                    <MudText Typo="Typo.body1">
+                        <MudIcon Icon="@Icons.Material.Filled.WaterDrop" Class="mr-2 mt-2 mb-4" /> Humidity: <b>@weatherData1.Humidity%</b>
+                    </MudText>
+                    <MudText Typo="Typo.body1">
+                        <MudIcon Icon="@Icons.Material.Filled.Air" Class="mr-2 mt-2 mb-4" /> Wind: <b>@weatherData1.WindSpeed m/s</b>
+                    </MudText>
+                </MudPaper>
+            </MudItem>
+
+            <MudItem xs="12" sm="6">
+                <MudPaper Class="city-card p-6 text-center hover-effect">
+                    <MudText Typo="Typo.h5" Class="font-bold mt-4 mb-2">@city2</MudText>
+                    <MudDivider Class="my-2" />
+                    <MudText Typo="Typo.body1">
+                        <MudIcon Icon="@Icons.Material.Filled.Thermostat" Class="mr-2  mt-2 mb-4" /> Temp: <b>@weatherData2.Temp°C</b>
+                    </MudText>
+                    <MudText Typo="Typo.body1">
+                        <MudIcon Icon="@Icons.Material.Filled.WaterDrop" Class="mr-2  mt-2 mb-4" /> Humidity: <b>@weatherData2.Humidity%</b>
+                    </MudText>
+                    <MudText Typo="Typo.body1">
+                        <MudIcon Icon="@Icons.Material.Filled.Air" Class="mr-2  mt-2 mb-4" /> Wind: <b>@weatherData2.WindSpeed m/s</b>
+                    </MudText>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    }
+</MudContainer>
+
+@if (!string.IsNullOrWhiteSpace(comparisonSummary))
+{
+    <MudPaper Class="p-4 my-4" Style="background-color: rgba(255,255,255,0.1); color: white; border-radius: 12px;">
+        <MudText Typo="Typo.h6" Color="Color.Primary">AI Summary (Gemini)</MudText>
+        <MudText Typo="Typo.body1">@comparisonSummary</MudText>
+    </MudPaper>
+}
+<style>
+
+    .glass-card {
+        background: rgba(255, 255, 255, 0.12);
+        border-radius: 1.5rem;
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+        color: white;
+        transition: all 0.3s ease;
+    }
+
+    .hover-effect:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.35);
+        cursor: pointer;
+    } 
+    .city-card {
+        background: rgba(255, 255, 255, 0.12);
+        border-radius: 1.5rem;
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+        color: white;
+        transition: all 0.3s ease;
+    }
+
+    .hover-effect:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.35);
+        cursor: pointer;
+    }
+
+    .city-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0px 12px 24px rgba(0, 173, 255, 0.4);
+    }
+    .back-button-container {
+        position: absolute;
+        left: 245px;
+        top: 80px;
+        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    }
+
+        .back-button-container:hover {
+            transform: scale(1.2) rotate(-10deg);
+            opacity: 0.8;
+        }
+
+
+    .custom-input .mud-input {
+        background: transparent !important; /* Removes background */
+        color: white !important; /* Text remains visible */
+        border-color: white !important; /* Keeps borders visible */
+    }
+
+    .custom-input .mud-input-label {
+        background: transparent !important; /* Fix label background */
+        color: white !important; /* Ensures readability */
+    }
+
+    .login-title {
+        font-size: 24px;
+        font-weight: 600;
+        letter-spacing: 3px;
+        color: #dcdcdc;
+    }
+
+    .custom-btn {
+        padding: 10px 50px;
+        border-radius: 6px;
+        font-weight: bold;
+        font-size: 16px;
+        color: #dcdcdc !important;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        transition: all 0.3s ease;
+    }
+
+        .custom-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+</style>
+
+
+@code {
+        private string city1 = string.Empty;
+        private string city2 = string.Empty;
+        private WeatherData weatherData1;
+        private WeatherData weatherData2;
+        private bool isLoading = false;
+        private string errorMessage = null;
+        private string comparisonSummary;
+
+        private async Task CompareWeather()
+        {
+            errorMessage = null;
+
+            // Check if cities are entered
+            if (string.IsNullOrWhiteSpace(city1) || string.IsNullOrWhiteSpace(city2))
+            {
+                Snackbar.Add("Please enter both city names before comparing.", Severity.Warning);
+                return;
+            }
+
+            isLoading = true;
+            StateHasChanged();
+
+            try
+            {
+                weatherData1 = await FetchWeatherData(city1);
+                weatherData2 = await FetchWeatherData(city2);
+
+                if (weatherData1 == null || weatherData2 == null)
+                {
+                Snackbar.Add("Failed to fetch weather data for one or both cities.", Severity.Error);
+                }
+
+           
+            }
+            catch (Exception ex)
+            {
+                errorMessage = $"An error occurred: {ex.Message}";
+                Snackbar.Add(errorMessage, Severity.Error);
+            }
+            finally
+            {
+                isLoading = false;
+                StateHasChanged();
+            }
+        }
+
+        private async Task<WeatherData> FetchWeatherData(string city)
+        {
+            var client = ClientFactory.CreateClient();
+            var requestUri = $"https://api.openweathermap.org/data/2.5/weather?q={Uri.EscapeDataString(city)}&appid=596a1e71b480c1efbdbdd4da71b6f8da&units=metric";
+
+            try
+            {
+                var response = await client.GetAsync(requestUri);
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    var weatherResponse = JsonSerializer.Deserialize<WeatherResponse>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    if (weatherResponse != null)
+                    {
+                        return new WeatherData
+                        {
+                            Temp = Convert.ToInt32(weatherResponse.Main.Temp),
+                            Humidity = Convert.ToInt32(weatherResponse.Main.Humidity),
+                            WindSpeed = weatherResponse.Wind.Speed
+                        };
+                    }
+                }
+                else
+                {
+                    Snackbar.Add($"Failed to fetch weather data for {city}. Please check the city name.", Severity.Error);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Snackbar.Add($"Error fetching data for {city}: {ex.Message}", Severity.Error);
+            }
+            return null;
+
+        }
+
+    private void GoBack()
+    {
+        NavigationManager.NavigateTo("/weather-analysis");
+    }
+
+    private class WeatherResponse
+    {
+        public MainData Main { get; set; }
+        public WindData Wind { get; set; }
+    }
+
+    private class MainData
+    {
+        public double Temp { get; set; }
+        public double Humidity { get; set; }
+    }
+
+    private class WindData
+    {
+        public double Speed { get; set; }
+    }
+
+    private class WeatherData
+    {
+        public int Temp { get; set; }
+        public int Humidity { get; set; }
+        public double WindSpeed { get; set; }
+    }
+}

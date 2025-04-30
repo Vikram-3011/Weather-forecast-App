@@ -7,74 +7,106 @@
 @inject ISnackbar Snackbar
 @inject AuthService authService
 @inject NavigationManager NavigationManager
+
 <PageTitle>User Profile</PageTitle>
 
-<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-5 d-flex justify-center" Style="max-width: 700px; width: 100%; height: auto;">
-    <MudCard Class="rounded-lg shadow-xl" Elevation="12" Style="padding: 40px;">
-        <MudCardHeader >
-            <MudText Typo="Typo.h5" Class="mb-0"> <srong>User Profile</srong></MudText>
-        </MudCardHeader>
-        <MudCardContent Class="p-6">
-            @if (isLoading)
-            {
-                <div class="d-flex flex-column align-items-center my-4">
-                    <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
-                    <MudText Typo="Typo.h6" Class="mt-3 text-primary">Loading user data, please wait...</MudText>
-                </div>
+<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-5 d-flex justify-center" Style="max-width: 800px; width: 100%;">
+    <MudPaper Elevation="10" Class="glass-card p-6">
+        <MudText  Typo="Typo.h4" Align="Align.Center" Class="mb-4 mt-5 font-bold">
+            <MudIcon Icon="@Icons.Material.Filled.Person" Class="me-2" /> User Profile
+        </MudText>
 
-            }
-            else if (user != null)
-            {
-                <MudStack Spacing="3">
-                    <MudDivider Class="mb-2" />
-                    <MudText Typo="Typo.body1">
-                        <MudIcon Icon="@Icons.Material.Filled.Person" Color="Color.Primary" />
-                        <strong> Name:</strong> @user.Name
-                    </MudText>
-                    <MudDivider />
-                    <MudText Typo="Typo.body1">
-                        <MudIcon Icon="@Icons.Material.Outlined.Email" Color="Color.Secondary" />
-                        <strong> Email:</strong> @user.Email
-                    </MudText>
-                    <MudDivider />
-                    <MudText Typo="Typo.body1">
-                        <MudIcon Icon="@Icons.Material.Outlined.Phone" Color="Color.Info" />
-                        <strong> Phone:</strong> @user.Phone
-                    </MudText>
-                    <MudDivider />
-                    <MudText Typo="Typo.body1">
-                        <MudIcon Icon="@Icons.Material.Outlined.LocationCity" Color="Color.Tertiary" />
-                        <strong> Address:</strong> @user.City
-                    </MudText>
-                    <MudDivider />
-                    <MudText Typo="Typo.body1">
-                        <MudIcon Icon="@Icons.Material.Outlined.Public" Color="Color.Warning" />
-                        <strong> Country:</strong> @user.Country
-                    </MudText>
-                </MudStack>
+        @if (isLoading)
+        {
+            <div class="d-flex flex-column align-items-center my-4">
+                <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
+                <MudText Typo="Typo.h6" Color="Color.Primary" Align="Align.Center" Class="mt-3">
+                    Loading user data, please wait...
+                </MudText>
+            </div>
+        }
+        else if (user != null)
+        {
+            <MudStack Spacing="2">
+                <MudText Class="mt-5 ml-6" Typo="Typo.body1">
+                    <MudIcon Icon="@Icons.Material.Filled.Person" /> <strong>Name:</strong> @user.Name
+                </MudText>
+                <MudText Class="mt-5 ml-6" Typo="Typo.body1">
+                    <MudIcon Icon="@Icons.Material.Outlined.Email" /> <strong>Email:</strong> @user.Email
+                </MudText>
+                <MudText Class="mt-5 ml-6" Typo="Typo.body1">
+                    <MudIcon Icon="@Icons.Material.Outlined.Phone" /> <strong>Phone:</strong> @user.Phone
+                </MudText>
+                <MudText Class="mt-5 ml-6" Typo="Typo.body1">
+                    <MudIcon Icon="@Icons.Material.Outlined.LocationCity" /> <strong>Address:</strong> @user.City
+                </MudText>
+                <MudText Class="mt-5 ml-6" Typo="Typo.body1">
+                    <MudIcon Icon="@Icons.Material.Outlined.Public" /> <strong>Country:</strong> @user.Country
+                </MudText>
+            </MudStack>
 
-                <MudDivider Class="my-7" />
-                <MudButton Variant="Variant.Outlined" Color="Color.Secondary" StartIcon="@Icons.Material.Outlined.Password" OnClick="NavigateToChangePassword" Class="mb-3">
+            <MudDivider Class="my-5" />
+
+            <MudStack Row="true" Spacing="2" JustifyContent="JustifyContent.Center">
+                <MudButton Variant="Variant.Text" Color="Color.Info" StartIcon="@Icons.Material.Outlined.Password" OnClick="NavigateToChangePassword" Class="hover-effect ml-8 mr-5 mb-6 mt10">
                     Change Password
                 </MudButton>
 
-                <MudCardActions >
-                    <MudButton Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Edit" OnClick="NavigateToEditProfile">
-                        Edit Profile
-                    </MudButton>
-                </MudCardActions>
-            }
-            else
-            {
-                <MudText Typo="Typo.h6" Class="text-center" Color="Color.Error">
-                    Loading user data, please wait...
-                </MudText>
-            }
-        </MudCardContent>
-       
-    </MudCard>
+                <MudButton Variant="Variant.Text" Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.Edit" OnClick="NavigateToEditProfile" Class="hover-effect  ml-8 mr-5 mb-6 mt10">
+                    Edit Profile
+                </MudButton>
+            </MudStack>
+        }
+        else
+        {
+            <MudText Typo="Typo.h6" Class="text-center" Color="Color.Error">
+                Failed to load user data.
+            </MudText>
+        }
+    </MudPaper>
 </MudContainer>
 
+
+<style>
+    body {
+        background: linear-gradient(135deg, #3a0ca3, #240046);
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .glass-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        width: 100%;
+    }
+
+    .hover-effect {
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        border-radius: 8px;
+    }
+
+        .hover-effect:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 5px 15px rgba(255, 255, 255, 0.1);
+        }
+
+    .mud-button-outlined {
+        border: 2px solid rgba(255, 255, 255, 0.3) !important;
+        color: white !important;
+    }
+
+        .mud-button-outlined:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+    .mud-text {
+        color: white;
+    }
+</style>
 
 
 @code {

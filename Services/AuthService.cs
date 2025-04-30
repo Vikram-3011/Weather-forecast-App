@@ -19,58 +19,104 @@ namespace BlazorApp.Services
             _snackbar = snackbar;
         }
 
-        public async Task<BlazorApp.Models.User?> SignUp(string email, string password, UserStateManager userState)
+        public async Task<bool> SignUp(string email, string password)
         {
             try
             {
+                // Check if the email already exists
+                var existingUser = await _supabaseClient.Auth.SignIn(email, password);
+                if (existingUser?.User != null)
+                {
+                    _snackbar.Add("Try to login, this email is already registered.", Severity.Warning);
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                if (!ex.Message.Contains("Invalid login credentials")) // Ignore login failure, as user may not exist
+                {
+                    _snackbar.Add($"Error checking existing user: {ex.Message}", Severity.Error);
+                    return false;
+                }
+            }
 
-
-                
-
+            try
+            {
                 var response = await _supabaseClient.Auth.SignUp(email, password);
+                if (response?.User != null)
+                {
+                    await _supabaseClient.Auth.SignOut(); // Ensure user is logged out until verification
+                    _snackbar.Add("Signup successful! Check your email to verify your account.", Severity.Success);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                string errorMessage = ex.Message.ToLower(); // Normalize message for easier handling
+
+                if (errorMessage.Contains("weak_password") || errorMessage.Contains("password should be at least 6 characters"))
+                {
+                    _snackbar.Add("Enter a strong password. It should be more than 6 characters.", Severity.Error);
+                }
+                else if (errorMessage.Contains("over_email_send_rate_limit"))
+                {
+                    _snackbar.Add("Too many signup attempts! Please wait a few minutes before trying again.", Severity.Warning);
+                }
+                else
+                {
+                    _snackbar.Add($"Signup failed: {errorMessage}", Severity.Error);
+                }
+            }
+            return false;
+        }
+
+
+
+
+        public async Task<string?> SignIn(string email, string password, UserStateManager userState)
+        {
+            try
+            {
+                var response = await _supabaseClient.Auth.SignIn(email, password);
                 currentUser = response?.User;
 
-                if (currentUser != null)
+                if (currentUser == null)
                 {
-                    var newUser = new BlazorApp.Models.User(currentUser.Email, null, new List<Favourite>());
-                    userState.SetUser(newUser);
-                    _snackbar.Add("User registered successfully!", Severity.Success);
-                    return newUser;
-                }
-            }
-            catch (Exception ex)  // Catch Supabase-specific exception
-            {
-                if (ex.Message.Contains("User already registered") || ex.Message.Contains("already exists"))
-                {
-                    _snackbar.Add("The email already exists. Try logging in.", Severity.Warning);
-                    return null;
+                    _snackbar.Add("Incorrect email or password. Please try again.", Severity.Error);
+                    return "Invalid login credentials.";
                 }
 
-                _snackbar.Add($"Registration failed: {ex.Message}", Severity.Error);
-            }
-           
-            return null;
-                 }
+                if (!currentUser.EmailConfirmedAt.HasValue)
+                {
+                    await _supabaseClient.Auth.SignOut();
+                    _snackbar.Add("Email not verified. Please check your inbox.", Severity.Warning);
+                    return "Email not verified.";
+                }
 
-
-        public async Task<string> SignIn(string email, string password, UserStateManager userState)
-        {
-            var response = await _supabaseClient.Auth.SignIn(email, password);
-            Supabase.Gotrue.User? currentUser = response.User; // Fully qualified name
-
-            if (currentUser != null)
-            {
                 var loggedInUser = new BlazorApp.Models.User(currentUser.Email, null, new List<Favourite>());
-                userState.SetUser(loggedInUser); // Store user email globally
-                _snackbar.Add("User Logged in successfully!", Severity.Success);
+                userState.SetUser(loggedInUser);
+                _snackbar.Add("Login successful!", Severity.Success);
                 return null;
             }
-            else
+            catch (Exception ex)
             {
-                _snackbar.Add("Login failed!", Severity.Error);
-                return "Login failed!";
+                string errorMessage = ex.Message;
+
+                // Handle invalid credentials error
+                if (errorMessage.Contains("invalid_credentials") || errorMessage.Contains("Invalid login credentials"))
+                {
+                    _snackbar.Add("Incorrect email or password. Please try again.", Severity.Error);
+                    return "Invalid login credentials.";
+                }
+                else
+                {
+                    _snackbar.Add($"Login failed: {errorMessage}", Severity.Error);
+                    return $"Login failed: {errorMessage}";
+                }
             }
         }
+
+
 
         public async Task<string> SignOut(UserStateManager userState)
         {
@@ -96,17 +142,25 @@ namespace BlazorApp.Services
             try
             {
                 var session = _supabaseClient.Auth.CurrentSession;
-
-                if (session == null)
-                    throw new Exception("User not logged in.");
-
-                // Create a UserAttributes object and set the new password
-                var userAttributes = new UserAttributes
+                if (session == null || session.User == null)
                 {
-                    Password = newPassword
-                };
+                    _snackbar.Add("User not logged in. Please log in again.", Severity.Warning);
+                    return false;
+                }
 
-                // Update the user's attributes
+                var email = session.User.Email;
+
+                // Try to authenticate with the current password
+                var reauthResponse = await _supabaseClient.Auth.SignIn(email, currentPassword);
+
+                if (reauthResponse?.User == null)
+                {
+                    _snackbar.Add("Incorrect current password. Please try again.", Severity.Error);
+                    return false;
+                }
+
+                // Proceed to update the password
+                var userAttributes = new UserAttributes { Password = newPassword };
                 await _supabaseClient.Auth.Update(userAttributes);
 
                 _snackbar.Add("Password updated successfully!", Severity.Success);
@@ -114,10 +168,25 @@ namespace BlazorApp.Services
             }
             catch (Exception ex)
             {
-                _snackbar.Add($"Failed to change password: {ex.Message}", Severity.Error);
+                if (ex.Message.Contains("invalid_credentials"))
+                {
+                    _snackbar.Add("Incorrect current password. Please try again.", Severity.Error);
+                }
+                else if (ex.Message.Contains("same_password"))
+                {
+                    _snackbar.Add("New password must be different from the current password.", Severity.Warning);
+                }
+                else
+                {
+                    _snackbar.Add($"Failed to change password: {ex.Message}", Severity.Error);
+                }
                 return false;
             }
         }
+
+
+
+
 
 
         public async Task SendPasswordResetLink(string email)
@@ -125,8 +194,7 @@ namespace BlazorApp.Services
             try
             {
                 await _supabaseClient.Auth.ResetPasswordForEmail(email);
-
-
+                _snackbar.Add("Password reset email sent. Check your inbox.", Severity.Success);
             }
             catch (Exception ex)
             {
@@ -134,17 +202,66 @@ namespace BlazorApp.Services
             }
         }
 
-        // Reset the Userr Password
-        public async Task<bool> ResetPassword(string email)
+        public async Task<bool> ResetPassword(string newPassword, string accessToken)
         {
             try
             {
-                await _supabaseClient.Auth.ResetPasswordForEmail(email);
+                if (string.IsNullOrEmpty(accessToken))
+                {
+                    _snackbar.Add("Invalid or expired password reset link.", Severity.Error);
+                    return false;
+                }
+
+                // Set the session using the access token (ensure correct refreshToken handling)
+                var session = await _supabaseClient.Auth.SetSession(accessToken, "");
+
+                if (session == null || session.User == null)
+                {
+                    _snackbar.Add("Invalid or expired reset link.", Severity.Error);
+                    return false;
+                }
+
+                // Proceed to update the password
+                var userAttributes = new UserAttributes { Password = newPassword };
+                await _supabaseClient.Auth.Update(userAttributes);
+
+                _snackbar.Add("Password updated successfully! You can now log in.", Severity.Success);
                 return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error resetting password: {ex.Message}");
+                _snackbar.Add($"Error updating password: {ex.Message}", Severity.Error);
+                return false;
+            }
+        }
+
+
+
+
+        public async Task<bool> ConfirmEmail()
+        {
+            try
+            {
+                var session = _supabaseClient.Auth.CurrentSession;
+                if (session == null || session.AccessToken == null)
+                {
+                    _snackbar.Add("Session expired or invalid. Please log in again.", Severity.Warning);
+                    return false;
+                }
+
+                var user = await _supabaseClient.Auth.GetUser(session.AccessToken);
+                if (user != null && user.EmailConfirmedAt.HasValue)
+                {
+                    _snackbar.Add("Email verified successfully. You can now log in.", Severity.Success);
+                    return true;
+                }
+
+                _snackbar.Add("Email verification failed. Try again or request a new confirmation email.", Severity.Warning);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                _snackbar.Add($"Email confirmation check failed: {ex.Message}", Severity.Error);
                 return false;
             }
         }
@@ -153,13 +270,22 @@ namespace BlazorApp.Services
         {
             try
             {
+                var session = _supabaseClient.Auth.CurrentSession;
+                if (session == null || session.User == null)
+                {
+                    _snackbar.Add("Session expired or invalid. Please request a new reset link.", Severity.Warning);
+                    return false;
+                }
+
                 var userAttributes = new UserAttributes { Password = newPassword };
-                await _supabaseClient.Auth.Update(userAttributes);
+                await _supabaseClient.Auth.Update(userAttributes); // Correct usage
+
+                _snackbar.Add("Password updated successfully! You can now log in.", Severity.Success);
                 return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error updating password: {ex.Message}");
+                _snackbar.Add($"Error updating password: {ex.Message}", Severity.Error);
                 return false;
             }
         }

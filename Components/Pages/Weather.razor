@@ -1,250 +1,321 @@
-﻿@page "/weather"
-@using System.Text.Json
-@using System.Text.Json.Serialization
-@using System.Collections.Generic
-@inject IHttpClientFactory ClientFactory
-@inject UserStateManager userState
-@inject DatabaseController databaseController
-@using BlazorApp.Controllers
-@using BlazorApp.Singletons
-@using BlazorApp.Models
-@using MongoDB.Bson;
-@inject ISnackbar Snackbar
-@inject IJSRuntime JS
-@using System.Globalization
+﻿    @page "/weather"
+    @using System.Text.Json
+    @using System.Text.Json.Serialization
+    @using System.Collections.Generic
+    @inject IHttpClientFactory ClientFactory
+    @inject UserStateManager userState
+    @inject DatabaseController databaseController
+    @using BlazorApp.Controllers
+    @using BlazorApp.Singletons
+    @using BlazorApp.Models
+    @using MongoDB.Bson;
+    @inject ISnackbar Snackbar
+    @inject IJSRuntime JS
+    @using System.Globalization
+    @using BlazorApp.Services
+    @inject WeatherService weatherService
+    @inject GeminiWeatherSummaryService geminiService
+    @using System.Text
 
-<PageTitle>Weather Forecast</PageTitle>
+    <PageTitle>Weather Forecast</PageTitle>
+<MudButton>hello world</MudButton>
 
+    <MudText Typo="Typo.h3" Align="Align.Center" Class="title" Style="color:white;">WEATHER FORECAST</MudText>
 
-<MudText Typo="Typo.h3" Align="Align.Center">Weather Forecast</MudText>
-<MudText Typo="Typo.body1" Align="Align.Center">Enter a city name to get weather data.</MudText>
+    <MudCard Class="weather-card rounded-xl mx-auto my-6 py-8 px-6 glass-card" Elevation="5">
+        <MudContainer MaxWidth="MaxWidth.Small">
+            <MudTextField @bind-Value="@cityName"
+            Label="Enter City Name"
+            Variant="Variant.Filled"
+            Class="custom-input mb-4"
+            Adornment="Adornment.Start"
+            AdornmentIcon="@Icons.Material.Filled.LocationOn"
+            Required
+            OnKeyDown="HandleKeyDown" />
 
-<MudCard Class="rounded-lg w-50 my-4 py-8 mx-auto" Elevation="5">
-    <MudContainer MaxWidth="MaxWidth.Small">
-        <MudTextField Class="mt-2" @bind-Value="@cityName" Label="Enter City Name" Variant="Variant.Outlined" OnKeyDown="HandleKeyDown" Required />
-        <MudTextField Class="mt-2" @bind-Value="@numDays" Label="Enter Days (1-5)" Variant="Variant.Outlined" Type="number" />
-        <MudTooltip Text="Fetch Weather Forecast">
-            <MudButton Class="mt-2" OnClick="@FetchWeatherData" Variant="Variant.Outlined" Color="Color.Primary">Get Weather</MudButton>
-        </MudTooltip>
-        @if (userState.IsLoggedIn())
-        {
-            <MudTooltip Text="Add to Fav cities">
-                <MudButton Class="mt-2" OnClick="@SaveToFavorites" StartIcon="@Icons.Material.Filled.Favorite" Variant="Variant.Text" Color="Color.Secondary">
-                    Add to Fav cities
+            <MudTextField @bind-Value="@numDays"
+            Label="Enter Days (1-5)"
+            Variant="Variant.Filled"
+            Type="number"
+            Class="custom-input mb-4"
+            Adornment="Adornment.Start"
+            AdornmentIcon="@Icons.Material.Filled.CalendarToday" />
+
+            <MudTooltip Text="Fetch Weather Forecast">
+                <MudButton OnClick="@FetchWeatherData" Variant="Variant.Filled" Color="Color.Primary" Class="w-full mb-2">
+                    <MudIcon Icon="@Icons.Material.Outlined.CloudQueue" Class="mr-2" />
+                    Get Weather
                 </MudButton>
             </MudTooltip>
-        }
-    </MudContainer>
-</MudCard>
 
-@if (dailyForecasts != null && dailyForecasts.Count > 0)
-{
-    <MudText Typo="Typo.h5" Align="Align.Center">Weather Forecast for @cityName</MudText>
-    <MudGrid JustifyContent="Center" Class="mt-4">
-        @foreach (var forecast in dailyForecasts)
-        {
-            <MudItem xs="12" sm="6" md="4" lg="3">
-                <MudCard Class="p-4 text-center">
-                    <MudText Typo="Typo.h6">@forecast.Date.ToString("dddd, MMM dd")</MudText>
-                    <img src="@GetWeatherIcon(forecast.Icon)" alt="@forecast.Description" width="100" height="100" />
-
-                    <MudText Typo="Typo.subtitle1">@forecast.Description</MudText>
-                    <MudText Typo="Typo.body2">Temp: Min @forecast.TempMin°C - Max @forecast.TempMax°C</MudText>
-                    <MudText Typo="Typo.body2">Feels Like: @forecast.FeelsLike°C</MudText>
-                    <MudText Typo="Typo.body2">Wind: @forecast.WindSpeed m/s</MudText>
-                    @if (userState.IsLoggedIn())
-                    {
-                        <MudText Typo="Typo.body2">Humidity: @forecast.Humidity%</MudText>
-                        <MudText Typo="Typo.body2">Pressure: @forecast.Pressure </MudText>
-                        <MudText Typo="Typo.body2">SeaLevel: @forecast.SeaLevel </MudText>
-                        <MudText Typo="Typo.body2">GroundLevel: @forecast.GroundLevel </MudText>
-                    }
-                </MudCard>
-            </MudItem>
-        }
-    </MudGrid>
-
-    <MudGrid Spacing="4" Justify="Justify.Center" Class="mt-4 mb-6">
-        <MudItem xs="12" sm="4">
-            <MudButton OnClick="ShowTemperatureChart" Color="Color.Error" Variant="Variant.Outlined" Class="px-5 py-2 mx-2">
-                🔥 TEMPERATURE
-            </MudButton>
-        </MudItem>
-        <MudItem xs="12" sm="4">
-            <MudButton OnClick="ShowHumidityChart" Color="Color.Info" Variant="Variant.Outlined" Class="px-5 py-2 mx-2">
-                💧 HUMIDITY
-            </MudButton>
-        </MudItem>
-        <MudItem xs="12" sm="4">
-            <MudButton OnClick="ShowWindSpeedChart" Color="Color.Success" Variant="Variant.Outlined" Class="px-5 py-2 mx-2">
-                🌬️ WIND SPEED
-            </MudButton>
-        </MudItem>
-    </MudGrid>
-
-
-}
-else if (showError)
-{
-    <MudAlert Severity="Severity.Error">Failed to fetch weather data for @cityName.</MudAlert>
-}
-
-<!-- Temperature Chart -->
-@if (showTemperatureChart)
-{
-    <MudCard Class="p-3 mt-4 mx-auto" Style="max-width: 600px; max-height: 350px;">
-        <MudText Typo="Typo.h6" Class="text-center text-blue-600">📊 Temperature Trends</MudText>
-        <MudChart ChartType="ChartType.Bar" ChartSeries="TemperatureSeries" Labels="Labels" Options="chartOptions" />
+            @if (userState.IsLoggedIn())
+            {
+                <MudTooltip Text="Add to Fav cities">
+                    <MudButton OnClick="@SaveToFavorites" StartIcon="@Icons.Material.Filled.Favorite" Variant="Variant.Text" Color="Color.Secondary" Class="w-full ml-4 pl-3">
+                        Add to Fav cities
+                    </MudButton>
+                </MudTooltip>
+            }
+        </MudContainer>
     </MudCard>
-}
 
-<!-- Humidity Chart -->
-@if (showHumidityChart)
+@if (!string.IsNullOrWhiteSpace(forecastSummary))
 {
-    <MudCard Class="p-3 mt-4 mx-auto" Style="max-width: 600px; max-height: 350px;">
-        <MudText Typo="Typo.h6" Class="text-center text-green-600">📊 Humidity Levels</MudText>
-        <MudChart ChartType="ChartType.Bar" ChartSeries="HumiditySeries" Labels="Labels" Options="chartOptions" />
-    </MudCard>
-}
-
-<!-- Wind Speed Chart -->
-@if (showWindSpeedChart)
-{
-    <MudCard Class="p-3 mt-4 mx-auto" Style="max-width: 600px; max-height: 350px;">
-        <MudText Typo="Typo.h6" Class="text-center text-red-600">📊 Wind Speed</MudText>
-        <MudChart ChartType="ChartType.Bar" ChartSeries="WindSpeedSeries" Labels="Labels" Options="chartOptions" />
-    </MudCard>
+    <MudPaper Class="p-4 my-3 forecast-summary " Elevation="4" Style="background: rgba(255, 255, 255, 0.05); border-radius: 12px;">
+        <MudText Typo="Typo.h6" Color="Color.Warning" Class="mb-2">Weather Summary :</MudText>
+        <MudText Typo="Typo.body1">@forecastSummary</MudText>
+    </MudPaper>
 }
 
 
-@code {
-    private string cityName = string.Empty;
-    private int numDays = 4;
-    private List<DailyForecast> dailyForecasts;
-    private bool showError = false;
-    private int searchCount = 0;  // Track the number of searches
-    private readonly int maxSearches = 5;
 
-    private bool showTemperatureChart = false;
-    private bool showHumidityChart = false;
-    private bool showWindSpeedChart = false;
-    private List<string> userAlertPreferences = new();
 
-    private List<string> Labels { get; set; } = new();
-    private List<ChartSeries> TemperatureSeries { get; set; } = new();
-    private List<ChartSeries> HumiditySeries { get; set; } = new();
-    private List<ChartSeries> WindSpeedSeries { get; set; } = new();
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+
+    @if (dailyForecasts != null && dailyForecasts.Count > 0)
     {
-        if (firstRender && !userState.IsLoggedIn())
-        {
-            searchCount = await GetSearchCount();  // Get search count from localStorage
-            StateHasChanged(); // Re-render the component
-        }
+        <MudText Typo="Typo.h5" Align="Align.Center" Class="text-white mb-4">Weather Forecast for @cityName</MudText>
+
+        <MudGrid JustifyContent="Center" Class="mt-4">
+            @foreach (var forecast in dailyForecasts)
+            {
+                <MudItem xs="12" sm="6" md="4" lg="3">
+                    <MudCard Class="glass-card-forecast p-4 text-center mb-8 " Elevation="6">
+
+                        <MudText Typo="Typo.h6" Class="text-white;">@forecast.Date.ToString("dddd, MMM dd")</MudText>
+                        <div style="justify-content:center; align-content:center;">
+                            <img src="@GetWeatherIcon(forecast.Icon)" alt="@forecast.Description" width="80" height="80" class="my-2" />
+                        </div>
+                        <MudText Typo="Typo.h6" Class="text-white; mb-3">@forecast.Description</MudText>
+                        <MudText Typo="Typo.body2" Class="text-white">Temp: Min @forecast.TempMin°C - Max @forecast.TempMax°C</MudText>
+                        <MudText Typo="Typo.body2" Class="text-white">Feels Like: @forecast.FeelsLike°C</MudText>
+                        <MudText Typo="Typo.body2" Class="text-white">Wind: @forecast.WindSpeed m/s</MudText>
+
+                        @if (userState.IsLoggedIn())
+                        {
+                            <MudText Typo="Typo.body2" Class="text-white">Humidity: @forecast.Humidity%</MudText>
+                            <MudText Typo="Typo.body2" Class="text-white">Pressure: @forecast.Pressure</MudText>
+                            <MudText Typo="Typo.body2" Class="text-white">Sea Level: @forecast.SeaLevel</MudText>
+                            <MudText Typo="Typo.body2" Class="text-white">Ground Level: @forecast.GroundLevel</MudText>
+                        }
+                    </MudCard>
+                </MudItem>
+            }
+        </MudGrid>
+    }
+    else if (showError)
+    {
+        Snackbar.Add($"Failed to fetch weather data for {cityName}.", Severity.Error);
 
     }
 
-    private async Task FetchWeatherData()
-    {
-        showError = false;
-
-        if (string.IsNullOrWhiteSpace(cityName) || numDays < 1 || numDays > 5)
-        {
-            showError = true;
-            return;
+    <style>
+        .weather-card {
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            background-color: rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: white;
+            max-width: 500px;
+            -webkit-text-fill-color:white;
         }
 
-        if (!userState.IsLoggedIn())
+        .custom-input .mud-input-root {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+        }
+
+        .mud-button {
+            border-radius: 12px;
+        }
+
+        .glass-card-forecast {
+            backdrop-filter: blur(14px) saturate(150%);
+            -webkit-backdrop-filter: blur(14px) saturate(150%);
+            background-color: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 18px;
+            color: white;
+            transition: transform 0.3s ease;
+        
+        }
+
+            .glass-card-forecast:hover {
+                transform: scale(1.03);
+                border-color: rgba(0, 173, 255, 0.5); /* Blue neon border */
+                box-shadow: 0 0 20px rgba(0, 173, 255, 0.4);
+            }
+
+        .title {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            color: #dcdcdc;
+        }
+    
+        .forecast-summary{
+
+            color:white;
+
+        }
+    </style>
+
+    @code {
+        private string cityName = string.Empty;
+        private int numDays = 5;
+        private List<DailyForecast> dailyForecasts;
+        private bool showError = false;
+        private int searchCount = 0;  // Track the number of searches
+        private readonly int maxSearches = 5;
+
+        private bool showTemperatureChart = false;
+        private bool showHumidityChart = false;
+        private bool showWindSpeedChart = false;
+        private List<string> userAlertPreferences = new();
+
+        private List<string> Labels { get; set; } = new();
+        private List<ChartSeries> TemperatureSeries { get; set; } = new();
+        private List<ChartSeries> HumiditySeries { get; set; } = new();
+        private List<ChartSeries> WindSpeedSeries { get; set; } = new();
+
+        private string forecastSummary = "";
+        private List<WeatherForecastData> forecastData;
+
+
+    
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            if (searchCount >= maxSearches)
+            if (firstRender && !userState.IsLoggedIn())
             {
-                Snackbar.Add("Search limit reached! Please log in to continue.", Severity.Warning);
+                searchCount = await GetSearchCount();  // Get search count from localStorage
+                StateHasChanged(); // Re-render the component
+            }
+
+        }
+
+        private async Task FetchWeatherData()
+        {
+            showError = false;
+
+            if (string.IsNullOrWhiteSpace(cityName) || numDays < 1 || numDays > 5)
+            {
+                showError = true;
                 return;
             }
 
-            searchCount++;
-            await SetSearchCount(searchCount);
-        }
-
-        var client = ClientFactory.CreateClient();
-        var requestUri = $"https://api.openweathermap.org/data/2.5/forecast?q={Uri.EscapeDataString(cityName)}&appid=596a1e71b480c1efbdbdd4da71b6f8da";
-
-        try
-        {
-            var response = await client.GetAsync(requestUri);
-            if (response.IsSuccessStatusCode)
+            if (!userState.IsLoggedIn())
             {
-                var json = await response.Content.ReadAsStringAsync();
-                var forecastResponse = JsonSerializer.Deserialize<ForecastResponse>(json, new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true
-                    });
-
-                if (forecastResponse != null)
+                if (searchCount >= maxSearches)
                 {
-                    dailyForecasts = forecastResponse.List
-                        .GroupBy(forecast => DateTimeOffset.FromUnixTimeSeconds(forecast.Dt).Date)
-                        .Take(numDays)
-                        .Select(group => new DailyForecast
-                            {
-                                Date = group.Key,
-                                TempMin = Convert.ToInt32(group.Min(f => f.Main.TempMin)),
-                                TempMax = Convert.ToInt32(group.Max(f => f.Main.TempMax)),
-                                FeelsLike = Convert.ToInt32(group.Average(f => f.Main.FeelsLike)),
-                                Icon = group.First().Weather[0].Icon,
-                                Description = group.First().Weather[0].Description,
-                                Humidity = Convert.ToInt32(group.Average(f => f.Main.Humidity)),
-                                Pressure = Convert.ToInt32(group.Average(f => f.Main.Pressure)),
-                                WindSpeed = group.Average(f => f.Wind.Speed),
-                                SeaLevel = group.First().Main.SeaLevel,  // Get Sea Level pressure from main data
-                                GroundLevel = group.First().Main.GroundLevel,
-
-                            })
-                        .ToList();
-
-                    await LoadWeatherData();
+                    Snackbar.Add("Search limit reached! Please log in to continue.", Severity.Warning);
+                    return;
                 }
 
-
+                searchCount++;
+                await SetSearchCount(searchCount);
             }
-            else
+
+            var client = ClientFactory.CreateClient();
+            var requestUri = $"https://api.openweathermap.org/data/2.5/forecast?q={Uri.EscapeDataString(cityName)}&appid=596a1e71b480c1efbdbdd4da71b6f8da";
+
+            try
             {
+                var response = await client.GetAsync(requestUri);
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    var forecastResponse = JsonSerializer.Deserialize<ForecastResponse>(json, new JsonSerializerOptions
+                        {
+                            PropertyNameCaseInsensitive = true
+                        });
+
+                    if (forecastResponse != null)
+                    {
+                        dailyForecasts = forecastResponse.List
+                            .GroupBy(forecast => DateTimeOffset.FromUnixTimeSeconds(forecast.Dt).Date)
+                            .Take(numDays)
+                            .Select(group => new DailyForecast
+                                {
+                                    Date = group.Key,
+                                    TempMin = Convert.ToInt32(group.Min(f => f.Main.TempMin)),
+                                    TempMax = Convert.ToInt32(group.Max(f => f.Main.TempMax)),
+                                    FeelsLike = Convert.ToInt32(group.Average(f => f.Main.FeelsLike)),
+                                    Icon = group.First().Weather[0].Icon,
+                                    Description = group.First().Weather[0].Description,
+                                    Humidity = Convert.ToInt32(group.Average(f => f.Main.Humidity)),
+                                    Pressure = Convert.ToInt32(group.Average(f => f.Main.Pressure)),
+                                    WindSpeed = group.Average(f => f.Wind.Speed),
+                                    SeaLevel = group.First().Main.SeaLevel,  // Get Sea Level pressure from main data
+                                    GroundLevel = group.First().Main.GroundLevel,
+
+                                })
+                            .ToList();
+
+                        await LoadWeatherData();
+                    var summaryInput = BuildWeatherSummaryInput(dailyForecasts);
+                    forecastSummary = await geminiService.GenerateForecastSummaryAsync(summaryInput);
+
+                    }
+
+
+                }
+                else
+                {
+                    showError = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
                 showError = true;
             }
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error: {ex.Message}");
-            showError = true;
-        }
-    }
 
-    private async Task<int> GetSearchCount()
-    {
-        try
+        private string BuildWeatherSummaryInput(List<DailyForecast> forecasts)
         {
-            var count = await JS.InvokeAsync<int?>("localStorage.getItem", "weatherSearchCount");
-            return count ?? 0;
+            var sb = new StringBuilder();
+
+            foreach (var forecast in forecasts)
+            {
+                sb.AppendLine($"{forecast.Date:dddd, MMM dd}:");
+                sb.AppendLine($"  Description: {forecast.Description}");
+                sb.AppendLine($"  Temp Min: {forecast.TempMin}°C, Max: {forecast.TempMax}°C");
+                sb.AppendLine($"  Feels Like: {forecast.FeelsLike}°C");
+                sb.AppendLine($"  Wind: {forecast.WindSpeed:F1} m/s");
+                sb.AppendLine($"  Humidity: {forecast.Humidity}%");
+                sb.AppendLine();
+            }
+
+            return sb.ToString();
         }
-        catch
+
+        private async Task<int> GetSearchCount()
         {
-            return 0;
+            try
+            {
+                var count = await JS.InvokeAsync<int?>("localStorage.getItem", "weatherSearchCount");
+                return count ?? 0;
+            }
+            catch
+            {
+                return 0;
+            }
         }
-    }
 
-    // Set search count in localStorage
-    private async Task SetSearchCount(int count)
-    {
-        await JS.InvokeVoidAsync("localStorage.setItem", "weatherSearchCount", count);
-    }
+        // Set search count in localStorage
+        private async Task SetSearchCount(int count)
+        {
+            await JS.InvokeVoidAsync("localStorage.setItem", "weatherSearchCount", count);
+        }
 
-    // Reset search count when the user logs in
-    private async Task ResetSearchCount()
-    {
-        await SetSearchCount(0);
-    }
-    private async Task SaveToFavorites()
+        // Reset search count when the user logs in
+        private async Task ResetSearchCount()
+        {
+            await SetSearchCount(0);
+        }
+        private async Task SaveToFavorites()
     {
         if (!string.IsNullOrWhiteSpace(cityName) && userState.IsLoggedIn())
         {
@@ -276,18 +347,20 @@ else if (showError)
     }
 
     [Inject] NavigationManager NavigationManager { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         await LoadWeatherData();
         var uri = new Uri(NavigationManager.Uri);
         var queryParams = System.Web.HttpUtility.ParseQueryString(uri.Query);
         var city = queryParams["city"];
-
+      
         if (!string.IsNullOrEmpty(city))
         {
             cityName = city;
             await FetchWeatherData(); // Automatically fetch weather on page load
         }
+        
     }
 
     private string GetWeatherIcon(string iconCode)
@@ -356,8 +429,7 @@ else if (showError)
         };
     }
 
-
- 
+  
 
     public class ForecastResponse
     {

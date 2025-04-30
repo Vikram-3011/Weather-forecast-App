@@ -1,0 +1,149 @@
+﻿@page "/historical-alerts"
+@rendermode InteractiveServer
+@inject DatabaseController databaseController
+@inject UserStateManager userState
+@inject NavigationManager NavigationManager
+@inject ISnackbar snackbar
+@inject BlazorApp.Controllers.DatabaseController DatabaseController
+@using BlazorApp.Models
+
+@using BlazorApp.Controllers
+@using BlazorApp.Singletons
+@using BlazorApp.Models
+
+
+<PageTitle>Historical Weather Alerts</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Medium">
+    <MudCard Class="glassmorphism-card-wide pa-4 rounded-lg mt-5" Elevation="0">
+        <MudCardHeader Class="d-flex flex-column align-items-center text-center">
+            <MudText Typo="Typo.h4" Class="login-title">Historical Weather Alerts</MudText>
+        </MudCardHeader>
+
+        <MudCardContent>
+            @if (isLoading)
+            {
+                <div class="d-flex flex-column align-items-center my-4">
+                    <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
+                    <MudText Typo="Typo.h6" Color="Color.Primary" Align="Align.Center" Class="mt-3">
+                        Loading history...
+                    </MudText>
+                </div>
+            }
+            else if (historicalAlerts != null && historicalAlerts.Count > 0)
+            {
+                <MudCard Class="glassmorphism-inner-card p-0 mt-3" Elevation="0">
+                    <MudTable Items="@historicalAlerts" Hover="true" Striped="false" Dense="false">
+                        <HeaderContent>
+                            <MudTh>City</MudTh>
+                            <MudTh>Alert</MudTh>
+                            <MudTh>Severity</MudTh>
+                            <MudTh>Date & Time</MudTh>
+                        </HeaderContent>
+
+                        <RowTemplate Context="alert">
+                            <MudTd>@alert.CityName</MudTd>
+                            <MudTd>@alert.Headline</MudTd>
+                            <MudTd>
+                                <MudChip Color="@(alert.Severity == "Severe" ? Color.Error : Color.Warning)" T="string">
+                                    @alert.Severity
+                                </MudChip>
+                            </MudTd>
+                            <MudTd>@alert.DateRecorded.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</MudTd>
+                        </RowTemplate>
+                    </MudTable>
+                </MudCard>
+            }
+            else
+            {
+                <MudAlert Severity="Severity.Info" Class="mt-4">No historical alerts available.</MudAlert>
+            }
+
+           @*  <div class="d-flex justify-content-center mt-4">
+                <MudButton Color="Color.Primary" Variant="Variant.Outlined" OnClick="@NavigateToFavorites" Class="custom-btn">
+                    BACK TO FAVORITES
+                </MudButton>
+            </div> *@
+        </MudCardContent>
+    </MudCard>
+</MudContainer>
+
+
+<style>
+    body {
+        background: linear-gradient(to right, #3a0ca3, #240046);
+        margin: 0;
+        padding: 0;
+    }
+
+    .glassmorphism-card-wide {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.25);
+        padding: 2rem;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .glassmorphism-inner-card {
+        background: transparent !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        border: none !important;
+        box-shadow: none !important;
+        color: #f0f0f0 !important;
+    }
+
+
+
+    .login-title {
+        font-size: 24px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        color: #f0f0f0;
+    }
+
+    .custom-btn {
+        padding: 10px 40px;
+        border-radius: 8px;
+        font-weight: bold;
+        font-size: 15px;
+        color: #e0e0e0 !important;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        transition: all 0.3s ease-in-out;
+    }
+
+        .custom-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+</style>
+
+@code {
+    private List<WeatherAlertHistory> historicalAlerts = new();
+    private bool isLoading = true;
+    private string userEmail = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        isLoading = true;
+        userEmail = userState.UserEmail;
+
+        if (!string.IsNullOrEmpty(userEmail))
+        {
+            historicalAlerts = await databaseController.GetHistoricalAlertsByUser(userEmail);
+        }
+
+        isLoading = false;
+        StateHasChanged();
+    }
+
+    private void NavigateToFavorites()
+    {
+        NavigationManager.NavigateTo("/favourites");
+    }
+}

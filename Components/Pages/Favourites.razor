@@ -13,71 +13,149 @@
 @inject WeatherAPIService WeatherService
 
 <PageTitle>Favorite Cities</PageTitle>
-<MudText Typo="Typo.h4" Align="Align.Center">Favorite Cities</MudText>
 
-<div class="d-flex justify-content-end mb-3">
-    <MudButton Color="Color.Tertiary" Variant="Variant.Filled" OnClick="NavigateToAlertPreferences">
-        <MudIcon Icon="@Icons.Material.Filled.Settings" Class="mr-2" />
+<MudText Typo="Typo.h4" Align="Align.Center" Class="heading-fav">FAVOURITE CITIES</MudText>
+
+
+<div class="d-flex justify-content-center gap-3 mb-8 mt-6" >
+    <MudButton Color="Color.Success" Variant="Variant.Outlined" OnClick="NavigateToAlertPreferences" Class="top-button glass-button">
+        <MudIcon Icon="@Icons.Material.Filled.Settings" Class="mr-1" />
         Alert Preferences
     </MudButton>
+    <MudButton Color="Color.Primary" Variant="Variant.Outlined" OnClick="NavigateToHistoricalAlerts" Class="top2-button glass-button">
+        <MudIcon Icon="@Icons.Material.Filled.History" Class="mr-1" />
+        View Historical Alerts
+    </MudButton>
 </div>
+
 @if (isLoading)
 {
-
     <div class="d-flex flex-column align-items-center my-4">
         <MudProgressCircular Size="Size.Large" Color="Color.Primary" Indeterminate="true" />
         <MudText Typo="Typo.h6" Color="Color.Primary" Align="Align.Center" Class="mt-3">
             Fetching location...
         </MudText>
     </div>
-
 }
-
-else if (favouriteCities != null && favouriteCities.Count > 0) //
+else if (favouriteCities != null && favouriteCities.Count > 0)
 {
-    <MudPaper Elevation="3" Class="p-4">
-        <MudTable Items="@favouriteCities" Hover="true" Striped="false" Dense="false">
-            <HeaderContent>
-                <MudTh Class="text-lg font-bold">City Name</MudTh>
-                <MudTh Class="text-lg font-bold">Date Added</MudTh>
-                <MudTh Class="text-lg font-bold"></MudTh>
-            </HeaderContent>
-
-            <RowTemplate Context="city">
-                <MudTd Class="text-md font-semibold text-start">@city.CityName</MudTd>
-                <MudTd Class="text-md text-start">@city.DateAdded.ToLocalTime().ToString("yyyy-MM-dd ")</MudTd>
-                <MudTd Class="text-end d-flex justify-content-end gap-4">
+    <div class="grid-container">
+        @foreach (var city in favouriteCities)
+        {
+            <MudPaper Elevation="4" Class="city-card  glass-card">
+                <MudIcon Icon="@Icons.Material.Filled.LocationCity" Size="Size.Large" Class="city-icon" />
+                <MudText Typo="Typo.h6" Align="Align.Center" Class="city-name">@city.CityName</MudText>
+                <MudText Typo="Typo.body2" Align="Align.Center" Class="city-date">
+                    Added on: @city.DateAdded.ToLocalTime().ToString("yyyy-MM-dd")
+                </MudText>
+                <div class="d-flex justify-content-center gap-2 mt-3">
                     <MudTooltip Text="Search Weather forecast">
-                        <MudButton Color="Color.Primary" Variant="Variant.Outlined" OnClick="@(() => SearchWeather(city.CityName))">
-                            <MudIcon Icon="@Icons.Material.Outlined.Search" Class="" />
+                        <MudButton Color="Color.Primary" Variant="Variant.Outlined" OnClick="@(() => SearchWeather(city.CityName))" Class="search-weather-button">
+                            <MudIcon Icon="@Icons.Material.Outlined.Search" Class="mr-1" />
                             Weather
                         </MudButton>
                     </MudTooltip>
                     <MudTooltip Text="Delete Fav City">
-                        <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="@(() => OpenDeleteDialog(city.CityName))"></MudIconButton>
+                        <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="@(() => OpenDeleteDialog(city.CityName))" />
                     </MudTooltip>
-                </MudTd>
-            </RowTemplate>
-        </MudTable>
-    </MudPaper>
-
+                </div>
+            </MudPaper>
+        }
+    </div>
 }
 else
 {
-    <MudAlert Severity="Severity.Info">No favorite cities added yet.</MudAlert>
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">No favorite cities added yet.</MudAlert>
 }
 
-
-
 <style>
-    .no-border {
-        border: none !important;
+    .heading-fav {
+        font-weight: bold;
+        color: var(--mud-palette-primary);
     }
 
-    .no-shadow {
-        box-shadow: none !important;
+    .subtitle-fav {
+        color: #ff4081;
+        font-size: 1rem;
+    }
+
+    .top-button,
+    .top2-button {
+        border-radius: 12px;
+        padding: 8px 18px;
+        font-weight: 600;
+        transition: all 0.3s ease-in-out;
+    }
+
+        .top-button:hover,
+        .top2-button:hover {
+            transform: scale(1.05);
+        }
+
+    .glass-button {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+    }
+
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+        justify-items: center;
+        margin: 0 auto;
+        padding: 16px;
+    }
+
+    .city-card {
+        width: 100%;
+        max-width: 320px;
+        padding: 20px;
+        text-align: center;
+        border-radius: 20px;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+    .glass-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);/* 
+        box-shadow: 0px 8px 24px rgba(0, 173, 255, 0.2); */
+        color: white;
+    }
+
+    .city-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0px 12px 24px rgba(0, 173, 255, 0.4);
+    }
+
+    .city-name {
+        font-weight: bold;
+        color:white;
+    }
+
+    .city-icon {
+        color: var(--mud-palette-primary);
+        margin-bottom: 8px;
+    }
+
+    .city-date {
+        color: white;
+        font-size: 0.9rem;
+    }
+
+    .heading-fav {
+        font-size: 24px;
+        font-weight: 600;
+        letter-spacing: 3px;
+        color: #dcdcdc;
     }
 </style>
+
+
 
 
 @code {
@@ -109,17 +187,21 @@ else
             // Check weather alerts for each favorite city
             foreach (var city in favouriteCities)
             {
-                var userPreferences = await databaseController.GetUserAlertPreferences(userEmail, city.CityName);
+                
 
-                if (userPreferences != null)
+                var userPreferences = await databaseController.GetUserAlertPreferences(userEmail);
+
+                if (userPreferences != null && userPreferences.Any()) // Ensure list is not null/empty
                 {
-                    var alerts = await WeatherService.CheckWeatherAlertsAsync(city.CityName);
+                    var alerts = await WeatherService.CheckWeatherAlertsAsync(city.CityName, userEmail);
+
                     var filteredAlerts = alerts.Where(a =>
-                        (userPreferences.TemperatureAlert && a.Type == "Temperature") ||
-                        (userPreferences.WindAlert && a.Type == "Wind") ||
-                        (userPreferences.RainAlert && a.Type == "Rain") ||
-                        (userPreferences.AirQualityAlert && a.Type == "AirQuality")
+                    (userPreferences.Contains("Temperature") && a.Type == "Temperature") ||
+                    (userPreferences.Contains("Wind") && a.Type == "Wind") ||
+                    (userPreferences.Contains("Rain") && a.Type == "Rain")
+
                     ).ToList();
+
 
                     if (filteredAlerts.Any())
                     {
@@ -128,6 +210,7 @@ else
                     }
                 }
             }
+
         }
         else
         {
@@ -171,4 +254,11 @@ else
     {
         NavigationManager.NavigateTo("/alert-preferences");
     }
+
+    private void NavigateToHistoricalAlerts()
+    {
+        NavigationManager.NavigateTo("/historical-alerts");
+    }
+ 
+    
 }
