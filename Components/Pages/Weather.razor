@@ -18,7 +18,6 @@
     @using System.Text
 
     <PageTitle>Weather Forecast</PageTitle>
-<MudButton>hello world</MudButton>
 
     <MudText Typo="Typo.h3" Align="Align.Center" Class="title" Style="color:white;">WEATHER FORECAST</MudText>
 
@@ -59,13 +58,16 @@
         </MudContainer>
     </MudCard>
 
+    @if(userState.IsLoggedIn()){
+
 @if (!string.IsNullOrWhiteSpace(forecastSummary))
 {
     <MudPaper Class="p-4 my-3 forecast-summary " Elevation="4" Style="background: rgba(255, 255, 255, 0.05); border-radius: 12px;">
         <MudText Typo="Typo.h6" Color="Color.Warning" Class="mb-2">Weather Summary :</MudText>
         <MudText Typo="Typo.body1">@forecastSummary</MudText>
     </MudPaper>
-}
+    }        
+    }
 
 
 

@@ -308,3 +308,4 @@ D:\Copy project\BlazorApp\bin\Debug\net8.0\System.ClientModel.dll
 D:\Copy project\BlazorApp\bin\Debug\net8.0\System.Interactive.Async.dll
 D:\Copy project\BlazorApp\bin\Debug\net8.0\System.Linq.Async.dll
 D:\Copy project\BlazorApp\bin\Debug\net8.0\System.Memory.Data.dll
+D:\Copy project\BlazorApp\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

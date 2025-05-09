@@ -15,32 +15,32 @@
         <MudText Typo="Typo.h5" Align="Align.Center" Class="mb-4 mt-5 mb-5" Style="font-weight: 600;">Enter Your Details</MudText>
 
         <MudGrid Gutter="Size.Medium" Class="ml-3">
-            <MudItem xs="12">
+            <MudItem xs="11">
                 <MudTextField T="string" Label="Name" @bind-Value="personalInfo.Name" FullWidth="true" Variant="Variant.Outlined" Class=" custom-input mb-3" />
             </MudItem>
 
-            <MudItem xs="12">
+            <MudItem xs="11">
                 <MudTextField T="string" Label="Email" @bind-Value="personalInfo.Email" FullWidth="true" Variant="Variant.Outlined" Class="custom-input mb-3" />
             </MudItem>
 
-            <MudItem xs="12">
+            <MudItem xs="11">
                 <MudTextField T="string" Label="Phone" @bind-Value="personalInfo.Phone" FullWidth="true" Variant="Variant.Outlined" Class="custom-input mb-3" />
             </MudItem>
 
-            <MudItem xs="12">
+            <MudItem xs="11">
                 <MudTextField T="string" Label="Address" @bind-Value="personalInfo.City" FullWidth="true" Variant="Variant.Outlined" Class="custom-input mb-3" />
             </MudItem>
 
-            <MudItem xs="12">
+            <MudItem xs="11">
                 <MudTextField T="string" Label="Country" @bind-Value="personalInfo.Country" FullWidth="true" Variant="Variant.Outlined" Class="custom-input mb-4" />
             </MudItem>
 
-            <MudItem xs="6" >
+            <MudItem xs="5" >
                 <MudButton Color="Color.Primary" Class="mb-5" OnClick="SubmitForm" FullWidth="true" Variant="Variant.Filled" Style="font-weight: 400;">
                     Submit
                 </MudButton>
             </MudItem>
-            <MudItem xs="6" >
+            <MudItem xs="5" >
               
                 <MudButton Color="Color.Secondary" Class="mb-5" OnClick="ClearForm" FullWidth="true" Variant="Variant.Outlined" Style="font-weight: 400;">
                     Clear

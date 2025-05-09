@@ -20,47 +20,47 @@
 <MudDialogProvider />
 <MudSnackbarProvider />
 
- 
-    <MudLayout>
-        <MudAppBar Elevation="0" Class="d-flex justify-between px-4" Style="background-color: transparent;">
-            <div class="d-flex align-center">
-                <MudTooltip Text="Menu">
-                    <MudIconButton Icon="@Icons.Material.Filled.List" Color="Color.Inherit" OnClick="@(() => ToggleDrawer())" />
-                </MudTooltip>
-            </div>
+
+<MudLayout>
+    <MudAppBar Elevation="0" Class="d-flex justify-between px-4" Style="background-color: transparent;">
+        <div class="d-flex align-center">
+            <MudTooltip Text="Menu">
+                <MudIconButton Icon="@Icons.Material.Filled.List" Color="Color.Inherit" OnClick="@(() => ToggleDrawer())" />
+            </MudTooltip>
+        </div>
 
         <div class="d-flex align-center" style="gap: 8px; margin-left: auto;">
-                <MudText Class="mx-2">@userRole</MudText>
+            <MudText Class="mx-2">@userRole</MudText>
 
-                @if (!userState.IsLoggedIn())
-                {
-                    <MudTooltip Text="User LogIn">
-                        <MudButton Variant="Variant.Text" StartIcon="@Icons.Material.Filled.Login" Style="@($"color:{Colors.LightBlue.Lighten5};")" Href="/login">Login</MudButton>
-                    </MudTooltip>
-                }
-
-                @if (isDarkMode)
-                {
-                    <MudTooltip Text=" Light Mode">
-                        <MudIconButton Icon="@Icons.Material.Filled.LightMode"
-                                       Color="Color.Inherit"
-                                       OnClick="@ToggleDarkMode" />
-                    </MudTooltip>
-                }
-                else
-                {
-                    <MudTooltip Text=" Dark Mode">
-                        <MudIconButton Icon="@Icons.Material.Filled.DarkMode"
-                                       Color="Color.Inherit"
-                                       OnClick="@ToggleDarkMode" />
-                    </MudTooltip>
-                }
-
-                <MudTooltip Text="Profile">
-                    <MudIconButton Icon="@Icons.Material.Filled.AccountCircle" Color="Color.Inherit" OnClick="@ToggleOpen" />
+            @if (!userState.IsLoggedIn())
+            {
+                <MudTooltip Text="User LogIn">
+                    <MudButton Variant="Variant.Text" StartIcon="@Icons.Material.Filled.Login" Style="@($"color:{Colors.LightBlue.Lighten5};")" Href="/login">Login</MudButton>
                 </MudTooltip>
-            </div>
-        </MudAppBar>
+            }
+
+            @if (isDarkMode)
+            {
+                <MudTooltip Text=" Light Mode">
+                    <MudIconButton Icon="@Icons.Material.Filled.LightMode"
+                    Color="Color.Inherit"
+                    OnClick="@ToggleDarkMode" />
+                </MudTooltip>
+            }
+            else
+            {
+                <MudTooltip Text=" Dark Mode">
+                    <MudIconButton Icon="@Icons.Material.Filled.DarkMode"
+                    Color="Color.Inherit"
+                    OnClick="@ToggleDarkMode" />
+                </MudTooltip>
+            }
+
+            <MudTooltip Text="Profile">
+                <MudIconButton Icon="@Icons.Material.Filled.AccountCircle" Color="Color.Inherit" OnClick="@ToggleOpen" />
+            </MudTooltip>
+        </div>
+    </MudAppBar>
 
     <MudPopover Open="@_open" Fixed="true" AnchorOrigin="Origin.TopRight" TransformOrigin="Origin.TopRight" Class="px-4 pt-4 profile-popover" OnClose="@ClosePopover">
         <div class="d-flex flex-column">
@@ -85,42 +85,51 @@
 
     <MudDrawer Open="@isOpen" Variant="DrawerVariant.Persistent">
         <MudDrawerHeader>
-           
+
             <MudButton Typo="Typo.h5" OnClick="@(() => NavigateTo("/"))">Weather Forecast</MudButton>
         </MudDrawerHeader>
         <NavMenu />
     </MudDrawer>
-        
+
 
     <MudMainContent>
         <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-4">
             @Body
         </MudContainer>
     </MudMainContent>
-
-    <!-- 🧠 Icon-only Chatbot Button (Top-Right) -->
-    <MudIconButton Icon="@Icons.Material.Outlined.SmartToy"
-                   Class="chatbot-icon-button"
-                   Color="Color.Default"
-                   Size="Size.Large"
-                   OnClick="ToggleChatbot" />
-
-    
-    <!-- 🧠 Embedded Chatbot Panel -->
-    @if (_showChatbot)
+    @if (userState.IsLoggedIn())
     {
-        <div class="chatbot-container">
-            <MudCard Class="p-4 chatbot-card">
-                <div class="chatbot-header">
-                    <MudText Typo="Typo.h4" Class="chatbot-title">Chatkaro</MudText>
-                    <MudIconButton Icon="@Icons.Material.Filled.Close" Class="chatbot-fabclose" OnClick="ToggleChatbot" />
-                </div>
-                <WeatherChatBot />
-            </MudCard>
-        </div>
+        <!-- 🧠 Icon-only Chatbot Button (Top-Right) -->
+        <MudIconButton Icon="@Icons.Material.Outlined.SmartToy"
+        Class="chatbot-icon-button"
+        Color="Color.Default"
+        Size="Size.Large"
+        OnClick="ToggleChatbot" />
+
+
+        <!-- 🧠 Embedded Chatbot Panel -->
+        @if (_showChatbot)
+        {
+            <div class="chatbot-container">
+                <MudCard Class="p-4 chatbot-card">
+                    <div class="chatbot-header">
+                        <MudText Typo="Typo.h4" Color="Color.Primary" Class="chatbot-title">Chatkaro</MudText>
+                        <MudIconButton Icon="@Icons.Material.Filled.Close" Class="chatbot-fabclose" OnClick="ToggleChatbot" />
+                    </div>
+                    <WeatherChatBot />
+                </MudCard>
+            </div>
+        }
     }
 
-}
+    @if (!userState.IsLoggedIn())
+    {
+        <div class="top-right-login-text">
+            Login to unlock more features 
+        </div>
+
+    }
+
 </MudLayout>
 
 <style>
@@ -188,7 +197,7 @@
     .chatbot-title {
         font-weight: bold;
         font-size: large;
-        color: white;
+        
     }
 
     .chatbot-fabclose {
@@ -201,12 +210,25 @@
             color: #f44336;
         }
 
+    .top-right-login-text {
+        position: absolute;
+        top: 80px;
+        right: 66px;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        font-weight: 600;
+        padding: 8px 16px;
+        border-radius: 8px;
+        z-index: 1000;
+        font-size: 0.95rem;
+    }
 
 </style>
 @code
 {
     private bool isOpen = false;
-    private bool isDarkMode = false;
+    private bool isDarkMode = false
+    ;
     private bool _open;
     private string? userRole = "";
     private bool _showChatbot = false;

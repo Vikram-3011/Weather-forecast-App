@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "fC1wR4fnRC0=",
+  "dgSpecHash": "3+g6bT8awbw=",
   "success": true,
   "projectFilePath": "D:\\Copy project\\BlazorApp\\BlazorApp.csproj",
   "expectedPackageFiles": [
@@ -37,6 +37,7 @@
     "C:\\Users\\vikra\\.nuget\\packages\\microsoft.jsinterop\\8.0.8\\microsoft.jsinterop.8.0.8.nupkg.sha512",
     "C:\\Users\\vikra\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.0\\microsoft.netcore.platforms.5.0.0.nupkg.sha512",
     "C:\\Users\\vikra\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
+    "C:\\Users\\vikra\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.21.0\\microsoft.visualstudio.azure.containers.tools.targets.1.21.0.nupkg.sha512",
     "C:\\Users\\vikra\\.nuget\\packages\\microsoft.win32.primitives\\4.3.0\\microsoft.win32.primitives.4.3.0.nupkg.sha512",
     "C:\\Users\\vikra\\.nuget\\packages\\microsoft.win32.registry\\5.0.0\\microsoft.win32.registry.5.0.0.nupkg.sha512",
     "C:\\Users\\vikra\\.nuget\\packages\\mimemapping\\3.0.1\\mimemapping.3.0.1.nupkg.sha512",

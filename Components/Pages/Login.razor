@@ -39,7 +39,7 @@
             <!-- Sign Up Section -->
             <div class="d-flex justify-content-center align-items-center my-2">
                 <MudText Class="signup-text">Don't have an account yet?</MudText>
-                <MudButton OnClick="OnSignup" Color="Color.Inherit" Variant="Variant.Text" Class="signup-btn">Register</MudButton>
+                <MudButton OnClick="OnSignup" Color="Color.Inherit" Variant="Variant.Text" Style="color:white;" Class="signup-btn">Register</MudButton>
             </div>
 
         </MudCardContent>
@@ -123,11 +123,18 @@
         background: transparent !important; /* Removes background */
         color: white !important; /* Text remains visible */
         border-color: white !important; /* Keeps borders visible */
+        
     }
 
     .custom-input .mud-input-label {
         background: transparent !important; /* Fix label background */
         color: white !important; /* Ensures readability */
+        
+    }
+
+    .custom-input .mud-input-adornment.mud-end-adornment button svg {
+        color: white !important;
+        fill: white !important;
     }
 
 </style>

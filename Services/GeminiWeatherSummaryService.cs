@@ -19,7 +19,7 @@ public class GeminiWeatherSummaryService
     public async Task<string> GenerateSummaryAsync(string weatherData)
     {
         var apiKey = _configuration["Gemini:ApiKey"]; // Get it properly from appsettings.json
-        var endpoint = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={apiKey}";
+        var endpoint = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=AIzaSyBDzdRM6mETaPv432Rp9vIjESQeKov6lAI";
 
         var requestBody = new
         {
@@ -29,7 +29,7 @@ public class GeminiWeatherSummaryService
                 {
                     parts = new[]
                     {
-                        new { text = $"Summarize this weather data in a short and friendly format: {weatherData}" }
+                        new { text = $"Summarize this weather data in a  friendly format: {weatherData}" }
                     }
                 }
             }
@@ -114,7 +114,7 @@ public class GeminiWeatherSummaryService
     {
         var apiKey = _configuration["Gemini:ApiKey"];
         var model = "models/gemini-pro";
-        var url = $"https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key={apiKey}";
+        var url = $"https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro:generateContent?key={apiKey}";
 
         var body = new
         {

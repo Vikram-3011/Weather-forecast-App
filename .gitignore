@@ -1,0 +1,13 @@
+# Ignore Visual Studio folders
+.vs/
+*.user
+*.suo
+*.sln.docstates
+
+# Ignore build output
+bin/
+obj/
+
+# Ignore secrets
+wwwroot/appsettings.json
+.env

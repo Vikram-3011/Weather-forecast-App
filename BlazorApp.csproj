@@ -4,10 +4,14 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>230ea521-3ee3-4fe2-9cbb-39b16d51398b</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>.</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Betalgo.OpenAI.GPT3" Version="6.8.4" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
     <PackageReference Include="MongoDB.Bson" Version="3.1.0" />
     <PackageReference Include="MongoDB.Driver" Version="3.1.0" />
     <PackageReference Include="MongoDB.Driver.Core" Version="2.30.0" />

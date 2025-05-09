@@ -36,6 +36,7 @@ builder.Services.AddScoped<WeatherService>();
 builder.Services.AddSingleton<GeminiWeatherSummaryService>();
 
 
+builder.WebHost.UseUrls("http://*:80"); // For Render compatibility
 
 var app = builder.Build();
 

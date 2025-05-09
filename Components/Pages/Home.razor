@@ -86,27 +86,24 @@
                         </MudPaper>
                     }
                 </MudCard>
-
+                @if (userState.IsLoggedIn()){        
+                    
                 <!-- Weather Summary Section -->
                 <MudCard Class="glassmorphism-card pa-6 rounded-xl mt-4">
                     <MudStack Direction="Column" AlignItems="AlignItems.Center" Spacing="3">
                         <MudText Typo="Typo.h5" Class="font-weight-bold text-white">
                             <MudIcon Icon="@Icons.Material.Filled.Description" Color="Color.Primary" /> AI Weather Summary
                         </MudText>
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="GenerateSummary">
-                            Get AI Summary
-                        </MudButton>
+                        
                     </MudStack>
                     <MudDivider Class="my-4" />
                     @if (!string.IsNullOrEmpty(weatherSummary))
                     {
                         <MudText Typo="Typo.body1" Class="text-white">@weatherSummary</MudText>
                     }
-                    else
-                    {
-                        <MudText Typo="Typo.body2" Class="text-white">Click the button to generate a summary.</MudText>
+                   
+                    </MudCard>
                     }
-                </MudCard>
             </MudStack>
         </MudItem>
 
@@ -216,6 +213,9 @@
         await LoadWeatherData();
 
         await FetchLocation();
+
+        await GenerateSummary(); // Automatically generate summary
+
     }
     void NavigateToLogin()  
     {

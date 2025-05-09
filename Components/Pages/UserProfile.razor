@@ -138,9 +138,11 @@
         }
         isLoading = false;
 
+        // If user data is not found, redirect to the personal-info page
         if (user == null)
         {
-            Snackbar.Add("User data not found or unable to retrieve data.", Severity.Error);
+            Snackbar.Add("No user details found. Please enter your personal information.", Severity.Warning);
+            NavigationManager.NavigateTo("/personal-info");
         }
     }
 
