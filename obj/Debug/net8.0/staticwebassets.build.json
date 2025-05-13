@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "6RHGYxepn64xYiNk5XQhs+5WutVmtv9wOGaQXf8woUU=",
+  "Hash": "+/13SSHPT7yWYnM2rZndOE5BZWPgsQVeFPF1ndKE4FQ=",
   "Source": "BlazorApp",
   "BasePath": "_content/BlazorApp",
   "Mode": "Default",
@@ -185,12 +185,12 @@
       "OriginalItemSpec": "wwwroot\\images\\pexels-lum3n-44775-1410224.jpg"
     },
     {
-      "Identity": "D:\\Copy project\\BlazorApp\\wwwroot\\Js\\location.js",
+      "Identity": "D:\\Copy project\\BlazorApp\\wwwroot\\js\\location.js",
       "SourceId": "BlazorApp",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\Copy project\\BlazorApp\\wwwroot\\",
       "BasePath": "_content/BlazorApp",
-      "RelativePath": "Js/location#[.{fingerprint}]?.js",
+      "RelativePath": "js/location#[.{fingerprint}]?.js",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -203,15 +203,15 @@
       "Integrity": "PDWKfc9nQLPwwsy61HaVCqOBjvHXLoxpu3DUhJXXcks=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\Js\\location.js"
+      "OriginalItemSpec": "wwwroot\\js\\location.js"
     },
     {
-      "Identity": "D:\\Copy project\\BlazorApp\\wwwroot\\Js\\site.js",
+      "Identity": "D:\\Copy project\\BlazorApp\\wwwroot\\js\\site.js",
       "SourceId": "BlazorApp",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\Copy project\\BlazorApp\\wwwroot\\",
       "BasePath": "_content/BlazorApp",
-      "RelativePath": "Js/site#[.{fingerprint}]?.js",
+      "RelativePath": "js/site#[.{fingerprint}]?.js",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -224,15 +224,15 @@
       "Integrity": "kubEeMNQBvK72/MHtk0oQX0B29/YqGaN/TO4VeA7sOg=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\Js\\site.js"
+      "OriginalItemSpec": "wwwroot\\js\\site.js"
     },
     {
-      "Identity": "D:\\Copy project\\BlazorApp\\wwwroot\\Js\\voice.js",
+      "Identity": "D:\\Copy project\\BlazorApp\\wwwroot\\js\\voice.js",
       "SourceId": "BlazorApp",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\Copy project\\BlazorApp\\wwwroot\\",
       "BasePath": "_content/BlazorApp",
-      "RelativePath": "Js/voice#[.{fingerprint}]?.js",
+      "RelativePath": "js/voice#[.{fingerprint}]?.js",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -245,7 +245,7 @@
       "Integrity": "UWCG5aWN7AD1ghrP+4kkik2cLr8jxAOMdz6J66aQTKU=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\Js\\voice.js"
+      "OriginalItemSpec": "wwwroot\\js\\voice.js"
     },
     {
       "Identity": "D:\\Copy project\\BlazorApp\\wwwroot\\snowflake.png",
@@ -858,8 +858,8 @@
       ]
     },
     {
-      "Route": "Js/location.js",
-      "AssetFile": "D:\\Copy project\\BlazorApp\\wwwroot\\Js\\location.js",
+      "Route": "js/location.js",
+      "AssetFile": "D:\\Copy project\\BlazorApp\\wwwroot\\js\\location.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -895,8 +895,8 @@
       ]
     },
     {
-      "Route": "Js/location.kckbzbkd1g.js",
-      "AssetFile": "D:\\Copy project\\BlazorApp\\wwwroot\\Js\\location.js",
+      "Route": "js/location.kckbzbkd1g.js",
+      "AssetFile": "D:\\Copy project\\BlazorApp\\wwwroot\\js\\location.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -931,7 +931,7 @@
         },
         {
           "Name": "label",
-          "Value": "Js/location.js"
+          "Value": "js/location.js"
         },
         {
           "Name": "integrity",
@@ -940,8 +940,8 @@
       ]
     },
     {
-      "Route": "Js/site.js",
-      "AssetFile": "D:\\Copy project\\BlazorApp\\wwwroot\\Js\\site.js",
+      "Route": "js/site.js",
+      "AssetFile": "D:\\Copy project\\BlazorApp\\wwwroot\\js\\site.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -977,8 +977,8 @@
       ]
     },
     {
-      "Route": "Js/site.u0h199evjx.js",
-      "AssetFile": "D:\\Copy project\\BlazorApp\\wwwroot\\Js\\site.js",
+      "Route": "js/site.u0h199evjx.js",
+      "AssetFile": "D:\\Copy project\\BlazorApp\\wwwroot\\js\\site.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1013,7 +1013,7 @@
         },
         {
           "Name": "label",
-          "Value": "Js/site.js"
+          "Value": "js/site.js"
         },
         {
           "Name": "integrity",
@@ -1022,8 +1022,8 @@
       ]
     },
     {
-      "Route": "Js/voice.js",
-      "AssetFile": "D:\\Copy project\\BlazorApp\\wwwroot\\Js\\voice.js",
+      "Route": "js/voice.js",
+      "AssetFile": "D:\\Copy project\\BlazorApp\\wwwroot\\js\\voice.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1059,8 +1059,8 @@
       ]
     },
     {
-      "Route": "Js/voice.r1zt9wmbp2.js",
-      "AssetFile": "D:\\Copy project\\BlazorApp\\wwwroot\\Js\\voice.js",
+      "Route": "js/voice.r1zt9wmbp2.js",
+      "AssetFile": "D:\\Copy project\\BlazorApp\\wwwroot\\js\\voice.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1095,7 +1095,7 @@
         },
         {
           "Name": "label",
-          "Value": "Js/voice.js"
+          "Value": "js/voice.js"
         },
         {
           "Name": "integrity",

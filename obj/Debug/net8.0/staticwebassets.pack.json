@@ -5,18 +5,6 @@
       "PackagePath": "staticwebassets\\BlazorApp.x7csz8uxo5.bundle.scp.css"
     },
     {
-      "Id": "D:\\Copy project\\BlazorApp\\wwwroot\\Js\\location.js",
-      "PackagePath": "staticwebassets\\Js\\location.js"
-    },
-    {
-      "Id": "D:\\Copy project\\BlazorApp\\wwwroot\\Js\\site.js",
-      "PackagePath": "staticwebassets\\Js\\site.js"
-    },
-    {
-      "Id": "D:\\Copy project\\BlazorApp\\wwwroot\\Js\\voice.js",
-      "PackagePath": "staticwebassets\\Js\\voice.js"
-    },
-    {
       "Id": "D:\\Copy project\\BlazorApp\\wwwroot\\app.css",
       "PackagePath": "staticwebassets\\app.css"
     },
@@ -31,6 +19,18 @@
     {
       "Id": "D:\\Copy project\\BlazorApp\\wwwroot\\images\\pexels-lum3n-44775-1410224.jpg",
       "PackagePath": "staticwebassets\\images\\pexels-lum3n-44775-1410224.jpg"
+    },
+    {
+      "Id": "D:\\Copy project\\BlazorApp\\wwwroot\\js\\location.js",
+      "PackagePath": "staticwebassets\\js\\location.js"
+    },
+    {
+      "Id": "D:\\Copy project\\BlazorApp\\wwwroot\\js\\site.js",
+      "PackagePath": "staticwebassets\\js\\site.js"
+    },
+    {
+      "Id": "D:\\Copy project\\BlazorApp\\wwwroot\\js\\voice.js",
+      "PackagePath": "staticwebassets\\js\\voice.js"
     },
     {
       "Id": "D:\\Copy project\\BlazorApp\\wwwroot\\snowflake.png",
