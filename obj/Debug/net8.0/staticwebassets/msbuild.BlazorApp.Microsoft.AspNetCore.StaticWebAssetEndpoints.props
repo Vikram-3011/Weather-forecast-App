@@ -60,17 +60,17 @@
       <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"rndg4jhubr"},{"Name":"integrity","Value":"sha256-J\u002BlONbPCa6Ax3hUn3GCwmq63CkPIUlzaGpJEtz6tvX0="},{"Name":"label","Value":"_content/BlazorApp/images/pexels-lum3n-44775-1410224.jpg"}]]]></EndpointProperties>
       <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"1694001"},{"Name":"Content-Type","Value":"image/jpeg"},{"Name":"ETag","Value":"\u0022J\u002BlONbPCa6Ax3hUn3GCwmq63CkPIUlzaGpJEtz6tvX0=\u0022"},{"Name":"Last-Modified","Value":"Sun, 30 Mar 2025 10:54:14 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/BlazorApp/js/location.2c6cly9cel.js">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\location.js'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"2c6cly9cel"},{"Name":"integrity","Value":"sha256-EjhRjpki0Sh51xSU\u002BoxaSLfnwLxeKkK08Gsuipy80/4="},{"Name":"label","Value":"_content/BlazorApp/js/location.js"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"1531"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022EjhRjpki0Sh51xSU\u002BoxaSLfnwLxeKkK08Gsuipy80/4=\u0022"},{"Name":"Last-Modified","Value":"Wed, 14 May 2025 10:16:45 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/BlazorApp/js/location.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\location.js'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-PDWKfc9nQLPwwsy61HaVCqOBjvHXLoxpu3DUhJXXcks="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"1321"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022PDWKfc9nQLPwwsy61HaVCqOBjvHXLoxpu3DUhJXXcks=\u0022"},{"Name":"Last-Modified","Value":"Thu, 23 Jan 2025 10:28:38 GMT"}]]]></ResponseHeaders>
-    </StaticWebAssetEndpoint>
-    <StaticWebAssetEndpoint Include="_content/BlazorApp/js/location.kckbzbkd1g.js">
-      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\location.js'))</AssetFile>
-      <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"kckbzbkd1g"},{"Name":"integrity","Value":"sha256-PDWKfc9nQLPwwsy61HaVCqOBjvHXLoxpu3DUhJXXcks="},{"Name":"label","Value":"_content/BlazorApp/js/location.js"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"1321"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022PDWKfc9nQLPwwsy61HaVCqOBjvHXLoxpu3DUhJXXcks=\u0022"},{"Name":"Last-Modified","Value":"Thu, 23 Jan 2025 10:28:38 GMT"}]]]></ResponseHeaders>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-EjhRjpki0Sh51xSU\u002BoxaSLfnwLxeKkK08Gsuipy80/4="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"1531"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022EjhRjpki0Sh51xSU\u002BoxaSLfnwLxeKkK08Gsuipy80/4=\u0022"},{"Name":"Last-Modified","Value":"Wed, 14 May 2025 10:16:45 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/BlazorApp/js/site.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\site.js'))</AssetFile>

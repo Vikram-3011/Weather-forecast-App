@@ -13,16 +13,24 @@
                 <b>@(message.Role == "user" ? "You" : "Generative AI"):</b> @message.Content
             </div>
         }
+        @if (IsLoading)
+        {
+            <div class="mb-2 text-blue-500">
+                <b>Generative AI:</b> <em>Typing...</em> @* <MudProgressCircular Indeterminate="true" Size="Size.Small" Color="Color.Primary" /> *@
+            </div>
+        }
     </MudPaper>
 
     <MudTextField @bind-Value="UserMessage" Placeholder="Ask something..." Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.ArrowForward" OnAdornmentClick="SendMessage" />
     <MudButton OnClick="ClearChat" Color="Color.Error" Class="mt-2">Clear Chat</MudButton>
-    <MudButton OnClick="StartVoiceInput" Color="Color.Primary" Class="mt-2">
+   @*  <MudButton OnClick="StartVoiceInput" Color="Color.Primary" Class="mt-2">
         🎙️ Speak
-    </MudButton>
+    </MudButton> *@
 </MudCard>
 @code {
     private string UserMessage = "";
+    private bool IsLoading = false;
+
     private List<GeminiChatMessage> Messages = new();
     private DotNetObjectReference<WeatherChatBot>? _dotNetRef;
 
@@ -34,7 +42,7 @@
 
     public async Task StartVoiceInput()
     {
-        await JS.InvokeVoidAsync("voiceAssistant.startListening", _dotNetRef);
+        await JS.InvokeVoidAsync("startVoiceRecognition", _dotNetRef);
     }
 
     [JSInvokable]
@@ -50,16 +58,47 @@
             return;
 
         Messages.Add(new GeminiChatMessage { Role = "user", Content = UserMessage });
+        IsLoading = true;
+        StateHasChanged(); // Immediately reflect loading in UI
 
-        var reply = await GeminiService.GenerateChatResponseAsync(Messages);
-
-        Messages.Add(new GeminiChatMessage { Role = "model", Content = reply });
+        try
+        {
+            var reply = await GeminiService.GenerateChatResponseAsync(Messages);
+            Messages.Add(new GeminiChatMessage { Role = "model", Content = reply });
+        }
+        catch (Exception ex)
+        {
+            Messages.Add(new GeminiChatMessage { Role = "model", Content = $"[Error: {ex.Message}]" });
+        }
 
         UserMessage = "";
+        IsLoading = false;
+        StateHasChanged(); // Refresh again to hide loading
     }
+
 
     private void ClearChat()
     {
         Messages.Clear();
     }
-}
+}@* 
+<script>
+    window.startVoiceRecognition = function (dotNetRef) {
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = 'en-US';
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
+        recognition.onresult = function (event) {
+            const transcript = event.results[0][0].transcript;
+            dotNetRef.invokeMethodAsync('ReceiveVoiceInput', transcript);
+        };
+
+        recognition.onerror = function (event) {
+            alert("Speech recognition error: " + event.error); // 🛠️ Show error to user
+            console.error('Speech recognition error:', event.error);
+        };
+
+        recognition.start();
+    };
+</script> *@

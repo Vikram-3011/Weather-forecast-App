@@ -6,7 +6,7 @@
 @rendermode InteractiveServer
 @inject AuthService auth
 @inject WeatherDataService WeatherService
-@inject IJSRuntime JSRuntime
+
 @inject UserStateManager userState
 @using System.Text.Json
 @inject IHttpClientFactory HttpClientFactory
@@ -255,6 +255,7 @@
     private double Accuracy;
     private string? FullAddress;
     private CityWeather? CurrentWeather;
+    [Inject] private IJSRuntime JSRuntime { get; set; }
 
     private string weatherSummary;
 
@@ -422,3 +423,25 @@
 
 
 }
+<script>
+     window.getUserLocation = async function () {
+         return new Promise((resolve, reject) => {
+             if (!navigator.geolocation) {
+                 reject('Geolocation is not supported by your browser');
+             } else {
+                 navigator.geolocation.getCurrentPosition(
+                     (position) => {
+                         resolve({
+                             latitude: position.coords.latitude,
+                             longitude: position.coords.longitude,
+                             accuracy: position.coords.accuracy
+                         });
+                     },
+                     (error) => {
+                         reject(error.message);
+                     }
+                 );
+             }
+         });
+     };
+</script>
