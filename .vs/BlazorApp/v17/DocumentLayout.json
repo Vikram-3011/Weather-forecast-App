@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "D:\\Copy project\\BlazorApp\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{CA45F84E-3E8B-46E6-8FC4-8FB406EAABEE}|BlazorApp.csproj|d:\\copy project\\blazorapp\\components\\pages\\editprofile.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA45F84E-3E8B-46E6-8FC4-8FB406EAABEE}|BlazorApp.csproj|solutionrelative:components\\pages\\editprofile.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{CA45F84E-3E8B-46E6-8FC4-8FB406EAABEE}|BlazorApp.csproj|d:\\copy project\\blazorapp\\components\\pages\\weatherchatbot.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{CA45F84E-3E8B-46E6-8FC4-8FB406EAABEE}|BlazorApp.csproj|solutionrelative:components\\pages\\weatherchatbot.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -50,8 +54,21 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "EditProfile.razor",
+              "DocumentMoniker": "D:\\Copy project\\BlazorApp\\Components\\Pages\\EditProfile.razor",
+              "RelativeDocumentMoniker": "Components\\Pages\\EditProfile.razor",
+              "ToolTip": "D:\\Copy project\\BlazorApp\\Components\\Pages\\EditProfile.razor",
+              "RelativeToolTip": "Components\\Pages\\EditProfile.razor",
+              "ViewState": "AgIAADoAAAAAAAAAAAAswE0AAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-14T11:20:32.27Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
@@ -62,7 +79,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "WeatherChatBot.razor",
               "DocumentMoniker": "D:\\Copy project\\BlazorApp\\Components\\Pages\\WeatherChatBot.razor",
               "RelativeDocumentMoniker": "Components\\Pages\\WeatherChatBot.razor",
@@ -75,7 +92,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Home.razor",
               "DocumentMoniker": "D:\\Copy project\\BlazorApp\\Components\\Pages\\Home.razor",
               "RelativeDocumentMoniker": "Components\\Pages\\Home.razor",
@@ -83,12 +100,11 @@
               "RelativeToolTip": "Components\\Pages\\Home.razor",
               "ViewState": "AgIAAJ0BAAAAAAAAAAAqwK8BAAA6AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-14T09:55:41.411Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-14T09:55:41.411Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "App.razor",
               "DocumentMoniker": "D:\\Copy project\\BlazorApp\\Components\\App.razor",
               "RelativeDocumentMoniker": "Components\\App.razor",
@@ -100,7 +116,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": ".gitignore",
               "DocumentMoniker": "D:\\Copy project\\BlazorApp\\.gitignore",
               "RelativeDocumentMoniker": ".gitignore",
@@ -112,7 +128,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": ".dockerignore",
               "DocumentMoniker": "D:\\Copy project\\BlazorApp\\.dockerignore",
               "RelativeDocumentMoniker": ".dockerignore",
@@ -124,7 +140,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\Copy project\\BlazorApp\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
@@ -136,7 +152,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "GeminiWeatherSummaryService.cs",
               "DocumentMoniker": "D:\\Copy project\\BlazorApp\\Services\\GeminiWeatherSummaryService.cs",
               "RelativeDocumentMoniker": "Services\\GeminiWeatherSummaryService.cs",
@@ -144,12 +160,11 @@
               "RelativeToolTip": "Services\\GeminiWeatherSummaryService.cs",
               "ViewState": "AgIAACcAAAAAAAAAAAAYwD4AAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-09T09:24:18.388Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-09T09:24:18.388Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\Copy project\\BlazorApp\\appsettings.json",
               "RelativeDocumentMoniker": "appsettings.json",
@@ -161,7 +176,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "BlazorApp.csproj",
               "DocumentMoniker": "D:\\Copy project\\BlazorApp\\BlazorApp.csproj",
               "RelativeDocumentMoniker": "BlazorApp.csproj",
@@ -173,7 +188,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "Dockerfile",
               "DocumentMoniker": "D:\\Copy project\\BlazorApp\\Dockerfile",
               "RelativeDocumentMoniker": "Dockerfile",
