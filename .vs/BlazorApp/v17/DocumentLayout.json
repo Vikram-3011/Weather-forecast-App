@@ -3,8 +3,8 @@
   "WorkspaceRootPath": "D:\\Copy project\\BlazorApp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{CA45F84E-3E8B-46E6-8FC4-8FB406EAABEE}|BlazorApp.csproj|d:\\copy project\\blazorapp\\wwwroot\\js\\location.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{CA45F84E-3E8B-46E6-8FC4-8FB406EAABEE}|BlazorApp.csproj|solutionrelative:wwwroot\\js\\location.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+      "AbsoluteMoniker": "D:0:0:{CA45F84E-3E8B-46E6-8FC4-8FB406EAABEE}|BlazorApp.csproj|d:\\copy project\\blazorapp\\components\\pages\\weatherchatbot.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA45F84E-3E8B-46E6-8FC4-8FB406EAABEE}|BlazorApp.csproj|solutionrelative:components\\pages\\weatherchatbot.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CA45F84E-3E8B-46E6-8FC4-8FB406EAABEE}|BlazorApp.csproj|d:\\copy project\\blazorapp\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -50,7 +50,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -59,6 +59,19 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "WeatherChatBot.razor",
+              "DocumentMoniker": "D:\\Copy project\\BlazorApp\\Components\\Pages\\WeatherChatBot.razor",
+              "RelativeDocumentMoniker": "Components\\Pages\\WeatherChatBot.razor",
+              "ToolTip": "D:\\Copy project\\BlazorApp\\Components\\Pages\\WeatherChatBot.razor",
+              "RelativeToolTip": "Components\\Pages\\WeatherChatBot.razor",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAACIAAAA+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-14T10:20:14.497Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -71,19 +84,6 @@
               "ViewState": "AgIAAJ0BAAAAAAAAAAAqwK8BAAA6AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-05-14T09:55:41.411Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "location.js",
-              "DocumentMoniker": "D:\\Copy project\\BlazorApp\\wwwroot\\js\\location.js",
-              "RelativeDocumentMoniker": "wwwroot\\js\\location.js",
-              "ToolTip": "D:\\Copy project\\BlazorApp\\wwwroot\\js\\location.js",
-              "RelativeToolTip": "wwwroot\\js\\location.js",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAqwBkAAAA3AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-05-13T10:37:04.709Z",
               "EditorCaption": ""
             },
             {
