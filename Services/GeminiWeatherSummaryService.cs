@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -18,25 +19,21 @@ public class GeminiWeatherSummaryService
 
     public async Task<string> GenerateSummaryAsync(string weatherData)
     {
-        var apiKey = _configuration["Gemini:ApiKey"]; // Get it properly from appsettings.json
-        var endpoint = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=AIzaSyBDzdRM6mETaPv432Rp9vIjESQeKov6lAI";
+        var apiKey = _configuration["QroqAI:ApiKey"]; // Store it in appsettings.json under QroqAI section
+        var endpoint = "https://api.gorq.cloud/v1/completion"; // Replace with the actual Qroq endpoint if different
 
         var requestBody = new
         {
-            contents = new[]
-            {
-                new
-                {
-                    parts = new[]
-                    {
-                        new { text = $"Summarize this weather data in a  friendly format: {weatherData}" }
-                    }
-                }
-            }
+            model = "gorq-1", // Adjust to correct model name if needed
+            prompt = $"Summarize this weather data in a friendly format: {weatherData}",
+            max_tokens = 200,
+            temperature = 0.7
         };
 
         var json = JsonSerializer.Serialize(requestBody);
         var client = _httpClientFactory.CreateClient();
+
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
 
         var request = new HttpRequestMessage(HttpMethod.Post, endpoint)
         {
@@ -50,19 +47,17 @@ public class GeminiWeatherSummaryService
             var responseContent = await response.Content.ReadAsStringAsync();
 
             using var doc = JsonDocument.Parse(responseContent);
-            var summary = doc.RootElement   
-                             .GetProperty("candidates")[0]
-                             .GetProperty("content")
-                             .GetProperty("parts")[0]
+            var summary = doc.RootElement
+                             .GetProperty("choices")[0]
                              .GetProperty("text")
                              .GetString();
 
-            return summary ?? "No summary returned from Gemini.";
+            return summary?.Trim() ?? "No summary returned from Qroq AI.";
         }
         else
         {
             var error = await response.Content.ReadAsStringAsync();
-            return $"Failed to generate summary from Gemini: {response.StatusCode} - {error}";
+            return $"Failed to generate summary from Qroq AI: {response.StatusCode} - {error}";
         }
     }
 

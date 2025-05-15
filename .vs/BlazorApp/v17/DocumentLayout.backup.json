@@ -3,16 +3,24 @@
   "WorkspaceRootPath": "D:\\Copy project\\BlazorApp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{CA45F84E-3E8B-46E6-8FC4-8FB406EAABEE}|BlazorApp.csproj|d:\\copy project\\blazorapp\\components\\pages\\weatherchatbot.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{CA45F84E-3E8B-46E6-8FC4-8FB406EAABEE}|BlazorApp.csproj|solutionrelative:components\\pages\\weatherchatbot.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{CA45F84E-3E8B-46E6-8FC4-8FB406EAABEE}|BlazorApp.csproj|d:\\copy project\\blazorapp\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{CA45F84E-3E8B-46E6-8FC4-8FB406EAABEE}|BlazorApp.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA45F84E-3E8B-46E6-8FC4-8FB406EAABEE}|BlazorApp.csproj|d:\\copy project\\blazorapp\\services\\geminiweathersummaryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA45F84E-3E8B-46E6-8FC4-8FB406EAABEE}|BlazorApp.csproj|solutionrelative:services\\geminiweathersummaryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CA45F84E-3E8B-46E6-8FC4-8FB406EAABEE}|BlazorApp.csproj|d:\\copy project\\blazorapp\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{CA45F84E-3E8B-46E6-8FC4-8FB406EAABEE}|BlazorApp.csproj|solutionrelative:components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CA45F84E-3E8B-46E6-8FC4-8FB406EAABEE}|BlazorApp.csproj|d:\\copy project\\blazorapp\\services\\geminiweathersummaryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CA45F84E-3E8B-46E6-8FC4-8FB406EAABEE}|BlazorApp.csproj|solutionrelative:services\\geminiweathersummaryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{CA45F84E-3E8B-46E6-8FC4-8FB406EAABEE}|BlazorApp.csproj|d:\\copy project\\blazorapp\\components\\pages\\editprofile.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA45F84E-3E8B-46E6-8FC4-8FB406EAABEE}|BlazorApp.csproj|solutionrelative:components\\pages\\editprofile.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA45F84E-3E8B-46E6-8FC4-8FB406EAABEE}|BlazorApp.csproj|d:\\copy project\\blazorapp\\components\\pages\\weatherchatbot.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA45F84E-3E8B-46E6-8FC4-8FB406EAABEE}|BlazorApp.csproj|solutionrelative:components\\pages\\weatherchatbot.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CA45F84E-3E8B-46E6-8FC4-8FB406EAABEE}|BlazorApp.csproj|d:\\copy project\\blazorapp\\blazorapp.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
@@ -25,10 +33,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{CA45F84E-3E8B-46E6-8FC4-8FB406EAABEE}|BlazorApp.csproj|d:\\copy project\\blazorapp\\components\\app.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{CA45F84E-3E8B-46E6-8FC4-8FB406EAABEE}|BlazorApp.csproj|solutionrelative:components\\app.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CA45F84E-3E8B-46E6-8FC4-8FB406EAABEE}|BlazorApp.csproj|d:\\copy project\\blazorapp\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{CA45F84E-3E8B-46E6-8FC4-8FB406EAABEE}|BlazorApp.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CA45F84E-3E8B-46E6-8FC4-8FB406EAABEE}|BlazorApp.csproj|d:\\copy project\\blazorapp\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
@@ -50,7 +54,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 10,
           "Children": [
             {
               "$type": "Bookmark",
@@ -62,7 +66,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
+              "Title": "EditProfile.razor",
+              "DocumentMoniker": "D:\\Copy project\\BlazorApp\\Components\\Pages\\EditProfile.razor",
+              "RelativeDocumentMoniker": "Components\\Pages\\EditProfile.razor",
+              "ToolTip": "D:\\Copy project\\BlazorApp\\Components\\Pages\\EditProfile.razor",
+              "RelativeToolTip": "Components\\Pages\\EditProfile.razor",
+              "ViewState": "AgIAADQAAAAAAAAAAAAswF0AAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-14T11:20:32.27Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "WeatherChatBot.razor",
               "DocumentMoniker": "D:\\Copy project\\BlazorApp\\Components\\Pages\\WeatherChatBot.razor",
               "RelativeDocumentMoniker": "Components\\Pages\\WeatherChatBot.razor",
@@ -70,25 +87,24 @@
               "RelativeToolTip": "Components\\Pages\\WeatherChatBot.razor",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAACIAAAA+AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-14T10:20:14.497Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-14T10:20:14.497Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Home.razor",
               "DocumentMoniker": "D:\\Copy project\\BlazorApp\\Components\\Pages\\Home.razor",
               "RelativeDocumentMoniker": "Components\\Pages\\Home.razor",
               "ToolTip": "D:\\Copy project\\BlazorApp\\Components\\Pages\\Home.razor",
               "RelativeToolTip": "Components\\Pages\\Home.razor",
-              "ViewState": "AgIAAJ0BAAAAAAAAAAAqwK8BAAA6AAAAAAAAAA==",
+              "ViewState": "AgIAAP4AAAAAAAAAAAAqwBMBAABCAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-05-14T09:55:41.411Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "App.razor",
               "DocumentMoniker": "D:\\Copy project\\BlazorApp\\Components\\App.razor",
               "RelativeDocumentMoniker": "Components\\App.razor",
@@ -100,7 +116,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": ".gitignore",
               "DocumentMoniker": "D:\\Copy project\\BlazorApp\\.gitignore",
               "RelativeDocumentMoniker": ".gitignore",
@@ -112,7 +128,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": ".dockerignore",
               "DocumentMoniker": "D:\\Copy project\\BlazorApp\\.dockerignore",
               "RelativeDocumentMoniker": ".dockerignore",
@@ -124,7 +140,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\Copy project\\BlazorApp\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
@@ -136,32 +152,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "GeminiWeatherSummaryService.cs",
               "DocumentMoniker": "D:\\Copy project\\BlazorApp\\Services\\GeminiWeatherSummaryService.cs",
               "RelativeDocumentMoniker": "Services\\GeminiWeatherSummaryService.cs",
               "ToolTip": "D:\\Copy project\\BlazorApp\\Services\\GeminiWeatherSummaryService.cs",
               "RelativeToolTip": "Services\\GeminiWeatherSummaryService.cs",
-              "ViewState": "AgIAACcAAAAAAAAAAAAYwD4AAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAkwBwAAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-09T09:24:18.388Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 0,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\Copy project\\BlazorApp\\appsettings.json",
               "RelativeDocumentMoniker": "appsettings.json",
               "ToolTip": "D:\\Copy project\\BlazorApp\\appsettings.json",
               "RelativeToolTip": "appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAABHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-05-09T09:22:56.595Z"
+              "WhenOpened": "2025-05-09T09:22:56.595Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "BlazorApp.csproj",
               "DocumentMoniker": "D:\\Copy project\\BlazorApp\\BlazorApp.csproj",
               "RelativeDocumentMoniker": "BlazorApp.csproj",
@@ -173,7 +190,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "Dockerfile",
               "DocumentMoniker": "D:\\Copy project\\BlazorApp\\Dockerfile",
               "RelativeDocumentMoniker": "Dockerfile",

@@ -1,3 +1,0 @@
-D:\Copy project\BlazorApp\wwwroot\js\location.js
-D:\Copy project\BlazorApp\wwwroot\js\site.js
-D:\Copy project\BlazorApp\wwwroot\js\voice.js
